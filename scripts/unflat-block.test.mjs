@@ -41,3 +41,14 @@ test('checkPair ignores CRLF vs LF', () => {
   const after = insert(before, block).replace(/\n/g, '\r\n');
   assert.deepEqual(checkPair(before, after), { ok: true });
 });
+
+test('checkPair fails when block is not before last </style>', () => {
+  const afterHead = before.replace('</head>', block + '\n</head>');
+  assert.deepEqual(checkPair(before, afterHead), { ok: false, reason: 'block-not-before-last-style' });
+});
+
+test('checkPair fails when block has no trailing newline', () => {
+  const i = before.lastIndexOf('</style>');
+  const afterNoNL = before.slice(0, i) + block + before.slice(i);
+  assert.deepEqual(checkPair(before, afterNoNL), { ok: false, reason: 'missing-trailing-newline' });
+});

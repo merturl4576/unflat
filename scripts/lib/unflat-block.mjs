@@ -20,8 +20,25 @@ export function stripUnflatBlock(html) {
 
 /** True when `after` is exactly `before` with one unflat block inserted. */
 export function checkPair(before, after) {
+  const src = normalize(after);
   const { stripped, reason } = stripUnflatBlock(after);
   if (!stripped) return { ok: false, reason };
+
+  // Check position and newline constraints
+  const e = src.indexOf('/* unflat: end */');
+  if (e >= 0) {
+    const posAfterEnd = e + END.length;
+    // Check for trailing newline after END marker
+    if (src[posAfterEnd] !== '\n') {
+      return { ok: false, reason: 'missing-trailing-newline' };
+    }
+    // Check that </style> is immediately after the newline and is the last occurrence
+    const stylePos = posAfterEnd + 1;
+    if (src.lastIndexOf('</style>') !== stylePos) {
+      return { ok: false, reason: 'block-not-before-last-style' };
+    }
+  }
+
   const a = normalize(before);
   if (stripped === a) return { ok: true };
   const al = a.split('\n');

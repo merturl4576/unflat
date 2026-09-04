@@ -5,8 +5,22 @@ import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { checkPair } from './lib/unflat-block.mjs';
 
-const dir = resolve(process.argv[2] ?? 'examples');
+// Parse arguments: directory is first non-flag arg, flags are --* args
+let dirArg = 'examples';
 const allowMissing = process.argv.includes('--allow-missing');
+for (let i = 2; i < process.argv.length; i++) {
+  if (!process.argv[i].startsWith('--')) {
+    dirArg = process.argv[i];
+    break;
+  }
+}
+
+const dir = resolve(dirArg);
+if (!existsSync(dir)) {
+  console.error(`Directory not found: ${dir}`);
+  process.exit(2);
+}
+
 let failed = 0, checked = 0;
 
 for (const name of readdirSync(dir).sort()) {
