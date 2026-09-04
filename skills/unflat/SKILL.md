@@ -13,7 +13,7 @@ AI-built pages put everything on one plane: a single background color, sections 
 
 ## The model: five moves
 
-1. **Ground.** Move the page background 4–8% lightness away from the section background, tinted toward the accent hue at very low chroma. Sections now have something to sit on.
+1. **Ground and lift.** Move the page background 1–3% lightness down (never near black) and lift the sections 2–3% up, both tinted toward the accent hue at very low chroma. The 4–6% separation is what makes the sections sit on something.
 2. **Light.** One fixed full-viewport layer behind content: a directional light (top-left by default) and a vignette in the opposite corner.
 3. **Texture.** Inline SVG fractal noise tinted to the palette, 3–6% opacity. No image files.
 4. **Surfaces.** Top-level sections become mounted surfaces: inset from the viewport edge, a 2–3% vertical gradient, a 1px border with a lit top edge, a deep shadow with a hairline base, and a centered top light-line. At most one surface carries an accent glow (two for the backlit material).
@@ -24,7 +24,7 @@ AI-built pages put everything on one plane: a single background color, sections 
 - **One block.** Everything lives between `/* unflat: start */` and `/* unflat: end */`, appended at the end of the global stylesheet (or in `unflat.css` imported last). Nothing else in the codebase changes.
 - **Derived colors.** Every color comes from the site's tokens or computed styles. Never invent a palette. Never pure `#000` or `#fff`.
 - **One light source.** Ground, surfaces and shadows agree on a direction. Backlit is the only exception (light from behind).
-- **Contrast preserved.** Surfaces stay within 3% lightness of the original section background, so existing text colors keep their contrast.
+- **Contrast preserved.** A surface's base color stays within 3% lightness of the original section background and its gradient adds at most 2.5% at the top edge, so existing text colors keep their contrast.
 - **Ground stays ground.** Header, nav, footer, and anything `position: fixed` or `sticky` are never turned into surfaces.
 - **No motion, no filters.** No animation, no `filter`, and `backdrop-filter` only for the glass material, off by default.
 - **Reversible.** Deleting the block restores the site exactly. If a markup annotation was unavoidable, say so in the report.

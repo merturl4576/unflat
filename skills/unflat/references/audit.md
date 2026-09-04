@@ -47,7 +47,7 @@ Also note: theme (dark or light), warmth of the palette (warm, cool, neutral), a
 
 ## 4. Browser snippet
 
-When a browser tool can evaluate JavaScript, run this on the page. It returns backgrounds of top-level children, fixed and sticky elements, and all `:root` custom properties.
+When a browser tool can evaluate JavaScript, run this on the page. It returns backgrounds of top-level children, fixed and sticky elements, and all `:root` custom properties, including ones declared inside `@media`, `@supports` or `@layer` blocks (later declarations overwrite earlier ones, so check which theme you are auditing).
 
 ```js
 (() => {
@@ -61,11 +61,14 @@ When a browser tool can evaluate JavaScript, run this on the page. It returns ba
   const fixed = [...document.querySelectorAll('body *')]
     .filter((e) => ['fixed', 'sticky'].includes(cs(e).position)).map(sig).slice(0, 20);
   const vars = {};
-  for (const sheet of document.styleSheets) {
-    let rules = []; try { rules = [...sheet.cssRules]; } catch {}
-    for (const r of rules) if (r.selectorText === ':root' || r.selectorText === 'html')
-      for (const p of r.style) if (p.startsWith('--')) vars[p] = r.style.getPropertyValue(p).trim();
-  }
+  const walk = (rules) => {
+    for (const r of rules) {
+      if (r.selectorText === ':root' || r.selectorText === 'html')
+        for (const p of r.style) if (p.startsWith('--')) vars[p] = r.style.getPropertyValue(p).trim();
+      if (r.cssRules) walk(r.cssRules); // @media, @supports, @layer, nested rules
+    }
+  };
+  for (const sheet of document.styleSheets) { let rules = []; try { rules = [...sheet.cssRules]; } catch {} walk(rules); }
   return {
     htmlBg: cs(document.documentElement).backgroundColor,
     bodyBg: cs(document.body).backgroundColor,
