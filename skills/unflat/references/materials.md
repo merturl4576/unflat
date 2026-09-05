@@ -69,7 +69,7 @@ Dark, cool or saturated accent. The ground is a soft field with two low-chroma a
 |---|---|
 | ground | page-bg −2% L, hue toward accent when the accent's hue is more than 30° from the background's |
 | field | two radial blobs in `body::before`: accent at .10 at `15% -10%`, secondary or accent at .07 at `90% 110%` |
-| surface top / bottom | `color-mix(in oklab, <page-bg +5% L>, transparent 15%)` / `color-mix(in oklab, <page-bg +3% L>, transparent 8%)` |
+| surface top / bottom | `color-mix(in oklab, <page-bg +5.8% L, white 7% in oklab>, transparent 15%)` / `color-mix(in oklab, <page-bg +2.9% L, white 3.5% in oklab>, transparent 8%)` |
 | edge | `rgba(255,255,255,.12)` |
 | line | `rgba(255,255,255,.07)` |
 | lightline | `rgba(255,255,255,.25)` |
@@ -94,7 +94,7 @@ body::before{background:
   background-size:auto,auto,auto,220px 220px}
 ```
 
-The gradient is 2% nominal; the 15%/8% transparency softens it on screen — do not go below that.
+The token gradient is 2.9% L nominal; through the 15%/8% transparency the rendered gap over the ground is about 2.1% L. For glass the 1.5–2.5% band is judged on that composited value, not on the raw tokens.
 
 ## slate — stone
 
