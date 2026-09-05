@@ -6,10 +6,10 @@ Run this after writing the block. Every line is pass or fail.
 
 | Check | Pass condition | How to check |
 |---|---|---|
-| Contrast | text on surfaces keeps its original contrast; the surface base (`--unflat-surface-bottom`) is within 3% L of the original section background and the gradient top at most 2.5% above that (nominal values; 8-bit hex rounding may add up to 0.15% L — `#161514`→`#1c1b1a` measures 2.64%) | compare `--unflat-surface-bottom` to the page-bg token; spot-check a heading and a paragraph |
+| Contrast | text on surfaces keeps its original contrast; the surface base (`--unflat-surface-bottom`) is within 3% L of the original section background and the gradient top at most 2.5% above that (nominal values; 8-bit hex rounding may add up to 0.2% L — `#161514`→`#1c1b1a` measures 2.64%) | compare `--unflat-surface-bottom` to the page-bg token; spot-check a heading and a paragraph |
 | Horizontal scroll | none introduced | `document.documentElement.scrollWidth <= innerWidth` |
 | Gap | consecutive surfaces are separated by `--unflat-gap` | the second top-level section's computed `margin-top` equals the gap value (`getComputedStyle(document.querySelectorAll('<your SURFACE selector>')[1]).marginTop`) |
-| Alignment | content inside surfaces stays on the header's grid at every width | `getBoundingClientRect().left` of the header's first text element vs the first surface's first text element at 1440 and 390: equal within 1px |
+| Alignment | content inside surfaces stays on the header's grid at every width | `getBoundingClientRect().left` of the header's first text element vs the first and last surface's first text element at 1440, at a width just under the container's max plus twice the inset (e.g. 1100 for a 1160px container), and 390: equal within 1px |
 | Fixed and sticky | header, banners, widgets unchanged | screenshot top of page and compare |
 | One light | edges lit from the same side as the light; shadows fall down | eye check on two surfaces |
 | Motion | no animation added | grep the block for `animation` and `transition` |
@@ -33,7 +33,7 @@ If the site sets `body { position: relative; z-index: 0 }` or similar, the layer
 
 ## Re-auditing after install
 
-Re-auditing a page after install: the audit snippet's `rootVars` now also picks up the block's own `@media` override (`--unflat-inset:0px`); read the block's `:root` values directly instead.
+The audit snippet's `rootVars` now also picks up the block's own `@media` override (`--unflat-inset:0px`); read the block's `:root` values directly instead.
 
 ## Content that sits on top of the layer
 

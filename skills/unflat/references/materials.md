@@ -23,8 +23,8 @@ Dark. A panel mounted on a wall: warm light from the top-left catches the top ed
 
 | Property | Value |
 |---|---|
-| ground | page-bg −3% L (the recipe default; never below L .10), hue toward accent, chroma ≤ .02 |
-| surface top / bottom | page-bg +5% L / page-bg +3% L |
+| ground | page-bg −3% L (the recipe default; never below L .10), hue toward accent when the accent's hue is more than 30° from the background's, chroma ≤ .02 |
+| surface top / bottom | page-bg +4.5% L / page-bg +2% L |
 | edge | text at .10 |
 | line | site line token |
 | lightline | text at .22 |
@@ -67,9 +67,9 @@ Dark, cool or saturated accent. The ground is a soft field with two low-chroma a
 
 | Property | Value |
 |---|---|
-| ground | page-bg −2% L, hue toward accent |
+| ground | page-bg −2% L, hue toward accent when the accent's hue is more than 30° from the background's |
 | field | two radial blobs in `body::before`: accent at .10 at `15% -10%`, secondary or accent at .07 at `90% 110%` |
-| surface top / bottom | `color-mix(in oklab, <page-bg +4% L>, transparent 15%)` / `color-mix(in oklab, <page-bg +3% L>, transparent 8%)` |
+| surface top / bottom | `color-mix(in oklab, <page-bg +5% L>, transparent 15%)` / `color-mix(in oklab, <page-bg +3% L>, transparent 8%)` |
 | edge | `rgba(255,255,255,.12)` |
 | line | `rgba(255,255,255,.07)` |
 | lightline | `rgba(255,255,255,.25)` |
@@ -81,7 +81,7 @@ Dark, cool or saturated accent. The ground is a soft field with two low-chroma a
 
 ```css
 /* glass overrides */
-:root{--unflat-surface-top:color-mix(in oklab,color-mix(in oklab,var(--bg),white 5%),transparent 15%);
+:root{--unflat-surface-top:color-mix(in oklab,color-mix(in oklab,var(--bg),white 7%),transparent 15%);
   --unflat-surface-bottom:color-mix(in oklab,color-mix(in oklab,var(--bg),white 3.5%),transparent 8%);
   --unflat-edge:rgba(255,255,255,.12);--unflat-line:rgba(255,255,255,.07);--unflat-lightline:rgba(255,255,255,.25);
   --unflat-shadow:0 30px 80px -40px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.06);
@@ -93,6 +93,8 @@ body::before{background:
   url("data:image/svg+xml;utf8,<grain svg with tint .85 .9 1 alpha .12>");
   background-size:auto,auto,auto,220px 220px}
 ```
+
+The gradient is 2% nominal; the 15%/8% transparency softens it on screen — do not go below that.
 
 ## slate — stone
 
@@ -119,7 +121,7 @@ Dark, high-saturation accent. The ground is the darkest; surfaces are lit from b
 
 | Property | Value |
 |---|---|
-| ground | page-bg −3% L (never below L .10), hue toward accent |
+| ground | page-bg −3% L (never below L .10), hue toward accent (same 30° rule) |
 | surface top / bottom | page-bg +4% L / page-bg +2% L |
 | edge | accent at .25 |
 | line | accent at .10 |

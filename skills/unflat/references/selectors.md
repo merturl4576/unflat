@@ -50,7 +50,7 @@ main > *:not(:has(img, video, canvas)) /* sections without artwork */
 
 ## 6. Choosing GLOW
 
-One surface only (two for backlit): the one the page is about. Pricing, the featured product, the collection, the signup. Pick by content when possible: `main > section:has(.pricing, .tiers, form)` (Baseline `:has()` in all evergreen browsers). Otherwise, `main > section:last-child` when the CTA is the last section (most pages), or `main > section:nth-last-child(2)` only when a newsletter or contact strip sits after it. When a content match (pricing, tiers, a form) and a distinct final CTA both exist, the content match wins; use the last section only when nothing matches by content. Always confirm which section you hit before writing the rule. For the backlit material only, GLOW may be two sections — usually the hero and the CTA — joined with a comma.
+One surface only (two for backlit): the one the page is about. Pricing, the featured product, the collection, the signup. Pick by content when possible: `main > section:has(.pricing, .tiers, form)` (Baseline `:has()` in all evergreen browsers). Otherwise, `main > section:last-child` when the CTA is the last section (most pages), or `main > section:nth-last-child(2)` only when a newsletter or contact strip sits after it. Glow the section the page wants the visitor to act on: a pricing section with one featured tier, a subscribe form, or the final CTA. A plain pricing grid with no featured tier is not the target — glow the CTA instead. Confirm the section you hit before writing the rule. For the backlit material only, GLOW may be two sections — usually the hero and the CTA — joined with a comma.
 
 ## 7. Alignment compensation
 
@@ -61,6 +61,8 @@ Fill in the three placeholders: `SURFACE`, `GLOW`, and `.wrap` — replace `.wra
 - Set `--unflat-pad` to the container padding token (`--pad`, `--gutter`, `--container-padding`) or its literal value.
 - Set `--unflat-max` to the container's outer max-width (`var(--max)` or a px value). Check `getComputedStyle(container).boxSizing` first; with `border-box` (the usual global reset) use the max-width as it is; add the horizontal padding when the container is `content-box`; leave `100vw` for a fluid container.
 - If the site has no container padding variable (Tailwind `px-6`, hard-coded padding): keep the inset small (`clamp(8px, 1vw, 16px)`) and let centered content stay centered. Left-aligned content next to the edge shifts by the inset; mention it in the report.
+
+The compensation declaration is `!important` so it wins over `.section .container{padding…}` rules. If the container's padding changes at breakpoints with literal values, mirror them in `--unflat-pad` inside the block with the same media queries.
 
 Verify: compare `getBoundingClientRect().left` of the header's first text element and of the first surface's first text element at 1440 and 390 — equal within 1px (at intermediate widths a 1px difference is the surface's own border).
 
@@ -83,6 +85,7 @@ Verify: compare `getBoundingClientRect().left` of the header's first text elemen
 - A section that already has `position: absolute` or `fixed` is not a surface.
 - If `SURFACE` sections already carry a background image, keep it: use `background-image` and set only `background-color` on them.
 - If the container has `display: grid` or `flex` with `gap`, drop the `:is(SURFACE) + :is(SURFACE) { margin-top }` rule and rely on the gap.
+- A section that has its own class rule for `background`, `border` or `box-shadow` beats `:is(SURFACE)` on specificity; include that class in SURFACE (`main > section.hero`) or repeat the selector (`:is(SURFACE):is(SURFACE)`) for that section.
 
 ## 10. Escape hatch
 

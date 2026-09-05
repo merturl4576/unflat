@@ -18,7 +18,7 @@ Grain tint and alpha are edited inside the SVG in `recipe.css` (its `feColorMatr
 
 | Property | Dark theme | Light theme |
 |---|---|---|
-| `--unflat-ground` | page-bg darkened 1–3% L, never below L 0.10; hue pulled toward accent, chroma ≤ 0.02 | page-bg darkened 3–4% L, hue kept warm or cool as the palette |
+| `--unflat-ground` | page-bg darkened 1–3% L, never below L 0.10; hue pulled toward accent when the accent's hue is more than 30° from the background's, chroma ≤ 0.02 | page-bg darkened 3–4% L, hue kept warm or cool as the palette |
 | `--unflat-surface-bottom` | page-bg lightened 2–3% L (the surface's base color) | page-bg lightened 0.5–1% L |
 | `--unflat-surface-top` | surface-bottom lightened 1.5–2.5% L | surface-bottom lightened 0.5–1% L (stay below `#fff`) |
 | `--unflat-edge` (lit top border) | text at 9–12% alpha | white at 75–85% alpha |
@@ -55,9 +55,11 @@ To pull the hue toward the accent, do not mix the accent color in directly — i
 
 ```css
 --unflat-ground: oklch(from var(--bg) calc(l - 0.03) 0.015 H);
---unflat-surface-bottom: oklch(from var(--bg) calc(l + 0.02) 0.015 H);
---unflat-surface-top: oklch(from var(--bg) calc(l + 0.045) 0.015 H);
+--unflat-surface-bottom: oklch(from var(--bg) calc(l + 0.02) c h);
+--unflat-surface-top: oklch(from var(--bg) calc(l + 0.045) c h);
 ```
+
+Use the tinted form for the ground only when the snippet says `tinted`; otherwise `oklch(from var(--bg) calc(l - 0.03) c h)`.
 
 `H` is the accent's OKLCh hue in degrees, a literal number you compute and write in (see the Node snippet below). Relative color syntax (`oklch(from …)`) is Baseline: Chrome 119, Safari 16.4, Firefox 128.
 
@@ -71,10 +73,13 @@ const toLab=h=>{const [r,g,b]=[1,3,5].map(i=>s2l(parseInt(h.slice(i,i+2),16)/255
   const l_=Math.cbrt(.4122214708*r+.5363325363*g+.0514459929*b), m_=Math.cbrt(.2119034982*r+.6806995451*g+.1073969566*b), s_=Math.cbrt(.0883024619*r+.2817188376*g+.6299787005*b);
   return [.2104542553*l_+.7936177850*m_-.0040720468*s_,1.9779984951*l_-2.4285922050*m_+.4505937099*s_,.0259040371*l_+.7827717662*m_-.8086757660*s_]};
 const [L0,A0,B0]=toLab(hex);
-let L=L0+dl<.10?.102:Math.min(1,L0+dl), A=A0, B=B0, pre="";
+let L=dl<0&&L0+dl<.10?.102:Math.min(1,L0+dl), A=A0, B=B0, pre="";
 if(accentHex){
+  const Hbg=(Math.atan2(B0,A0)*180/Math.PI+360)%360;
   const [,aA,aB]=toLab(accentHex), H=(Math.atan2(aB,aA)*180/Math.PI+360)%360, c=Math.sqrt(A*A+B*B), c2=Math.min(.02,Math.max(c,.012)), rad=H*Math.PI/180;
-  A=c2*Math.cos(rad); B=c2*Math.sin(rad); pre="H="+H.toFixed(1)+" ";
+  const d=Math.abs(((H-Hbg+540)%360)-180);
+  if(d>30){A=c2*Math.cos(rad); B=c2*Math.sin(rad);}
+  pre="Hbg="+Hbg.toFixed(1)+" H="+H.toFixed(1)+(d>30?" tinted ":" untinted ");
 }
 const l2=(L+.3963377774*A+.2158037573*B)**3, m2=(L-.1055613458*A-.0638541728*B)**3, s2=(L-.0894841775*A-1.2914855480*B)**3;
 const out=[4.0767416621*l2-3.3077115913*m2+.2309699292*s2,-1.2684380046*l2+2.6097574011*m2-.3413193965*s2,-.0041960863*l2-.7034186147*m2+1.7076147010*s2].map(v=>Math.round(Math.min(1,Math.max(0,l2s(v)))*255).toString(16).padStart(2,"0")).join("");
@@ -83,7 +88,7 @@ console.log(pre+"#"+out)' "#121110" -3
 
 `-3` darkens by three OKLab lightness points; `+2` lightens by two. Expected results (no third argument, behavior unchanged from before): `"#121110" -3` → `#0c0b0a`, `"#121110" +2` → `#161514`, `"#121110" +4.5` → `#1c1b1a`. These are also recipe.css's shipped defaults, so on a `#121110` page the recipe works unedited. Print the result for the ground, the surface base and the surface top, then write the hex values into the block. When the shift would cross the floor, the snippet lands at L 0.102 so the printed hex stays at or above L 0.10.
 
-Give a third argument, the accent's hex, to also pull the hue: the snippet then prints the accent's OKLCh hue `H` followed by the shifted color with its hue set to `H` and its chroma set to `min(0.02, max(c, 0.012))` (`c` is the shifted color's own chroma) — the same low-chroma technique as the CSS above. Without the third argument the snippet behaves exactly as today. Apply the hue pull for the ground only (surfaces keep the page background's own hue): the tint comes either from this third argument or from the relative-color CSS above. Pass the accent whenever the site has one: the snippet caps chroma at 0.02, so a neutral background only gets a faint cast, which is the point.
+Give a third argument, the accent's hex, to also pull the hue: the snippet then prints the accent's OKLCh hue `H` followed by the shifted color with its hue set to `H` and its chroma set to `min(0.02, max(c, 0.012))` (`c` is the shifted color's own chroma) — the same low-chroma technique as the CSS above. Without the third argument the snippet behaves exactly as today. Apply the hue pull for the ground only (surfaces keep the page background's own hue): the tint comes either from this third argument or from the relative-color CSS above. On dark themes pass the accent whenever the site has one: the snippet tints only when the accent's hue is more than 30° from the background's (it prints `tinted` or `untinted`), and caps chroma at 0.02. Light themes are never tinted — paper and slate keep the palette's own hue.
 
 ## Texture
 
@@ -99,7 +104,7 @@ The grain is an inline SVG in `body::before`:
 </svg>
 ```
 
-`R G B` is `--unflat-grain-tint` (0–1 each) and `A` is `--unflat-grain-alpha`. Tile 200–260px. Keep the SVG on one line inside `url("data:image/svg+xml;utf8,...")` and encode `#` as `%23`. The texture sits behind content by default; an optional film overlay on top of everything is capped at 4% opacity and must not cover photography.
+`R G B` and `A` are the grain tint and alpha inside the SVG (`R G B` 0–1 each). Tile 200–260px. Keep the SVG on one line inside `url("data:image/svg+xml;utf8,...")` and encode `#` as `%23`. The texture sits behind content by default; an optional film overlay on top of everything is capped at 4% opacity and must not cover photography.
 
 ## Glow
 
@@ -109,5 +114,5 @@ Glow marks the one surface the page is about (pricing, the product, the featured
 
 - A second light direction (for example lit top edges plus a shadow that falls upward).
 - Ground and surface base further apart than 6% L, which reads as boxes instead of depth. A ground below L 0.10 on a dark page, which reads as a hole.
-- Pure black or pure white anywhere in the block.
+- Pure `#000` or `#fff` as a fill (alpha-black shadows and the print reset are fine).
 - Texture over images or video.
