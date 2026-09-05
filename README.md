@@ -4,7 +4,7 @@
 
 One CSS block that gives a single-tone page a ground, one light source and mounted surfaces, derived from the site's own colors. No markup changes. Delete the block to revert.
 
-![before and after wipe](assets/hero.gif)
+![Two flat pages, then the same pages sitting on a ground with mounted, lit surfaces](assets/hero.gif)
 
 [Live gallery with draggable before/after sliders →](https://merturl4576.github.io/unflat/gallery/)
 
@@ -61,12 +61,23 @@ Neutral fallbacks: plate for dark, paper for light. Glass is never a default.
 
 ## Before and after
 
-| | before | after |
-|---|---|---|
-| Ferro & Grain, dark workshop → plate | ![](assets/01-before.png) | ![](assets/01-after.png) |
-| Margin, light editorial → paper | ![](assets/02-before.png) | ![](assets/02-after.png) |
-| Cartograph, dark SaaS → glass | ![](assets/03-before.png) | ![](assets/03-after.png) |
-| HALOGEN, backlit brand → backlit | ![](assets/04-before.png) | ![](assets/04-after.png) |
+Full-page tops at 1440 px: the flat page on the left, the same page with the block on the right. Nothing else changed. Open the [gallery](https://merturl4576.github.io/unflat/gallery/) to drag the seam yourself.
+
+**Ferro & Grain, dark workshop → plate**
+
+![Ferro & Grain before and after: plate](assets/01-compare.png)
+
+**Margin, light editorial → paper**
+
+![Margin before and after: paper](assets/02-compare.png)
+
+**Cartograph, dark SaaS → glass**
+
+![Cartograph before and after: glass](assets/03-compare.png)
+
+**HALOGEN, backlit brand → backlit**
+
+![HALOGEN before and after: backlit](assets/04-compare.png)
 
 Every `after.html` in `examples/` is `before.html` plus the block and nothing else. `node scripts/check-examples.mjs` proves it. The after pages were produced by the skill itself, not by hand.
 
