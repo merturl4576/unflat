@@ -93,9 +93,9 @@ Every `after.html` in `examples/` is `before.html` plus the block and nothing el
 
 **It picked the wrong material.** Tell the agent which one you want; the decision table in `skills/unflat/references/materials.md` is a default, not a rule.
 
-## Origin
+## Why
 
-unflat was extracted from a real build: an e-commerce site for a laser-cut wood studio (Lazerus CNC Design) whose pages sat on one dark brown. The fix that made it feel built was a single appended CSS block. This repo generalizes that block to any palette.
+Sites built by an agent tend to share one tell: every section sits on the same solid color. Nothing is in front of or behind anything, so the page reads as unfinished even when the layout is right. More components do not fix that. A ground, one light source and surfaces mounted on that ground do, and all three can be derived from the palette the site already has. unflat is that fix as a single appended CSS block.
 
 ## Contributing
 
