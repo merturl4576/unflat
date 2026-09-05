@@ -16,7 +16,7 @@ AI-built pages put everything on one plane: a single background color, sections 
 1. **Ground and lift.** Move the page background 1–3% lightness down (never near black) and lift the sections 2–3% up, both tinted toward the accent hue at very low chroma. The 4–6% separation is what makes the sections sit on something.
 2. **Light.** One fixed full-viewport layer behind content: a directional light (top-left by default) and a vignette in the opposite corner.
 3. **Texture.** Inline SVG fractal noise tinted to the palette, 3–6% opacity. No image files.
-4. **Surfaces.** Top-level sections become mounted surfaces: inset from the viewport edge, a 2–3% vertical gradient, a 1px border with a lit top edge, a deep shadow with a hairline base, and a centered top light-line. At most one surface carries an accent glow (two for the backlit material).
+4. **Surfaces.** Top-level sections become mounted surfaces: inset from the viewport edge, a 1.5–2.5% vertical gradient, a 1px border with a lit top edge, a deep shadow with a hairline base, and a centered top light-line. At most one surface carries an accent glow (two for the backlit material).
 5. **Alignment compensation.** Content inside a surface keeps the page grid by reducing inner horizontal padding by the inset. Header and footer stay on the ground. Breathing margins separate surfaces.
 
 ## Rules that do not bend
