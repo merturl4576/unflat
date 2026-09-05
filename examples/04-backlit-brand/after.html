@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HALOGEN — two nights in Rotterdam harbour, 12–13 June 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07060a;--ink:#f2eef7;--ink-2:#a79fb3;--ink-3:#6b6377;
+  --line:rgba(242,238,247,.10);--line-2:rgba(242,238,247,.22);
+  --accent:#ff2d95;--accent-2:#7cf5ff;
+  --display:'Syne','Arial Black',sans-serif;
+  --body:'Archivo','Segoe UI',system-ui,sans-serif;
+  --mono:'Space Mono',Consolas,monospace;
+  --max:1240px;--pad:clamp(20px,4vw,48px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:var(--max);margin:0 auto;padding-inline:var(--pad)}
+header{position:sticky;top:0;z-index:10;background:rgba(7,6,10,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;height:66px}
+.brand{font-family:var(--display);font-weight:800;font-size:1.24rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;line-height:1}
+nav{display:flex;gap:28px;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase}
+nav a{text-decoration:none;color:var(--ink-2)}
+nav a:hover{color:var(--ink)}
+section{padding:clamp(56px,7vw,112px) 0}
+h1,h2,h3{font-family:var(--display);font-weight:800;text-transform:uppercase;margin:0;line-height:.94;letter-spacing:-.02em;text-wrap:balance}
+h1{font-size:clamp(2.4rem,7.4vw,5.6rem)}
+h2{font-size:clamp(1.9rem,4vw,3.2rem)}
+.btn{display:inline-flex;align-items:center;height:46px;padding:0 22px;font:600 .8rem var(--body);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--ink);border:1px solid var(--line-2)}
+.btn:hover{border-color:var(--ink)}
+.btn-p{background:var(--accent);border-color:var(--accent);color:#07060a}
+.btn-p:hover{background:#ff5cae;border-color:#ff5cae}
+.btn-s{height:38px;padding:0 16px;font-size:.74rem}
+.row{display:flex;gap:12px;margin-top:36px;flex-wrap:wrap}
+.u{white-space:nowrap;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:4px}
+.hero{padding-top:clamp(56px,8vw,120px)}
+.dates{font:400 .84rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);margin:0 0 26px}
+.hero p.blurb{margin:26px 0 0;color:var(--ink-2);max-width:54ch;font-size:1.05rem}
+.facts{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);margin:clamp(48px,6vw,80px) 0 0;padding:0;border-top:1px solid var(--line-2)}
+.facts li{font:400 .86rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);padding:20px 0 0}
+.facts li+li{border-left:1px solid var(--line);padding-left:clamp(16px,3vw,36px)}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap;border-bottom:1px solid var(--line-2);padding-bottom:18px}
+.sec-h p{margin:0;font:400 .78rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.bill{margin-top:clamp(36px,5vw,56px)}
+.bill ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;row-gap:8px}
+.bill li{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:1.02}
+.bill li:not(:last-child)::after{content:'·';color:var(--ink-3);font-weight:400;margin:0 .38em}
+.bill .a li{font-size:clamp(1.9rem,6.4vw,3rem)}
+.bill .b{margin-top:26px}
+.bill .b li{font-size:clamp(1.3rem,3.6vw,2rem);color:var(--ink)}
+.bill .c{margin-top:22px}
+.bill .c li{font-size:clamp(1rem,2.2vw,1.3rem);color:var(--ink-2)}
+.piers{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:44px}
+.pier{border:1px solid var(--line);padding:24px}
+.schem{border:1px solid var(--line-2);padding:10px;height:92px;display:flex;align-items:flex-end;margin-bottom:22px}
+.schem i{display:block;height:26px;background:var(--accent-2)}
+.pier h3{font-size:1rem;letter-spacing:-.03em;margin-bottom:14px}
+.pier dl{margin:0;font:400 .78rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.pier dl div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
+.pier dt{color:var(--ink-3)}
+.pier dd{margin:0;text-align:right}
+.tt{margin-top:40px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:640px;font:400 .82rem var(--mono);letter-spacing:.04em}
+th,td{text-align:left;padding:15px 16px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-weight:700;text-transform:uppercase;font-size:.72rem;letter-spacing:.16em;color:var(--ink-3);border-bottom-color:var(--line-2)}
+td:first-child{color:var(--accent-2)}
+td{color:var(--ink)}
+.tix{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:44px}
+.tk{border:1px solid var(--line);padding:26px;display:flex;flex-direction:column}
+.tk h3{font-size:1.3rem}
+.tk .amt{font-family:var(--display);font-weight:800;font-size:3rem;line-height:1;margin:18px 0 8px;letter-spacing:-.03em}
+.tk p{margin:0 0 26px;font:400 .76rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.tk .btn{margin-top:auto;justify-content:center}
+.cols{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:44px}
+.cols h3{font:600 .8rem var(--body);letter-spacing:.16em;text-transform:uppercase;margin-bottom:12px;color:var(--ink-3)}
+.cols p{margin:0;color:var(--ink-2);font-size:.95rem}
+footer{border-top:1px solid var(--line);padding:34px 0;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer nav{gap:24px;font-size:.8rem}
+footer nav a{color:var(--ink-3)}
+@media(max-width:980px){.piers,.tix{grid-template-columns:1fr}.cols{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){
+  .facts{grid-template-columns:1fr}
+  .facts li+li{border-left:0;border-top:1px solid var(--line);padding-left:0;margin-top:16px}
+  header nav{display:none}
+  .cols{grid-template-columns:1fr}
+}
+/* unflat: start */
+/* unflat v1 — ground + light + surfaces, derived from this site's own tokens.
+   Delete everything between the start and end markers to revert.
+   Three placeholders replaced per selectors.md: SURFACE -> main > section, GLOW -> main > .hero, main > .tickets, .wrap -> .wrap (the site's container class already is .wrap).
+   The inline comments and values below describe the backlit material for this site (lit from behind by the accent) per materials.md. */
+:root{
+  --unflat-ground:#060304;                      /* page ground: page-bg -3% L, floor-clamped to L .102 (bg is already L .126), hue pulled toward accent */
+  --unflat-surface-top:#0f0e13;                 /* surface top: page-bg +4% L (backlit), keeps the page's own hue */
+  --unflat-surface-bottom:#0b090e;              /* surface base: page-bg +2% L (backlit), keeps the page's own hue */
+  --unflat-edge:rgba(255,45,149,.25);           /* lit top border: accent at .25 (backlit) */
+  --unflat-line:rgba(255,45,149,.10);           /* other borders: accent at .10 (backlit) */
+  --unflat-lightline:rgba(255,45,149,.45);      /* centered 1px light-line: accent at .45 (backlit) */
+  --unflat-shadow:0 40px 90px -50px rgba(0,0,0,.9),0 0 0 1px rgba(255,45,149,.06);
+  --unflat-glow:0 0 120px -30px rgba(255,45,149,.40),0 60px 140px -70px rgba(255,45,149,.40);   /* accent at .40, up to two surfaces (backlit) */
+  --unflat-light:rgba(255,45,149,.12);          /* primary light, from behind (backlit; replaces the top-left light) */
+  --unflat-vignette:rgba(0,0,0,.5);             /* opposite corner */
+  --unflat-inset:clamp(8px,1.6vw,24px);         /* surface inset from the viewport edge */
+  --unflat-gap:clamp(14px,2vw,28px);            /* breathing room between surfaces */
+  --unflat-pad:var(--pad,0px);                  /* the site's container padding variable, if any */
+  --unflat-max:var(--max);                      /* container outer max-width */
+}
+/* 1. ground — painted on the canvas so the fixed light layer can sit above it */
+html{background:var(--unflat-ground)}
+body{background:transparent}
+/* 2 + 3. light and texture — one fixed layer behind all content; backlit: light from behind (top-center) plus a secondary low light, no top-left light */
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(60% 40% at 50% -10%,var(--unflat-light) 0%,transparent 60%),
+    radial-gradient(50% 40% at 50% 110%,rgba(124,245,255,.06) 0%,transparent 60%),
+    radial-gradient(100% 80% at 100% 110%,var(--unflat-vignette) 0%,transparent 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 .85  0 0 0 0 .95  0 0 0 .18 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
+  background-size:auto,auto,auto,220px 220px}
+/* 4. surfaces — mounted, lit from behind, shadow below */
+:is(main > section){position:relative;margin-inline:var(--unflat-inset);
+  background:linear-gradient(180deg,var(--unflat-surface-top) 0%,var(--unflat-surface-bottom) 100%);
+  border:1px solid var(--unflat-line);border-top-color:var(--unflat-edge);
+  box-shadow:var(--unflat-shadow)}
+:is(main > section)::before{content:'';position:absolute;left:8%;right:8%;top:-1px;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,var(--unflat-lightline),transparent)}
+:is(main > section) + :is(main > section){margin-top:var(--unflat-gap)}
+:is(main > .hero, main > .tickets){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
+/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset */
+:is(main > section) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset)))}
+/* responsive: keep top and bottom edges, drop the side inset on small screens */
+@media (max-width:640px){:root{--unflat-inset:0px}:is(main > section){border-left:0;border-right:0}}
+/* print: paper is already a surface */
+@media print{html{background:#fff}body::before{display:none}:is(main > section),:is(main > .hero, main > .tickets){box-shadow:none;border-color:transparent;background:none}}
+/* unflat: end */
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="brand" href="#">HALOGEN</a>
+    <nav><a href="#lineup">Lineup</a><a href="#stages">Stages</a><a href="#tickets">Tickets</a><a href="#info">Info</a></nav>
+    <a class="btn btn-p btn-s" href="#tickets">Tickets</a>
+  </div>
+</header>
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <p class="dates">12–13 June 2027 · Maashaven, Rotterdam</p>
+      <h1>Two nights. Three piers. No daylight.</h1>
+      <p class="blurb">Two nights of electronic music on a working harbour, in a grain shed, on a container quay and on an open deck that faces east on purpose. Doors at ten, last record at seven.</p>
+      <div class="row"><a class="btn btn-p" href="#tickets">Get tickets</a><a class="btn" href="#lineup">See the lineup</a></div>
+      <ul class="facts">
+        <li>48 artists</li>
+        <li>3 stages</li>
+        <li>22:00 – 07:00</li>
+      </ul>
+    </div>
+  </section>
+  <section class="lineup" id="lineup">
+    <div class="wrap">
+      <div class="sec-h"><h2>Lineup</h2><p>Wave 1 · more names in March</p></div>
+      <div class="bill">
+        <ul class="a"><li>Kova</li><li>Perihelion</li><li>Mira Voss</li></ul>
+        <ul class="b"><li>Delta Sleep Club</li><li>Anaerobe</li><li>Oslo Tape</li><li>Nadja Rue</li><li>Bloc Party Fault</li><li>Saltwater Church</li></ul>
+        <ul class="c"><li>Yuki Hana</li><li>Fennel</li><li>Cathode</li><li>Loma Prieta Sound</li><li>Tundra Kids</li><li>Rennes</li><li>Half Light</li><li>Ozone Mother</li><li>Ilse</li></ul>
+      </div>
+    </div>
+  </section>
+  <section class="stages" id="stages">
+    <div class="wrap">
+      <div class="sec-h"><h2>Three piers</h2><p>Maashaven · 400 m end to end</p></div>
+      <div class="piers">
+        <div class="pier">
+          <div class="schem"><i style="width:100%"></i></div>
+          <h3>Pier 1 · Main</h3>
+          <dl>
+            <div><dt>Capacity</dt><dd>6,000</dd></div>
+            <div><dt>Sound</dt><dd>d&amp;b KSL</dd></div>
+            <div><dt>Cover</dt><dd>Tented quay</dd></div>
+          </dl>
+        </div>
+        <div class="pier">
+          <div class="schem"><i style="width:42%"></i></div>
+          <h3>Pier 2 · Warehouse</h3>
+          <dl>
+            <div><dt>Capacity</dt><dd>2,500</dd></div>
+            <div><dt>Sound</dt><dd>Funktion-One</dd></div>
+            <div><dt>Cover</dt><dd>1932 grain shed</dd></div>
+          </dl>
+        </div>
+        <div class="pier">
+          <div class="schem"><i style="width:15%"></i></div>
+          <h3>Pier 3 · Deck</h3>
+          <dl>
+            <div><dt>Capacity</dt><dd>900</dd></div>
+            <div><dt>Sound</dt><dd>Open air, sunrise set</dd></div>
+            <div><dt>Cover</dt><dd>None. Bring a coat</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="timetable">
+    <div class="wrap">
+      <div class="sec-h"><h2>Saturday night</h2><p>Friday timetable lands in May</p></div>
+      <div class="tt">
+        <table>
+          <thead><tr><th scope="col">Time</th><th scope="col">Pier 1</th><th scope="col">Pier 2</th><th scope="col">Pier 3</th></tr></thead>
+          <tbody>
+            <tr><td>22:00</td><td>Fennel</td><td>Ilse</td><td>Cathode</td></tr>
+            <tr><td>23:30</td><td>Yuki Hana</td><td>Rennes</td><td>Half Light</td></tr>
+            <tr><td>01:00</td><td>Oslo Tape</td><td>Nadja Rue</td><td>Tundra Kids</td></tr>
+            <tr><td>02:30</td><td>Mira Voss</td><td>Anaerobe</td><td>Ozone Mother</td></tr>
+            <tr><td>04:00</td><td>Perihelion</td><td>Saltwater Church</td><td>Loma Prieta Sound</td></tr>
+            <tr><td>05:30</td><td>Kova</td><td>Delta Sleep Club</td><td>Bloc Party Fault</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section class="tickets" id="tickets">
+    <div class="wrap">
+      <div class="sec-h"><h2>Tickets</h2><p>Phase 2 · prices rise 1 April</p></div>
+      <div class="tix">
+        <div class="tk">
+          <h3>Friday</h3>
+          <div class="amt">€59</div>
+          <p>12 June · 22:00 – 07:00</p>
+          <a class="btn" href="#">Buy Friday</a>
+        </div>
+        <div class="tk">
+          <h3>Saturday</h3>
+          <div class="amt">€59</div>
+          <p>13 June · 22:00 – 07:00</p>
+          <a class="btn" href="#">Buy Saturday</a>
+        </div>
+        <div class="tk">
+          <h3>Weekend</h3>
+          <div class="amt">€99</div>
+          <p>Both nights · sold in phases, <span class="u">phase 2 now</span></p>
+          <a class="btn btn-p" href="#">Buy the weekend</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="info" id="info">
+    <div class="wrap">
+      <div class="sec-h"><h2>Info</h2><p>Questions · hallo@halogen.example</p></div>
+      <div class="cols">
+        <div><h3>Getting there</h3><p>Water taxi from Erasmusbrug every 15 minutes until 06:30, metro D to Maashaven, and a night bus back to Centraal on the half hour. No parking on the quay.</p></div>
+        <div><h3>Age</h3><p>18+, no exceptions. Bring a passport or an ID card; a photo of one is not enough at the gate.</p></div>
+        <div><h3>Lockers and cloakroom</h3><p>€6 a locker, €3 a coat, both on Pier 1 and Pier 2 and open all night. Anything left behind goes to the office on Monday.</p></div>
+        <div><h3>Accessibility</h3><p>Step-free on Pier 1 and Pier 2, with a raised viewing platform on the main stage. Pier 3 is reached by a ramped gangway. A companion ticket is free.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>HALOGEN is produced by Nachtwerk BV</span>
+    <nav><a href="#">Press</a><a href="#">Partners</a><a href="#">Privacy</a></nav>
+  </div>
+</footer>
+</body>
+</html>
