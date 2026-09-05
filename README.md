@@ -16,7 +16,7 @@ AI-generated pages put everything on one plane. One background color, sections s
 
 It is an [Agent Skill](https://agentskills.io) for Claude Code, Cursor, Codex and other coding agents. The agent audits the page, extracts your tokens, picks a material from your site's world, and appends one block to your global stylesheet. Five moves:
 
-1. **Ground.** The page background moves 4–8% away from the sections, tinted toward your accent.
+1. **Ground and lift.** The page background moves 1–3% lightness down and the sections lift 2–3% up — a 4–6% separation. On dark themes the ground is tinted toward your accent when their hues differ.
 2. **Light.** One fixed layer: a directional light and a vignette. Everything agrees on where the light comes from.
 3. **Texture.** Inline SVG grain tinted to your palette, 3–6% opacity. No image files.
 4. **Surfaces.** Sections become mounted surfaces: inset, lit top edge, deep shadow, a hairline of light.
@@ -85,7 +85,7 @@ Every `after.html` in `examples/` is `before.html` plus the block and nothing el
 
 **Does it change my HTML?** No. If a page's structure truly cannot express the choice, the skill may add a `data-unflat` attribute and will say so in its report.
 
-**Light themes?** Yes. Paper and light slate use shadows and slightly lighter sheets instead of lit edges.
+**Light themes?** Yes. Paper and light slate use ink-tinted shadows, slightly lighter sheets and a soft white edge instead of a lit metal edge.
 
 **Dashboards?** No. unflat is for marketing and content pages. The skill stops and says so on app UI.
 
