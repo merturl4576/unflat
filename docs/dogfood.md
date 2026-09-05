@@ -20,7 +20,7 @@ Runs use a mid-tier model (Claude Sonnet) to stand in for a typical user. Browse
 
 ## After the final wave
 
-Two more fix waves landed after the final judgments: wave 3 (doc polish, `in oklab` for white/black mixes) and wave 4, driven by the task review — one tint rule (the snippet tints only when the accent's hue is more than 30° from the background's; light themes never), plate and glass tables aligned with the recipe (glass gradient raised to 2% nominal so it sits inside the 1.5–2.5% range), the glow-target wording, `!important` on the alignment compensation so it beats `.section .container{padding…}` rules, and audit counts that ignore fixed/sticky elements. Because the recipe changed, every demo was re-run against the current skill; the rows below are the shipped pages.
+Two more fix waves landed after the final judgments: wave 3 (doc polish, `in oklab` for white/black mixes) and wave 4, driven by the task review — one tint rule (the snippet tints only when the accent's hue is more than 30° from the background's; light themes never), plate and glass tables aligned with the recipe (glass surfaces raised to `white 7%`/`3.5%` mixes: 2.9% L nominal, about 2.1% as rendered through the panels' transparency — for glass the 1.5–2.5% band is judged on that composited value), the glow-target wording, `!important` on the alignment compensation so it beats `.section .container{padding…}` rules, and audit counts that ignore fixed/sticky elements. Because the recipe changed, every demo was re-run against the current skill; the rows below are the shipped pages.
 
 | Run | Demo | Material chosen | Checker | Review verdict | Skill change made |
 |---|---|---|---|---|---|
