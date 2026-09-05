@@ -17,12 +17,12 @@ AI-built pages put everything on one plane: a single background color, sections 
 2. **Light.** One fixed full-viewport layer behind content: a directional light (top-left by default) and a vignette in the opposite corner.
 3. **Texture.** Inline SVG fractal noise tinted to the palette, 3–6% opacity. No image files.
 4. **Surfaces.** Top-level sections become mounted surfaces: inset from the viewport edge, a 1.5–2.5% vertical gradient, a 1px border with a lit top edge, a deep shadow with a hairline base, and a centered top light-line. At most one surface carries an accent glow (two for the backlit material).
-5. **Alignment compensation.** Content inside a surface keeps the page grid by reducing inner horizontal padding by the inset. Header and footer stay on the ground. Breathing margins separate surfaces.
+5. **Alignment compensation.** Content inside a surface keeps the page grid: inner padding gives back the inset only where the container fills the surface (narrow viewports); centered max-width containers already align. Header and footer stay on the ground. Breathing margins separate surfaces.
 
 ## Rules that do not bend
 
 - **One block.** Everything lives between `/* unflat: start */` and `/* unflat: end */`, appended at the end of the global stylesheet (or in `unflat.css` imported last). Nothing else in the codebase changes.
-- **Derived colors.** Every color comes from the site's tokens or computed styles. Never invent a palette. Never pure `#000` or `#fff`.
+- **Derived colors.** Every color comes from the site's tokens or computed styles. Never invent a palette. Never pure `#000` or `#fff`. The print block is the one exception: it resets the page to white for paper.
 - **One light source.** Ground, surfaces and shadows agree on a direction. Backlit is the only exception (light from behind).
 - **Contrast preserved.** A surface's base color stays within 3% lightness of the original section background and its gradient adds at most 2.5% at the top edge, so existing text colors keep their contrast.
 - **Ground stays ground.** Header, nav, footer, and anything `position: fixed` or `sticky` are never turned into surfaces.
@@ -46,13 +46,13 @@ Follow `references/materials.md`. What is this site about, what is its tone, is 
 Follow `references/light.md` to compute concrete values: ground color, surface top and bottom, edge highlight, line, light-line, shadow, glow target, light color, vignette, texture tint and opacity, inset, gap. Present them as a short table before writing any CSS.
 
 ### Step 4 — Write the block
-Copy `references/recipe.css`, fill in the `--unflat-*` values from Step 3, and replace every `SURFACE` token with the structural selector list chosen per `references/selectors.md`. Append the block at the end of the global stylesheet. For a single HTML file, insert it immediately before the last `</style>`. The block's last line is `/* unflat: end */`, and exactly one newline character separates it from `</style>` — no blank line. Byte view: `…/* unflat: end */\n</style>`. `recipe.css` already ends with that newline; do not add another.
+Copy `references/recipe.css`, fill in the `--unflat-*` values from Step 3, and replace the three placeholders — `SURFACE` (selector list), `GLOW` (one section) and `.wrap` (container class) — per `references/selectors.md`. Append the block at the end of the global stylesheet. For a single HTML file, insert it immediately before the last `</style>`. The block's last line is `/* unflat: end */`, and exactly one newline character separates it from `</style>` — no blank line. Byte view: `…/* unflat: end */\n</style>`. `recipe.css` already ends with that newline; do not add another. Insert it programmatically rather than by hand — with the block saved as `unflat-block.css`: `node -e "const fs=require('fs');const [f,b]=process.argv.slice(1);const s=fs.readFileSync(f,'utf8');const i=s.lastIndexOf('</style>');fs.writeFileSync(f,s.slice(0,i)+fs.readFileSync(b,'utf8').replace(/\s+$/,'')+'\n'+s.slice(i))" page.html unflat-block.css` — it trims the block's trailing whitespace and writes exactly one newline.
 
 ### Step 5 — Verify
 Run the checklist in `references/guardrails.md`. If a browser tool is available, screenshot before and after at 1440×900 and compare. Confirm: text contrast on surfaces unchanged, no horizontal scroll, sticky header untouched, print clean, no motion, one fixed pseudo-element, images not tinted.
 
 ### Step 6 — Report
-Six lines: material and why; key values (ground, surface, edge, shadow); file touched and where the block sits; how to revert; three dials to tune (`--unflat-ground` depth, `--unflat-edge` light, the grain alpha inside the SVG for texture); any markup change made.
+Six lines: material and why; key values (ground, surface, edge, shadow); file touched and where the block sits; how to revert; four dials to tune (`--unflat-ground` depth, `--unflat-edge` light, `--unflat-inset` mounting, the grain alpha inside the SVG for texture); any markup change made.
 
 ## When to stop instead
 

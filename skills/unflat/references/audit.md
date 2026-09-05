@@ -57,15 +57,19 @@ When a browser tool can evaluate JavaScript, run this on the page. It returns ba
     .filter((e) => !['SCRIPT', 'STYLE', 'LINK', 'TEMPLATE'].includes(e.tagName));
   const bgs = kids.filter((e) => !['fixed', 'sticky'].includes(cs(e).position))
     .map((e) => cs(e).backgroundColor).filter((c) => c !== 'rgba(0, 0, 0, 0)');
+  const shadowed = kids.filter((e) => cs(e).boxShadow !== 'none').length;
+  const withBgImage = kids.filter((e) => cs(e).backgroundImage !== 'none').length;
   const sig = (e) => e.tagName.toLowerCase() + (e.id ? '#' + e.id : '') +
     (typeof e.className === 'string' && e.className ? '.' + e.className.trim().split(/\s+/).slice(0, 3).join('.') : '');
   const fixed = [...document.querySelectorAll('body *')]
     .filter((e) => ['fixed', 'sticky'].includes(cs(e).position)).map(sig).slice(0, 20);
   const vars = {};
+  let hasUnflatBlock = [...document.querySelectorAll('style')].some((s) => s.textContent.includes('unflat: start'));
   const walk = (rules) => {
     for (const r of rules) {
       if (r.selectorText === ':root' || r.selectorText === 'html')
         for (const p of r.style) if (p.startsWith('--')) vars[p] = r.style.getPropertyValue(p).trim();
+      try { if (r.cssText && r.cssText.includes('unflat: start')) hasUnflatBlock = true; } catch {}
       if (r.cssRules) walk(r.cssRules); // @media, @supports, @layer, nested rules
     }
   };
@@ -75,13 +79,16 @@ When a browser tool can evaluate JavaScript, run this on the page. It returns ba
     bodyBg: cs(document.body).backgroundColor,
     topLevelCount: kids.length,
     distinctSectionBgs: [...new Set(bgs)],
+    shadowed,
+    withBgImage,
+    hasUnflatBlock,
     fixedOrSticky: fixed,
     rootVars: vars,
   };
 })()
 ```
 
-Interpretation: `distinctSectionBgs.length <= 2` with no shadows means flat. `htmlBg` not transparent matters for the block (see `guardrails.md`, painting order).
+Interpretation: `distinctSectionBgs.length <= 2` with no shadows means flat. `hasUnflatBlock` true, or `shadowed >= 2`, or `distinctSectionBgs.length >= 3` means already layered: stop and say why. `htmlBg` not transparent matters for the block (see `guardrails.md`, painting order).
 
 ## 5. Output of the audit
 

@@ -50,20 +50,25 @@ main > *:not(:has(img, video, canvas)) /* sections without artwork */
 
 ## 6. Choosing GLOW
 
-One surface only (two for backlit): the one the page is about. Pricing, the featured product, the collection, the signup. Pick by content when possible: `main > section:has(.pricing, .tiers, form)` (Baseline `:has()` in all evergreen browsers). Otherwise, `main > section:last-child` when the CTA is the last section (most pages), or `main > section:nth-last-child(2)` only when a newsletter or contact strip sits after it. Always confirm which section you hit before writing the rule.
+One surface only (two for backlit): the one the page is about. Pricing, the featured product, the collection, the signup. Pick by content when possible: `main > section:has(.pricing, .tiers, form)` (Baseline `:has()` in all evergreen browsers). Otherwise, `main > section:last-child` when the CTA is the last section (most pages), or `main > section:nth-last-child(2)` only when a newsletter or contact strip sits after it. Always confirm which section you hit before writing the rule. For the backlit material only, GLOW may be two sections — usually the hero and the CTA — joined with a comma.
 
 ## 7. Alignment compensation
 
-Surfaces are inset by `--unflat-inset`. Content inside them must keep the page grid.
+An auto-centered container already absorbs the inset by itself; only a container that fills the surface needs compensation, and recipe.css handles both with `--unflat-max`.
 
-- If the site has a container padding variable (`--pad`, `--gutter`, `--container-padding`): set `--unflat-pad: var(--pad)` and keep `SURFACE > .wrap { padding-inline: calc(var(--unflat-pad) - var(--unflat-inset)) }`, replacing `.wrap` with the container class or `> *`.
-- If it does not (Tailwind `px-6`, hard-coded padding): keep the inset small (`clamp(8px, 1vw, 16px)`) and let centered content stay centered. Left-aligned content next to the edge shifts by the inset; mention it in the report.
+Fill in the three placeholders: `SURFACE`, `GLOW`, and `.wrap` — replace `.wrap` with the site's container class, or `> *`.
+
+- Set `--unflat-pad` to the container padding token (`--pad`, `--gutter`, `--container-padding`) or its literal value.
+- Set `--unflat-max` to the container's outer max-width (`var(--max)` or a px value; add the horizontal padding when the container is `content-box`; leave `100vw` for a fluid container).
+- If the site has no container padding variable (Tailwind `px-6`, hard-coded padding): keep the inset small (`clamp(8px, 1vw, 16px)`) and let centered content stay centered. Left-aligned content next to the edge shifts by the inset; mention it in the report.
+
+Verify: compare `getBoundingClientRect().left` of the header's first text element and of the first surface's first text element at 1440 and 390 — equal within 1px.
 
 ## 8. Framework notes
 
 | Stack | Where the block goes | Notes |
 |---|---|---|
-| Plain HTML | last `<style>` in `<head>`, before `</style>` | one newline character, no blank line: `/* unflat: end */\n</style>` |
+| Plain HTML | last `<style>` in `<head>`, before `</style>` | one newline character, no blank line: `/* unflat: end */\n</style>`. Insert programmatically: `node -e "const fs=require('fs');const [f,b]=process.argv.slice(1);const s=fs.readFileSync(f,'utf8');const i=s.lastIndexOf('</style>');fs.writeFileSync(f,s.slice(0,i)+fs.readFileSync(b,'utf8').replace(/\s+$/,'')+'\n'+s.slice(i))" page.html unflat-block.css` |
 | Next.js (app or pages) | end of `app/globals.css` or `styles/globals.css` | after the Tailwind import if present |
 | Vite / React / Vue | end of `src/index.css` or `src/style.css` | |
 | Astro | end of `src/styles/global.css`, imported in the layout | |

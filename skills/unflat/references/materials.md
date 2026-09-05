@@ -1,6 +1,6 @@
 # Materials
 
-A material is a set of `--unflat-*` values plus a few structural choices. Pick one per site. The material must come from the site's own world; when nothing fits, the neutral fallbacks are **plate** (dark) and **paper** (light). Glass is never a default.
+A material is a set of `--unflat-*` values plus a few structural choices. Where a material table states a number, it wins over the general ranges in light.md; light.md's ranges apply to anything the table leaves out. Pick one per site. The material must come from the site's own world; when nothing fits, the neutral fallbacks are **plate** (dark) and **paper** (light). Glass is never a default.
 
 ## Decision table
 
@@ -23,7 +23,7 @@ Dark. A panel mounted on a wall: warm light from the top-left catches the top ed
 
 | Property | Value |
 |---|---|
-| ground | page-bg −3% L (the recipe default) (never below L .10), hue toward accent, chroma ≤ .02 |
+| ground | page-bg −3% L (the recipe default; never below L .10), hue toward accent, chroma ≤ .02 |
 | surface top / bottom | page-bg +5% L / page-bg +3% L |
 | edge | text at .10 |
 | line | site line token |
@@ -144,6 +144,8 @@ body::before{background:
   url("data:image/svg+xml;utf8,<grain svg with tint 1 .85 .95 alpha .18>");
   background-size:auto,auto,auto,220px 220px}
 ```
+
+`--unflat-light` still holds the primary light color; the second radial light in this override is a literal (the foil color), not a custom property.
 
 ## Adding a material
 

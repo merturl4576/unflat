@@ -1,8 +1,8 @@
 /* unflat: start */
 /* unflat v1 — ground + light + surfaces, derived from this site's own tokens.
    Delete everything between the start and end markers to revert.
-   Replace SURFACE with the structural selector list for top-level sections,
-   and GLOW with the one section that carries the accent glow (see selectors.md). Every token is already wrapped in :is(), so a comma list or a selector with combinators drops in unchanged. */
+   Three placeholders to replace per selectors.md: SURFACE (the selector list for top-level sections, always inside :is()), GLOW (the one section that carries the accent glow) and .wrap (the container class). Every token sits inside :is(), so a comma list or a selector with combinators drops in unchanged.
+   The inline comments and default values describe the plate material; other materials override per materials.md. */
 :root{
   --unflat-ground:#0c0b0a;                      /* page ground: page-bg 1–3% L darker (never below L .10), tinted toward accent */
   --unflat-surface-top:#1c1b1a;                 /* surface top: 1.5–2.5% L lighter than the base */
@@ -17,6 +17,7 @@
   --unflat-inset:clamp(8px,1.6vw,24px);         /* surface inset from the viewport edge */
   --unflat-gap:clamp(14px,2vw,28px);            /* breathing room between surfaces */
   --unflat-pad:var(--pad,0px);                  /* the site's container padding variable, if any */
+  --unflat-max:100vw;                           /* container outer max-width, e.g. var(--max); 100vw = fluid container */
 }
 /* 1. ground — painted on the canvas so the fixed light layer can sit above it */
 html{background:var(--unflat-ground)}
@@ -37,10 +38,10 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:linear-gradient(90deg,transparent,var(--unflat-lightline),transparent)}
 :is(SURFACE) + :is(SURFACE){margin-top:var(--unflat-gap)}
 :is(GLOW){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
-/* 5. alignment — content inside a surface stays on the page grid */
-:is(SURFACE) > .wrap{padding-inline:calc(var(--unflat-pad) - var(--unflat-inset))}
+/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset */
+:is(SURFACE) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset)))}
 /* responsive: keep top and bottom edges, drop the side inset on small screens */
-@media (max-width:640px){:is(SURFACE){margin-inline:0;border-left:0;border-right:0}}
+@media (max-width:640px){:root{--unflat-inset:0px}:is(SURFACE){border-left:0;border-right:0}}
 /* print: paper is already a surface */
 @media print{html{background:#fff}body::before{display:none}:is(SURFACE),:is(GLOW){box-shadow:none;border-color:transparent;background:none}}
 /* unflat: end */
