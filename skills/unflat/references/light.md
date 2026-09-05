@@ -24,10 +24,10 @@ Grain tint and alpha are edited inside the SVG in `recipe.css` (its `feColorMatr
 | `--unflat-edge` (lit top border) | text at 9–12% alpha | white at 75–85% alpha |
 | `--unflat-line` (other borders) | the site's line token, or text at 8–10% | the site's line token, or text at 6–8% |
 | `--unflat-lightline` | text at .18–.25 alpha | white at .85–.95 alpha |
-| `--unflat-shadow` | `0 40px 90px -50px rgba(0,0,0,.9), 0 2px 0 rgba(0,0,0,.55)` | `0 30px 60px -40px <ground hue dark at .25>, 0 1px 0 <text at .06>` |
+| `--unflat-shadow` | `0 40px 90px -50px rgba(0,0,0,.9), 0 2px 0 rgba(0,0,0,.55)` | light theme: `--ink` at .25 for the shadow's first layer and .06 for its hairline |
 | `--unflat-glow` | `0 60px 140px -70px <accent at .35–.40>` | `0 40px 100px -60px <accent at .12–.18>` |
 | `--unflat-light` | warm palette `rgba(255,196,150,.075)`, cool `rgba(190,210,255,.06)`, neutral `rgba(255,255,255,.05)` | warm `rgba(255,250,240,.6)`, cool `rgba(240,246,255,.6)` |
-| `--unflat-vignette` | `rgba(0,0,0,.45)` | `<ground hue dark at .10>` |
+| `--unflat-vignette` | `rgba(0,0,0,.45)` | light theme: `--ink` at .10 |
 | grain tint (SVG feColorMatrix) | warm `1 .93 .84`, cool `.85 .9 1`, neutral `.8 .82 .86` | warm `.55 .5 .45`, cool `.45 .5 .58` |
 | grain alpha (SVG feColorMatrix) | .12–.18 (renders as roughly 3–6% visible grain) | .08–.12 (≤ 4% under dense text) |
 | `--unflat-inset` | `clamp(8px, 1.6vw, 24px)` | same |
@@ -42,10 +42,12 @@ Grain tint and alpha are edited inside the SVG in `recipe.css` (its `feColorMatr
 Preferred, when the codebase already uses modern CSS (any evergreen browser since 2023):
 
 ```css
---unflat-ground: color-mix(in oklch, var(--bg), black 15%);           /* about -2.5% L on a dark bg */
---unflat-surface-bottom: color-mix(in oklch, var(--bg), white 3%);    /* about +2.5% L */
---unflat-surface-top: color-mix(in oklch, var(--bg), white 6%);       /* about +5% L */
+--unflat-ground: color-mix(in oklab, var(--bg), black 15%);           /* about -2.5% L on a dark bg */
+--unflat-surface-bottom: color-mix(in oklab, var(--bg), white 3%);    /* about +2.5% L */
+--unflat-surface-top: color-mix(in oklab, var(--bg), white 6%);       /* about +5% L */
 ```
+
+Mix with white or black in `oklab`, never `oklch`: an achromatic mix partner has no hue, and browsers drop the hue of the result.
 
 Rules of thumb: mixing with black scales L by (1 − p); mixing with white adds p × (1 − L). On a dark bg (L ≈ 0.15–0.20): black 15% ≈ −2.5% L, white 3% ≈ +2.5% L, white 6% ≈ +5% L. On a light bg (L ≈ 0.96): black 4% ≈ −4% L, white 40% ≈ +1.5% L.
 
@@ -79,9 +81,9 @@ const out=[4.0767416621*l2-3.3077115913*m2+.2309699292*s2,-1.2684380046*l2+2.609
 console.log(pre+"#"+out)' "#121110" -3
 ```
 
-`-3` darkens by three OKLab lightness points; `+2` lightens by two. Expected results (no third argument, behavior unchanged from before): `"#121110" -3` → `#0c0b0a`, `"#121110" +2` → `#161514`, `"#121110" +4.5` → `#1c1b1a`. Print the result for the ground, the surface base and the surface top, then write the hex values into the block. When the shift would cross the floor, the snippet lands at L 0.102 so the printed hex stays at or above L 0.10.
+`-3` darkens by three OKLab lightness points; `+2` lightens by two. Expected results (no third argument, behavior unchanged from before): `"#121110" -3` → `#0c0b0a`, `"#121110" +2` → `#161514`, `"#121110" +4.5` → `#1c1b1a`. These are also recipe.css's shipped defaults, so on a `#121110` page the recipe works unedited. Print the result for the ground, the surface base and the surface top, then write the hex values into the block. When the shift would cross the floor, the snippet lands at L 0.102 so the printed hex stays at or above L 0.10.
 
-Give a third argument, the accent's hex, to also pull the hue: the snippet then prints the accent's OKLCh hue `H` followed by the shifted color with its hue set to `H` and its chroma set to `min(0.02, max(c, 0.012))` (`c` is the shifted color's own chroma) — the same low-chroma technique as the CSS above. Without the third argument the snippet behaves exactly as today. Apply the hue pull for the ground only (surfaces keep the page background's own hue): the tint comes either from this third argument or from the relative-color CSS above. Skip it when the page background's chroma is below 0.01.
+Give a third argument, the accent's hex, to also pull the hue: the snippet then prints the accent's OKLCh hue `H` followed by the shifted color with its hue set to `H` and its chroma set to `min(0.02, max(c, 0.012))` (`c` is the shifted color's own chroma) — the same low-chroma technique as the CSS above. Without the third argument the snippet behaves exactly as today. Apply the hue pull for the ground only (surfaces keep the page background's own hue): the tint comes either from this third argument or from the relative-color CSS above. Pass the accent whenever the site has one: the snippet caps chroma at 0.02, so a neutral background only gets a faint cast, which is the point.
 
 ## Texture
 

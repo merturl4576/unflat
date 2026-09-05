@@ -31,6 +31,10 @@ The light layer is `body::before` with `position: fixed; z-index: -1`. It paints
 
 If the site sets `body { position: relative; z-index: 0 }` or similar, the layer disappears behind the body background. Fix by moving the ground and the layer to `html` (`html::before`) or by removing the body stacking context if it is harmless.
 
+## Re-auditing after install
+
+Re-auditing a page after install: the audit snippet's `rootVars` now also picks up the block's own `@media` override (`--unflat-inset:0px`); read the block's `:root` values directly instead.
+
 ## Content that sits on top of the layer
 
 Anything with `z-index: -1` of its own (decorative blobs) will now compete with the light layer. Give the light layer `z-index: -2` in that case and keep the blobs at `-1`.

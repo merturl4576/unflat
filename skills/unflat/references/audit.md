@@ -47,7 +47,7 @@ Also note: theme (dark or light), warmth of the palette (warm, cool, neutral), a
 
 ## 4. Browser snippet
 
-When a browser tool can evaluate JavaScript, run this on the page. It returns backgrounds of top-level children, fixed and sticky elements, and all `:root` custom properties, including ones declared inside `@media`, `@supports` or `@layer` blocks (later declarations overwrite earlier ones, so check which theme you are auditing).
+When a browser tool can evaluate JavaScript, run this on the page. It returns backgrounds of top-level children, fixed and sticky elements, and all `:root` custom properties, including ones declared inside `@media`, `@supports` or `@layer` blocks (later declarations overwrite earlier ones — this includes `@media` breakpoints, so audit at the viewport you are designing for and note which theme you are in).
 
 ```js
 (() => {

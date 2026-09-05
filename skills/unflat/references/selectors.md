@@ -50,7 +50,7 @@ main > *:not(:has(img, video, canvas)) /* sections without artwork */
 
 ## 6. Choosing GLOW
 
-One surface only (two for backlit): the one the page is about. Pricing, the featured product, the collection, the signup. Pick by content when possible: `main > section:has(.pricing, .tiers, form)` (Baseline `:has()` in all evergreen browsers). Otherwise, `main > section:last-child` when the CTA is the last section (most pages), or `main > section:nth-last-child(2)` only when a newsletter or contact strip sits after it. Always confirm which section you hit before writing the rule. For the backlit material only, GLOW may be two sections — usually the hero and the CTA — joined with a comma.
+One surface only (two for backlit): the one the page is about. Pricing, the featured product, the collection, the signup. Pick by content when possible: `main > section:has(.pricing, .tiers, form)` (Baseline `:has()` in all evergreen browsers). Otherwise, `main > section:last-child` when the CTA is the last section (most pages), or `main > section:nth-last-child(2)` only when a newsletter or contact strip sits after it. When a content match (pricing, tiers, a form) and a distinct final CTA both exist, the content match wins; use the last section only when nothing matches by content. Always confirm which section you hit before writing the rule. For the backlit material only, GLOW may be two sections — usually the hero and the CTA — joined with a comma.
 
 ## 7. Alignment compensation
 
@@ -59,10 +59,10 @@ An auto-centered container already absorbs the inset by itself; only a container
 Fill in the three placeholders: `SURFACE`, `GLOW`, and `.wrap` — replace `.wrap` with the site's container class, or `> *`.
 
 - Set `--unflat-pad` to the container padding token (`--pad`, `--gutter`, `--container-padding`) or its literal value.
-- Set `--unflat-max` to the container's outer max-width (`var(--max)` or a px value; add the horizontal padding when the container is `content-box`; leave `100vw` for a fluid container).
+- Set `--unflat-max` to the container's outer max-width (`var(--max)` or a px value). Check `getComputedStyle(container).boxSizing` first; with `border-box` (the usual global reset) use the max-width as it is; add the horizontal padding when the container is `content-box`; leave `100vw` for a fluid container.
 - If the site has no container padding variable (Tailwind `px-6`, hard-coded padding): keep the inset small (`clamp(8px, 1vw, 16px)`) and let centered content stay centered. Left-aligned content next to the edge shifts by the inset; mention it in the report.
 
-Verify: compare `getBoundingClientRect().left` of the header's first text element and of the first surface's first text element at 1440 and 390 — equal within 1px.
+Verify: compare `getBoundingClientRect().left` of the header's first text element and of the first surface's first text element at 1440 and 390 — equal within 1px (at intermediate widths a 1px difference is the surface's own border).
 
 ## 8. Framework notes
 

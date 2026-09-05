@@ -1,6 +1,6 @@
 # Materials
 
-A material is a set of `--unflat-*` values plus a few structural choices. Where a material table states a number, it wins over the general ranges in light.md; light.md's ranges apply to anything the table leaves out. Pick one per site. The material must come from the site's own world; when nothing fits, the neutral fallbacks are **plate** (dark) and **paper** (light). Glass is never a default.
+A material is a set of `--unflat-*` values plus a few structural choices. Where a material table states a number, it wins over the general ranges in light.md; light.md's ranges apply to anything the table leaves out. An override snippet replaces the recipe rule that has the same selector; do not keep both. Pick one per site. The material must come from the site's own world; when nothing fits, the neutral fallbacks are **plate** (dark) and **paper** (light). Glass is never a default.
 
 ## Decision table
 
@@ -47,10 +47,10 @@ Light. Sheets of paper lying on a slightly darker desk, lit from the top-left, w
 | edge | `rgba(255,255,255,.8)` |
 | line | site line token, or text at .07 |
 | lightline | `rgba(255,255,255,.9)` |
-| shadow | `0 30px 60px -40px <ground hue, dark, at .25>, 0 1px 0 <text at .06>` e.g. `rgba(60,45,30,.25)` |
+| shadow | `0 30px 60px -40px <ground hue, dark, at .25>, 0 1px 0 <text at .06>` e.g. `rgba(60,45,30,.25)` (= `--ink` at .25) |
 | glow | accent at .14, one surface, optional |
 | light | `rgba(255,250,240,.6)` |
-| vignette | `<ground hue dark at .10>` e.g. `rgba(80,60,40,.10)` |
+| vignette | `<ground hue dark at .10>` e.g. `rgba(80,60,40,.10)` (= `--ink` at .10) |
 | grain | tint `.55 .5 .45`, alpha .10 |
 
 ```css
@@ -81,8 +81,8 @@ Dark, cool or saturated accent. The ground is a soft field with two low-chroma a
 
 ```css
 /* glass overrides */
-:root{--unflat-surface-top:color-mix(in oklab,color-mix(in oklch,var(--bg),white 5%),transparent 15%);
-  --unflat-surface-bottom:color-mix(in oklab,color-mix(in oklch,var(--bg),white 3.5%),transparent 8%);
+:root{--unflat-surface-top:color-mix(in oklab,color-mix(in oklab,var(--bg),white 5%),transparent 15%);
+  --unflat-surface-bottom:color-mix(in oklab,color-mix(in oklab,var(--bg),white 3.5%),transparent 8%);
   --unflat-edge:rgba(255,255,255,.12);--unflat-line:rgba(255,255,255,.07);--unflat-lightline:rgba(255,255,255,.25);
   --unflat-shadow:0 30px 80px -40px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.06);
   --unflat-light:rgba(190,210,255,.06);--unflat-vignette:rgba(0,0,0,.4)}
@@ -105,10 +105,10 @@ Neutral, dark or light. Cold light, planes close together, hairline borders, ver
 | edge | text at .08 | `rgba(255,255,255,.7)` |
 | line | text at .07 | text at .06 |
 | lightline | text at .14 | `rgba(255,255,255,.8)` |
-| shadow | `0 24px 60px -40px rgba(0,0,0,.6), 0 1px 0 rgba(0,0,0,.4)` | `0 20px 40px -30px rgba(30,35,45,.2), 0 1px 0 rgba(30,35,45,.05)` |
+| shadow | `0 24px 60px -40px rgba(0,0,0,.6), 0 1px 0 rgba(0,0,0,.4)` | `0 20px 40px -30px rgba(30,35,45,.2), 0 1px 0 rgba(30,35,45,.05)` (= `--ink` at .2 / at .05) |
 | glow | none | none |
 | light | `rgba(200,215,235,.05)` | `rgba(240,246,255,.5)` |
-| vignette | `rgba(0,0,0,.3)` | `rgba(30,35,45,.06)` |
+| vignette | `rgba(0,0,0,.3)` | `rgba(30,35,45,.06)` (= `--ink` at .06) |
 | grain | tint `.8 .82 .86`, alpha .09 | tint `.45 .5 .58`, alpha .07 |
 
 Remove the `GLOW` rule entirely for slate.
@@ -136,16 +136,16 @@ Dark, high-saturation accent. The ground is the darkest; surfaces are lit from b
 :root{--unflat-edge:rgba(255,45,149,.25);--unflat-line:rgba(255,45,149,.10);--unflat-lightline:rgba(255,45,149,.45);
   --unflat-shadow:0 40px 90px -50px rgba(0,0,0,.9),0 0 0 1px rgba(255,45,149,.06);
   --unflat-glow:0 0 120px -30px rgba(255,45,149,.40),0 60px 140px -70px rgba(255,45,149,.40);
-  --unflat-vignette:rgba(0,0,0,.5)}
+  --unflat-light:rgba(255,45,149,.12);--unflat-vignette:rgba(0,0,0,.5)}
 body::before{background:
-  radial-gradient(60% 40% at 50% -10%,rgba(255,45,149,.12) 0%,transparent 60%),
+  radial-gradient(60% 40% at 50% -10%,var(--unflat-light) 0%,transparent 60%),
   radial-gradient(50% 40% at 50% 110%,rgba(124,245,255,.06) 0%,transparent 60%),
   radial-gradient(100% 80% at 100% 110%,var(--unflat-vignette) 0%,transparent 60%),
   url("data:image/svg+xml;utf8,<grain svg with tint 1 .85 .95 alpha .18>");
   background-size:auto,auto,auto,220px 220px}
 ```
 
-`--unflat-light` still holds the primary light color; the second radial light in this override is a literal (the foil color), not a custom property.
+`--unflat-light` holds the primary light; only the second (foil) light is a literal.
 
 ## Adding a material
 
