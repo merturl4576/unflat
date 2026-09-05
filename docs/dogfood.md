@@ -29,6 +29,15 @@ Two more fix waves landed after the final judgments: wave 3 (doc polish, `in okl
 | re-run | 03-dark-saas | glass | PASS | ACCEPT — glass table raised to `white 7%`/`3.5%`: gradient 2.9% nominal, 2.1% as rendered through the panels' transparency (the band is judged on the composited value for glass); glow on the pricing section (featured tier); alignment first/last surface 0/+1px at 1440, 1100 and 390 | — |
 | re-run | 04-backlit-brand | backlit | PASS | ACCEPT — values identical to the accepted run (ground tinted: accent hue 59.6° from the background's); two glows | — |
 
+
+## After the final review
+
+The final whole-branch review changed two things in the alignment rule: `--unflat-pad` is never `0px` while the rule is present, and a container class that is also a padded card is excluded from the compensation. Demo 03 has such a card (`.cta .wrap`), so it was re-run against the reviewed skill; the row below is the shipped page.
+
+| Run | Demo | Material chosen | Checker | Review verdict | Skill change made |
+|---|---|---|---|---|---|
+| re-run 2 | 03-dark-saas | glass | PASS | ACCEPT — every `--unflat-*` value identical to the previous re-run; the compensation now skips the `.cta` card (`:is(main > section):not(.cta) > .wrap`), which keeps its padding symmetric (56px on every side at 1440); the run put the glow on the CTA instead of the pricing grid (it judged the Team tier's filled button not a featured tier — a call the skill leaves open); alignment 0/+1/0 px at 1440, 1100 and 390 | — |
+
 ## What the runs taught the skill
 
 - Prose instructions about whitespace do not survive contact with a model; the insertion is now a one-line script.
