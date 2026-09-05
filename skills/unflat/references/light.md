@@ -69,7 +69,7 @@ const toLab=h=>{const [r,g,b]=[1,3,5].map(i=>s2l(parseInt(h.slice(i,i+2),16)/255
   const l_=Math.cbrt(.4122214708*r+.5363325363*g+.0514459929*b), m_=Math.cbrt(.2119034982*r+.6806995451*g+.1073969566*b), s_=Math.cbrt(.0883024619*r+.2817188376*g+.6299787005*b);
   return [.2104542553*l_+.7936177850*m_-.0040720468*s_,1.9779984951*l_-2.4285922050*m_+.4505937099*s_,.0259040371*l_+.7827717662*m_-.8086757660*s_]};
 const [L0,A0,B0]=toLab(hex);
-let L=Math.min(1,Math.max(.10,L0+dl)), A=A0, B=B0, pre="";
+let L=L0+dl<.10?.102:Math.min(1,L0+dl), A=A0, B=B0, pre="";
 if(accentHex){
   const [,aA,aB]=toLab(accentHex), H=(Math.atan2(aB,aA)*180/Math.PI+360)%360, c=Math.sqrt(A*A+B*B), c2=Math.min(.02,Math.max(c,.012)), rad=H*Math.PI/180;
   A=c2*Math.cos(rad); B=c2*Math.sin(rad); pre="H="+H.toFixed(1)+" ";
@@ -79,7 +79,7 @@ const out=[4.0767416621*l2-3.3077115913*m2+.2309699292*s2,-1.2684380046*l2+2.609
 console.log(pre+"#"+out)' "#121110" -3
 ```
 
-`-3` darkens by three OKLab lightness points; `+2` lightens by two. Expected results (no third argument, behavior unchanged from before): `"#121110" -3` → `#0c0b0a`, `"#121110" +2` → `#161514`, `"#121110" +4.5` → `#1c1b1a`. Print the result for the ground, the surface base and the surface top, then write the hex values into the block. The snippet clamps L to a floor of 0.10 after applying the shift, so a shift that would go lower prints at L 0.10 instead (8-bit hex rounding can still land a hair under 0.10, the same rounding noise `guardrails.md` documents elsewhere).
+`-3` darkens by three OKLab lightness points; `+2` lightens by two. Expected results (no third argument, behavior unchanged from before): `"#121110" -3` → `#0c0b0a`, `"#121110" +2` → `#161514`, `"#121110" +4.5` → `#1c1b1a`. Print the result for the ground, the surface base and the surface top, then write the hex values into the block. When the shift would cross the floor, the snippet lands at L 0.102 so the printed hex stays at or above L 0.10.
 
 Give a third argument, the accent's hex, to also pull the hue: the snippet then prints the accent's OKLCh hue `H` followed by the shifted color with its hue set to `H` and its chroma set to `min(0.02, max(c, 0.012))` (`c` is the shifted color's own chroma) — the same low-chroma technique as the CSS above. Without the third argument the snippet behaves exactly as today. Apply the hue pull for the ground only (surfaces keep the page background's own hue): the tint comes either from this third argument or from the relative-color CSS above. Skip it when the page background's chroma is below 0.01.
 
