@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Margin — a weekly journal about design and the people who make things</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter+Tight:wght@500;600&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f3ee;--ink:#1c1a17;--ink-2:#6f6a61;--ink-3:#a19b90;
+  --line:rgba(28,26,23,.10);--line-2:rgba(28,26,23,.25);
+  --accent:#b23a2b;
+  --display:'Fraunces',Georgia,'Times New Roman',serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --ui:'Inter Tight','Segoe UI',system-ui,sans-serif;
+  --max:1160px;--pad:clamp(20px,4vw,48px);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:var(--max);margin:0 auto;padding-inline:var(--pad)}
+header{position:sticky;top:0;z-index:10;background:rgba(246,243,238,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;height:68px}
+.masthead{font-family:var(--display);font-variation-settings:'opsz' 72;font-weight:500;font-size:1.72rem;letter-spacing:-.02em;line-height:1;text-decoration:none}
+nav{display:flex;gap:26px;font-family:var(--ui);font-weight:500;font-size:.92rem}
+nav a{text-decoration:none;color:var(--ink-2)}
+nav a:hover{color:var(--accent)}
+.issue{font-family:var(--ui);font-weight:500;font-size:.8rem;color:var(--ink-3);white-space:nowrap}
+section{padding:clamp(56px,7vw,104px) 0}
+h1,h2,h3,h4{font-family:var(--display);font-variation-settings:'opsz' 144;font-weight:500;margin:0;line-height:1.03;letter-spacing:-.018em;text-wrap:balance}
+h1{font-size:clamp(2.5rem,5.4vw,4.5rem)}
+h2{font-size:clamp(1.9rem,3.4vw,2.9rem);font-variation-settings:'opsz' 96}
+h3,h4{font-variation-settings:'opsz' 48}
+.kicker{font-family:var(--ui);font-weight:600;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin:0 0 20px}
+.deck{font-size:1.16rem;color:var(--ink-2);max-width:62ch;margin:24px 0 0}
+.btn{display:inline-flex;align-items:center;height:46px;padding:0 20px;font:500 .95rem var(--ui);text-decoration:none;border:1px solid var(--line-2);color:var(--ink);background:none;cursor:pointer}
+.btn:hover{border-color:var(--ink)}
+.btn-p{background:var(--accent);border-color:var(--accent);color:#fbf8f4}
+.btn-p:hover{background:#8f2d21;border-color:#8f2d21}
+.row{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+.hero{padding-top:clamp(48px,6vw,84px);border-bottom:1px solid var(--line)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:56px;align-items:start}
+.toc{font-family:var(--ui);font-size:.95rem;border-top:1px solid var(--line-2);padding-top:10px}
+.toc-h{font-weight:600;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
+.toc a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink-2)}
+.toc a:hover{color:var(--ink)}
+.toc b{font:600 1.5rem/1 var(--display);font-variation-settings:'opsz' 30;color:var(--ink);font-variant-numeric:tabular-nums}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap;border-bottom:1px solid var(--line-2);padding-bottom:16px}
+.sec-h p{margin:0;font-family:var(--ui);font-size:.86rem;color:var(--ink-3)}
+.essays{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:40px}
+.essay{display:flex;flex-direction:column}
+.cover{aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;font:500 clamp(5rem,9vw,8rem)/1 var(--display);font-variation-settings:'opsz' 144;color:#f6f3ee;margin-bottom:22px}
+.c1{background:#b23a2b}.c2{background:#2f4a3f}.c3{background:#2b3550}
+.essay h3{font-size:1.55rem;margin-bottom:12px}
+.essay p{margin:0;color:var(--ink-2);max-width:62ch}
+.byline{font-family:var(--ui);font-size:.8rem;color:var(--ink-3);margin-top:auto;padding-top:16px;border-top:1px solid var(--line)}
+.interview .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:56px;align-items:start}
+blockquote{margin:0;font:500 clamp(1.7rem,3.1vw,2.6rem)/1.08 var(--display);font-variation-settings:'opsz' 144;letter-spacing:-.018em;color:var(--ink)}
+cite{display:block;margin-top:24px;font:500 .84rem var(--ui);font-style:normal;color:var(--ink-3)}
+.qa{margin:0}
+.qa > div{padding:24px 0;border-top:1px solid var(--line)}
+.qa > div:first-child{border-top:0;padding-top:0}
+.qa dt{font-family:var(--ui);font-weight:600;font-size:.95rem;color:var(--accent);margin-bottom:10px}
+.qa dd{margin:0;color:var(--ink-2);max-width:62ch}
+.objs{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:40px}
+.obj{border:1px solid var(--line);padding:22px}
+.swatch{height:92px;margin-bottom:20px}
+.s1{background:#c9762f}.s2{background:#4a4f45}.s3{background:#8d6b8f}
+.obj h4{font-size:1.25rem;margin-bottom:8px}
+.obj p{margin:0;color:var(--ink-2);font-size:.98rem}
+.price{font-family:var(--ui);font-weight:600;font-size:.86rem;color:var(--ink-3);margin-top:14px}
+.arch{margin-top:32px}
+.arch a{display:grid;grid-template-columns:80px minmax(0,1fr) 168px 84px;gap:20px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.arch a:hover .t{color:var(--accent)}
+.arch .n{font:600 1.35rem/1 var(--display);font-variation-settings:'opsz' 30;font-variant-numeric:tabular-nums;color:var(--ink-3)}
+.arch .t{font-size:1.12rem}
+.arch .d,.arch .m{font-family:var(--ui);font-size:.84rem;color:var(--ink-3)}
+.arch .m{text-align:right}
+.subscribe .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:start;border-top:1px solid var(--line-2);padding-top:clamp(40px,5vw,72px)}
+.subscribe p{margin:20px 0 0;color:var(--ink-2);max-width:62ch}
+form{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+input[type=email]{flex:1 1 220px;min-width:0;height:46px;padding:0 16px;font:400 1rem var(--ui);color:var(--ink);background:transparent;border:1px solid var(--line-2)}
+input[type=email]::placeholder{color:var(--ink-3)}
+input[type=email]:focus{outline:0;border-color:var(--accent)}
+.fine{font-family:var(--ui);font-size:.78rem;color:var(--ink-3);margin:0}
+footer{border-top:1px solid var(--line);padding:34px 0;font-family:var(--ui);font-size:.84rem;color:var(--ink-3)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer nav{gap:22px;font-size:.84rem}
+@media(max-width:980px){.essays,.objs{grid-template-columns:1fr 1fr}}
+@media(max-width:860px){
+  .hero .wrap,.interview .wrap,.subscribe .wrap{grid-template-columns:1fr;gap:40px}
+  .essays,.objs{grid-template-columns:1fr}
+  .cover{aspect-ratio:16/7}
+  .arch a{grid-template-columns:56px minmax(0,1fr);row-gap:4px}
+  .arch .d,.arch .m{grid-column:2;text-align:left}
+  .issue{display:none}
+}
+@media(max-width:620px){header .wrap{height:auto;padding-block:14px;flex-wrap:wrap;gap:10px}nav{gap:16px;font-size:.86rem}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="masthead" href="#">Margin</a>
+    <nav><a href="#issues">Issues</a><a href="#essays">Essays</a><a href="#interview">Interviews</a><a href="#subscribe">Subscribe</a></nav>
+    <span class="issue">Issue 47 · 5 September 2026</span>
+  </div>
+</header>
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="kicker">This week</p>
+        <h1>The chair that took eleven years</h1>
+        <p class="deck">Sofie Lindqvist spent a decade on one joint. The result seats you like nothing else, and she still thinks the armrest is wrong.</p>
+        <div class="row"><a class="btn btn-p" href="#essays">Read the essay</a><a class="btn" href="#issues">Browse issue 47</a></div>
+      </div>
+      <div class="toc" id="issues">
+        <p class="toc-h">In this issue</p>
+        <a href="#"><span>The chair that took eleven years</span><b>04</b></a>
+        <a href="#essays"><span>Why the best tools disappear</span><b>18</b></a>
+        <a href="#interview"><span>In the workshop with Tomás Reyes</span><b>26</b></a>
+        <a href="#"><span>Letters, corrections, one apology</span><b>44</b></a>
+      </div>
+    </div>
+  </section>
+  <section class="featured" id="essays">
+    <div class="wrap">
+      <div class="sec-h"><h2>Essays</h2><p>Three long reads · Issue 47</p></div>
+      <div class="essays">
+        <article class="essay">
+          <div class="cover c1">W</div>
+          <h3>Why the best tools disappear</h3>
+          <p>A good plane vanishes in the hand. A bad one is all you can think about. On the strange craft of designing things that refuse to announce themselves to you.</p>
+          <div class="byline">Ada Mörk · 12 min read</div>
+        </article>
+        <article class="essay">
+          <div class="cover c2">A</div>
+          <h3>A short history of the paper clip</h3>
+          <p>Nine patents, one Norwegian myth and a single wire bent four times. How the least designed object on your desk quietly survived a century of improvements nobody ever actually wanted.</p>
+          <div class="byline">Peter Halvorsen · 9 min read</div>
+        </article>
+        <article class="essay">
+          <div class="cover c3">O</div>
+          <h3>On finishing</h3>
+          <p>The last five percent takes half the year and none of the glory. Six makers on sanding, second-guessing, and the exact moment they decided that a piece was done enough.</p>
+          <div class="byline">Iris Cardoso · 18 min read</div>
+        </article>
+      </div>
+    </div>
+  </section>
+  <section class="interview" id="interview">
+    <div class="wrap">
+      <div>
+        <blockquote>“I don’t design objects. I design the moment you stop noticing them.”</blockquote>
+        <cite>Tomás Reyes, cabinetmaker, Lisbon</cite>
+      </div>
+      <dl class="qa">
+        <div>
+          <dt>What does the first hour in the workshop look like?</dt>
+          <dd>I sweep. Everyone reads that as modesty; it is not. Sweeping tells me what I did yesterday — where the shavings fell, which machine ran, what I left half-clamped. By the time the floor is clear I know what the day is.</dd>
+        </div>
+        <div>
+          <dt>Which tool would you never replace?</dt>
+          <dd>A shoulder plane my father rehandled in 1974. Not because it is precious — the sole is worn hollow and I have to compensate for it — but because I know exactly how much it lies. A new one would be more accurate and I would trust it less.</dd>
+        </div>
+        <div>
+          <dt>When did something last fail?</dt>
+          <dd>March. A dining table, eight seats, and the top cupped like a roof tile three weeks after delivery. My glue-up, my humidity, my fault. I drove down, took it back and built a second one. The client got the better table. I got the lesson, which is the more expensive of the two.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+  <section class="objects">
+    <div class="wrap">
+      <div class="sec-h"><h2>One thing worth buying</h2><p>Chosen this week, bought with our own money</p></div>
+      <div class="objs">
+        <div class="obj"><div class="swatch s1"></div><h4>A brass folding rule</h4><p>Boxwood and brass, six folds, made in Sheffield since 1899. It will outlive the tape measure you keep losing, and it never rewinds itself into your thumb.</p><div class="price">€38 · Rabone &amp; Fils</div></div>
+        <div class="obj"><div class="swatch s2"></div><h4>Reground bench chisels</h4><p>A set of four, bought blunt at a Ghent flea market and reground by a shop in Malmö. Cheaper than new, better steel, and the handles already fit somebody’s hand.</p><div class="price">€145 · Verkstad Åter</div></div>
+        <div class="obj"><div class="swatch s3"></div><h4>The 1962 joinery atlas</h4><p>Two hundred plates of Japanese and European joints, drawn in section, with no text at all. Reprinted last spring, and still the only reference we have seen a workshop keep unopened on a shelf.</p><div class="price">€64 · Kessler Press</div></div>
+      </div>
+    </div>
+  </section>
+  <section class="archive">
+    <div class="wrap">
+      <div class="sec-h"><h2>From the archive</h2><p>Every back issue is free after ninety days</p></div>
+      <div class="arch">
+        <a href="#"><span class="n">39</span><span class="t">The glue problem</span><span class="d">6 June 2026</span><span class="m">14 min</span></a>
+        <a href="#"><span class="n">36</span><span class="t">Kitchens that were never cooked in</span><span class="d">16 May 2026</span><span class="m">11 min</span></a>
+        <a href="#"><span class="n">33</span><span class="t">A factory in Jutland closes</span><span class="d">25 April 2026</span><span class="m">22 min</span></a>
+        <a href="#"><span class="n">30</span><span class="t">The colour of a room at four o’clock</span><span class="d">4 April 2026</span><span class="m">8 min</span></a>
+        <a href="#"><span class="n">27</span><span class="t">Everything is a chair if you are tired</span><span class="d">14 March 2026</span><span class="m">7 min</span></a>
+        <a href="#"><span class="n">24</span><span class="t">Against the second prototype</span><span class="d">21 February 2026</span><span class="m">13 min</span></a>
+        <a href="#"><span class="n">21</span><span class="t">Who owns a pattern?</span><span class="d">31 January 2026</span><span class="m">19 min</span></a>
+        <a href="#"><span class="n">18</span><span class="t">Notes on a borrowed workshop</span><span class="d">10 January 2026</span><span class="m">9 min</span></a>
+      </div>
+    </div>
+  </section>
+  <section class="subscribe" id="subscribe">
+    <div class="wrap">
+      <div>
+        <h2>One letter a week. No noise.</h2>
+        <p>Every Friday, one essay, one interview, one thing worth buying. Free, or €40 a year for the print edition.</p>
+      </div>
+      <div>
+        <form action="#" method="post">
+          <input type="email" name="email" placeholder="you@example.com" aria-label="Email address" required>
+          <button class="btn btn-p" type="submit">Subscribe</button>
+        </form>
+        <p class="fine">Unsubscribe with one click. We never sell the list.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>Margin is published from Copenhagen</span>
+    <nav><a href="#">About</a><a href="#">Advertise</a><a href="#">RSS</a></nav>
+  </div>
+</footer>
+</body>
+</html>
