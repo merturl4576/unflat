@@ -8,6 +8,7 @@ Run this after writing the block. Every line is pass or fail.
 |---|---|---|
 | Contrast | text on surfaces keeps its original contrast; the surface base (`--unflat-surface-bottom`) is within 3% L of the original section background and the gradient top at most 2.5% above that | compare `--unflat-surface-bottom` to the page-bg token; spot-check a heading and a paragraph |
 | Horizontal scroll | none introduced | `document.documentElement.scrollWidth <= innerWidth` |
+| Gap | consecutive surfaces are separated by `--unflat-gap` | the second top-level section's computed `margin-top` equals the gap value (`getComputedStyle(document.querySelector('main > section:nth-of-type(2)')).marginTop`) |
 | Fixed and sticky | header, banners, widgets unchanged | screenshot top of page and compare |
 | One light | edges lit from the same side as the light; shadows fall down | eye check on two surfaces |
 | Motion | no animation added | grep the block for `animation` and `transition` |

@@ -1,6 +1,6 @@
 # Selectors: surfaces without touching markup
 
-`SURFACE` in recipe.css stands for the list of top-level sections that become surfaces. `GLOW` stands for the one of them that carries the accent glow. Fill both with structural selectors; never add classes or wrappers to the markup.
+`SURFACE` in recipe.css stands for the list of top-level sections that become surfaces. `GLOW` stands for the one of them that carries the accent glow. Fill both with structural selectors; never add classes or wrappers to the markup. recipe.css wraps every token in `:is()`, so paste your selector or comma-separated list as-is — do not add your own `:is()`, and do not strip the existing one.
 
 ## 1. Find the container
 
@@ -77,7 +77,7 @@ Surfaces are inset by `--unflat-inset`. Content inside them must keep the page g
 - A section with `overflow: hidden` clips the light-line at `top: -1px`. Use `top: 0` for that section.
 - A section that already has `position: absolute` or `fixed` is not a surface.
 - If `SURFACE` sections already carry a background image, keep it: use `background-image` and set only `background-color` on them.
-- If the container has `display: grid` or `flex` with `gap`, drop the `SURFACE + SURFACE { margin-top }` rule and rely on the gap.
+- If the container has `display: grid` or `flex` with `gap`, drop the `:is(SURFACE) + :is(SURFACE) { margin-top }` rule and rely on the gap.
 
 ## 10. Escape hatch
 
