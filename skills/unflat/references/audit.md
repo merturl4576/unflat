@@ -53,9 +53,10 @@ When a browser tool can evaluate JavaScript, run this on the page. It returns ba
 (() => {
   const cs = (el) => getComputedStyle(el);
   const roots = ['main > *', '#app > *', '#root > *', '#__next > *', 'body > *'];
-  const kids = [...new Set(roots.flatMap((s) => [...document.querySelectorAll(s)]))]
+  const kids = (roots.map((s) => [...document.querySelectorAll(s)]).find((a) => a.length) || [])
     .filter((e) => !['SCRIPT', 'STYLE', 'LINK', 'TEMPLATE'].includes(e.tagName));
-  const bgs = kids.map((e) => cs(e).backgroundColor).filter((c) => c !== 'rgba(0, 0, 0, 0)');
+  const bgs = kids.filter((e) => !['fixed', 'sticky'].includes(cs(e).position))
+    .map((e) => cs(e).backgroundColor).filter((c) => c !== 'rgba(0, 0, 0, 0)');
   const sig = (e) => e.tagName.toLowerCase() + (e.id ? '#' + e.id : '') +
     (typeof e.className === 'string' && e.className ? '.' + e.className.trim().split(/\s+/).slice(0, 3).join('.') : '');
   const fixed = [...document.querySelectorAll('body *')]

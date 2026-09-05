@@ -8,7 +8,7 @@ These rules turn the token table into the `--unflat-*` values. Ranges are limits
 
 ## Ground and lift
 
-The separation between ground and surface is 4–6% L in total, and it is split: the ground goes down a little, the surfaces come up a little. Dark pages have no room below them (a page at L 0.15 is two steps from black), so most of the separation is lift. This is how the origin site did it: page-bg L 0.154, ground L 0.144, surface L 0.187 at the base and 0.202 at the top. The ground never goes below L 0.10, and a surface's base never rises more than 3% L above the original background, so text contrast is unchanged.
+The separation between ground and surface is 4–6% L in total, and it is split: the ground goes down a little, the surfaces come up a little. Dark pages have no room below them (a page at L 0.15 is two steps from black), so most of the separation is lift. The origin site (a different, darker palette: page-bg L 0.154) measured ground L 0.144 and surfaces L 0.187–0.202. The worked example below uses `#121110` (L 0.178). The ground never goes below L 0.10, and a surface's base never rises more than 3% L above the original background, so text contrast is unchanged.
 
 ## How each value is derived
 
@@ -61,6 +61,8 @@ console.log("#"+out)' "#121110" -3
 ```
 
 `-3` darkens by three OKLab lightness points; `+2` lightens by two. Expected results: `"#121110" -3` → `#0c0b0a`, `"#121110" +2` → `#161514`, `"#121110" +4.5` → `#1c1b1a`. Print the result for the ground, the surface base and the surface top, then write the hex values into the block.
+
+The snippet shifts lightness only. Apply the hue pull in CSS: `color-mix(in oklab, <shifted hex>, <accent> 6%)` for the ground and surfaces (chroma stays ≤ 0.02 at 6%). Skip the tint when the page background is already neutral (OKLab chroma below 0.01).
 
 ## Texture
 

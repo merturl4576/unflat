@@ -46,7 +46,7 @@ Follow `references/materials.md`. What is this site about, what is its tone, is 
 Follow `references/light.md` to compute concrete values: ground color, surface top and bottom, edge highlight, line, light-line, shadow, glow target, light color, vignette, texture tint and opacity, inset, gap. Present them as a short table before writing any CSS.
 
 ### Step 4 — Write the block
-Copy `references/recipe.css`, fill in the `--unflat-*` values from Step 3, and replace every `SURFACE` token with the structural selector list chosen per `references/selectors.md`. Append the block at the end of the global stylesheet. For a single HTML file, insert it immediately before the last `</style>`, followed by one newline.
+Copy `references/recipe.css`, fill in the `--unflat-*` values from Step 3, and replace every `SURFACE` token with the structural selector list chosen per `references/selectors.md`. Append the block at the end of the global stylesheet. For a single HTML file, insert it immediately before the last `</style>`. The block's last line is `/* unflat: end */`, and exactly one newline character separates it from `</style>` — no blank line. Byte view: `…/* unflat: end */\n</style>`. `recipe.css` already ends with that newline; do not add another.
 
 ### Step 5 — Verify
 Run the checklist in `references/guardrails.md`. If a browser tool is available, screenshot before and after at 1440×900 and compare. Confirm: text contrast on surfaces unchanged, no horizontal scroll, sticky header untouched, print clean, no motion, one fixed pseudo-element, images not tinted.

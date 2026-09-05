@@ -23,7 +23,7 @@ Dark. A panel mounted on a wall: warm light from the top-left catches the top ed
 
 | Property | Value |
 |---|---|
-| ground | page-bg −2% L (never below L .10), hue toward accent, chroma ≤ .02 |
+| ground | page-bg −3% L (the recipe default) (never below L .10), hue toward accent, chroma ≤ .02 |
 | surface top / bottom | page-bg +5% L / page-bg +3% L |
 | edge | text at .10 |
 | line | site line token |

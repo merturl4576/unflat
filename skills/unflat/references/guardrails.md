@@ -6,7 +6,7 @@ Run this after writing the block. Every line is pass or fail.
 
 | Check | Pass condition | How to check |
 |---|---|---|
-| Contrast | text on surfaces keeps its original contrast; the surface base (`--unflat-surface-bottom`) is within 3% L of the original section background and the gradient top at most 2.5% above that | compare `--unflat-surface-bottom` to the page-bg token; spot-check a heading and a paragraph |
+| Contrast | text on surfaces keeps its original contrast; the surface base (`--unflat-surface-bottom`) is within 3% L of the original section background and the gradient top at most 2.5% above that (nominal values; 8-bit hex rounding may add up to 0.15% L — `#161514`→`#1c1b1a` measures 2.64%) | compare `--unflat-surface-bottom` to the page-bg token; spot-check a heading and a paragraph |
 | Horizontal scroll | none introduced | `document.documentElement.scrollWidth <= innerWidth` |
 | Gap | consecutive surfaces are separated by `--unflat-gap` | the second top-level section's computed `margin-top` equals the gap value (`getComputedStyle(document.querySelector('main > section:nth-of-type(2)')).marginTop`) |
 | Fixed and sticky | header, banners, widgets unchanged | screenshot top of page and compare |
@@ -17,7 +17,7 @@ Run this after writing the block. Every line is pass or fail.
 | Images | photography and video not tinted by grain; texture behind content | look at a section with an image |
 | Print | ground, texture and shadows removed | print preview or `@media print` present |
 | Reduced motion | nothing to do unless glow is animated; it is not | grep |
-| Reversible | removing start..end restores the file byte for byte | delete and diff |
+| Reversible | removing start..end restores the file byte for byte | delete start..end (plus the one newline after end) and diff; for a single HTML file also confirm the bytes between `/* unflat: end */` and `</style>` are exactly one `\n`: `node -e "const s=require('fs').readFileSync('FILE','utf8');console.log(JSON.stringify(s.slice(s.indexOf('/* unflat: end */')+17,s.lastIndexOf('</style>'))))"` must print `"\n"` |
 | Report | six lines delivered (material, values, file, revert, dials, markup) | read the response |
 
 ## Painting order gotcha

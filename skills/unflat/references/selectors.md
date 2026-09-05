@@ -50,7 +50,7 @@ main > *:not(:has(img, video, canvas)) /* sections without artwork */
 
 ## 6. Choosing GLOW
 
-One surface only (two for backlit): the one the page is about. Pricing, the featured product, the collection, the signup. Examples: `main > section:nth-last-child(2)` (usually the CTA before the footer), `main > section:has(> .pricing)`, `main > section:has(h2:first-of-type)` is too broad; be specific.
+One surface only (two for backlit): the one the page is about. Pricing, the featured product, the collection, the signup. Pick by content when possible: `main > section:has(.pricing, .tiers, form)` (Baseline `:has()` in all evergreen browsers). Otherwise, `main > section:last-child` when the CTA is the last section (most pages), or `main > section:nth-last-child(2)` only when a newsletter or contact strip sits after it. Always confirm which section you hit before writing the rule.
 
 ## 7. Alignment compensation
 
@@ -63,7 +63,7 @@ Surfaces are inset by `--unflat-inset`. Content inside them must keep the page g
 
 | Stack | Where the block goes | Notes |
 |---|---|---|
-| Plain HTML | last `<style>` in `<head>`, before `</style>` | insert block + one newline |
+| Plain HTML | last `<style>` in `<head>`, before `</style>` | one newline character, no blank line: `/* unflat: end */\n</style>` |
 | Next.js (app or pages) | end of `app/globals.css` or `styles/globals.css` | after the Tailwind import if present |
 | Vite / React / Vue | end of `src/index.css` or `src/style.css` | |
 | Astro | end of `src/styles/global.css`, imported in the layout | |
