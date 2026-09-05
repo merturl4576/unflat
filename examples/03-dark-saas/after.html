@@ -106,30 +106,26 @@ footer nav a{color:var(--ink-3)}
 }
 @media(max-width:560px){header .wrap{gap:16px}.signin{display:none}}
 /* unflat: start */
-/* unflat v1 — ground + light + surfaces, derived from this site's own tokens.
-   Delete everything between the start and end markers to revert.
-   Material: glass (dark SaaS/AI/dev-tools + cool accent, per materials.md). Values below are the
-   glass overrides, not the plate defaults that ship in recipe.css. */
 :root{
-  --unflat-ground:oklch(from var(--bg) calc(l - 0.02) 0.015 269.9);  /* page-bg -2% L, hue pulled toward --accent #6d8cff (H=269.9); ≈ #080a12 */
-  --unflat-surface-top:color-mix(in oklab,color-mix(in oklab,var(--bg),white 5%),transparent 15%);     /* page-bg +4% L, 15% transparent (glass); "in oklab" not "in oklch" — see report */
-  --unflat-surface-bottom:color-mix(in oklab,color-mix(in oklab,var(--bg),white 3.5%),transparent 8%); /* page-bg +3% L, 8% transparent (glass); "in oklab" not "in oklch" — see report */
-  --unflat-edge:rgba(255,255,255,.12);          /* glass edge: fixed glass highlight */
-  --unflat-line:rgba(255,255,255,.07);          /* glass line */
-  --unflat-lightline:rgba(255,255,255,.25);     /* centered 1px light-line */
+  --unflat-ground:#070b12;                      /* page-bg −2% L; untinted (accent hue only 6° from bg) */
+  --unflat-surface-top:color-mix(in oklab,color-mix(in oklab,var(--bg),white 7%),transparent 15%);
+  --unflat-surface-bottom:color-mix(in oklab,color-mix(in oklab,var(--bg),white 3.5%),transparent 8%);
+  --unflat-edge:rgba(255,255,255,.12);          /* glass: white at .12 */
+  --unflat-line:rgba(255,255,255,.07);          /* glass: white at .07 */
+  --unflat-lightline:rgba(255,255,255,.25);     /* glass: white at .25 */
   --unflat-shadow:0 30px 80px -40px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.06);
-  --unflat-glow:0 60px 140px -70px rgba(109,140,255,.30);  /* --accent #6d8cff at 30%, CTA surface only */
-  --unflat-light:rgba(190,210,255,.06);         /* cool light tint; body::before below paints the glass field directly instead of this var */
+  --unflat-glow:0 60px 140px -70px rgba(109,140,255,.30);   /* --accent #6d8cff at .30, one surface only */
+  --unflat-light:rgba(190,210,255,.06);         /* cool; glass's field blobs in body::before carry the actual light */
   --unflat-vignette:rgba(0,0,0,.4);             /* opposite corner */
   --unflat-inset:clamp(8px,1.6vw,24px);         /* surface inset from the viewport edge */
   --unflat-gap:clamp(14px,2vw,28px);            /* breathing room between surfaces */
-  --unflat-pad:var(--pad,0px);                  /* site's own container padding token */
-  --unflat-max:var(--max);                      /* site's own container max-width (1180px); .wrap is border-box, no extra padding to add */
+  --unflat-pad:var(--pad);                      /* the site's container padding variable */
+  --unflat-max:var(--max);                      /* container outer max-width; .wrap is border-box, used as-is */
 }
 /* 1. ground — painted on the canvas so the fixed light layer can sit above it */
 html{background:var(--unflat-ground)}
 body{background:transparent}
-/* 2 + 3. light and texture — one fixed layer behind all content: two low-chroma accent blobs (the glass field) instead of a single top-left light */
+/* 2 + 3. light and texture — one fixed layer behind all content */
 body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:
     radial-gradient(60% 50% at 15% -10%,rgba(109,140,255,.10) 0%,transparent 60%),
@@ -145,13 +141,12 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
 :is(main > section)::before{content:'';position:absolute;left:8%;right:8%;top:-1px;height:1px;pointer-events:none;
   background:linear-gradient(90deg,transparent,var(--unflat-lightline),transparent)}
 :is(main > section) + :is(main > section){margin-top:var(--unflat-gap)}
-:is(main > section:last-child){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
-/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset */
-:is(main > section) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset)))}
+:is(main > section.pricing){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
+/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own container rule (e.g. `.section .container{padding:0 24px}`); outside the compensation band it equals the site's padding, so nothing else changes. */ :is(main > section) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
 /* responsive: keep top and bottom edges, drop the side inset on small screens */
 @media (max-width:640px){:root{--unflat-inset:0px}:is(main > section){border-left:0;border-right:0}}
 /* print: paper is already a surface */
-@media print{html{background:#fff}body::before{display:none}:is(main > section),:is(main > section:last-child){box-shadow:none;border-color:transparent;background:none}}
+@media print{html{background:#fff}body::before{display:none}:is(main > section),:is(main > section.pricing){box-shadow:none;border-color:transparent;background:none}}
 /* unflat: end */
 </style>
 </head>

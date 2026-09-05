@@ -101,26 +101,21 @@ footer nav{gap:22px;font-size:.84rem}
 }
 @media(max-width:620px){header .wrap{height:auto;padding-block:14px;flex-wrap:wrap;gap:10px}nav{gap:16px;font-size:.86rem}}
 /* unflat: start */
-/* unflat v1 — ground + light + surfaces, derived from this site's own tokens.
-   Delete everything between the start and end markers to revert.
-   Three placeholders to replace per selectors.md: SURFACE (the selector list for top-level sections, always inside :is()), GLOW (the one section that carries the accent glow) and .wrap (the container class). Every token sits inside :is(), so a comma list or a selector with combinators drops in unchanged.
-   The inline comments and default values describe the plate material; other materials override per materials.md.
-   Material: paper (light editorial). Ground/surface derived in OKLab from --bg #f6f3ee; edge/lightline/light/grain per materials.md's paper table; shadow/vignette use the site's own --ink at .06 plus a dark warm tint of the ground's hue at .25/.10. */
 :root{
-  --unflat-ground:#e9e6e1;                      /* page ground: page-bg -3.9% L, palette's own warm hue kept */
-  --unflat-surface-top:#fbf8f3;                 /* surface top: page-bg +1.5% L (never #fff) */
-  --unflat-surface-bottom:#f8f5f0;              /* surface base: page-bg +0.6% L */
-  --unflat-edge:rgba(255,255,255,.8);           /* lit top border: white ~80% (paper) */
+  --unflat-ground:#e9e6e1;                      /* page-bg −4% L (paper) */
+  --unflat-surface-top:#fbf8f3;                 /* surface top: page-bg +1.5% L, never #fff */
+  --unflat-surface-bottom:#f8f5f0;              /* surface base: page-bg +0.5% L */
+  --unflat-edge:rgba(255,255,255,.8);           /* lit top border: white ~80% (light theme) */
   --unflat-line:var(--line);                    /* other borders: the site's own line token */
-  --unflat-lightline:rgba(255,255,255,.9);      /* centered 1px light-line (paper) */
+  --unflat-lightline:rgba(255,255,255,.9);      /* centered 1px light-line, white ~90% */
   --unflat-shadow:0 30px 60px -40px rgba(60,45,30,.25),0 1px 0 rgba(28,26,23,.06);
   --unflat-glow:0 40px 100px -60px rgba(178,58,43,.14);   /* accent at .14, one surface only */
-  --unflat-light:rgba(255,250,240,.6);          /* directional light, top-left (warm paper) */
+  --unflat-light:rgba(255,250,240,.6);          /* directional light, top-left */
   --unflat-vignette:rgba(80,60,40,.10);         /* opposite corner */
   --unflat-inset:clamp(8px,1.6vw,24px);         /* surface inset from the viewport edge */
   --unflat-gap:clamp(14px,2vw,28px);            /* breathing room between surfaces */
-  --unflat-pad:var(--pad,0px);                  /* the site's container padding variable */
-  --unflat-max:var(--max);                      /* container outer max-width (border-box, no padding add) */
+  --unflat-pad:var(--pad,0px);                  /* the site's container padding variable, if any */
+  --unflat-max:var(--max);                      /* container outer max-width */
 }
 /* 1. ground — painted on the canvas so the fixed light layer can sit above it */
 html{background:var(--unflat-ground)}
@@ -140,13 +135,12 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
 :is(main > section)::before{content:'';position:absolute;left:8%;right:8%;top:-1px;height:1px;pointer-events:none;
   background:linear-gradient(90deg,transparent,var(--unflat-lightline),transparent)}
 :is(main > section) + :is(main > section){margin-top:var(--unflat-gap)}
-:is(main > section:has(form)){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
-/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset */
-:is(main > section) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset)))}
+:is(main > section:last-child){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
+/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own container rule (e.g. `.section .container{padding:0 24px}`); outside the compensation band it equals the site's padding, so nothing else changes. */ :is(main > section) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
 /* responsive: keep top and bottom edges, drop the side inset on small screens */
 @media (max-width:640px){:root{--unflat-inset:0px}:is(main > section){border-left:0;border-right:0}}
 /* print: paper is already a surface */
-@media print{html{background:#fff}body::before{display:none}:is(main > section),:is(main > section:has(form)){box-shadow:none;border-color:transparent;background:none}}
+@media print{html{background:#fff}body::before{display:none}:is(main > section),:is(main > section:last-child){box-shadow:none;border-color:transparent;background:none}}
 /* unflat: end */
 </style>
 </head>

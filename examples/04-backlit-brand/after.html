@@ -92,30 +92,26 @@ footer nav a{color:var(--ink-3)}
   .cols{grid-template-columns:1fr}
 }
 /* unflat: start */
-/* unflat v1 — ground + light + surfaces, derived from this site's own tokens.
-   Delete everything between the start and end markers to revert.
-   Three placeholders replaced per selectors.md: SURFACE -> main > section, GLOW -> main > .hero, main > .tickets, .wrap -> .wrap (the site's container class already is .wrap).
-   The inline comments and values below describe the backlit material for this site (lit from behind by the accent) per materials.md. */
 :root{
-  --unflat-ground:#060304;                      /* page ground: page-bg -3% L, floor-clamped to L .102 (bg is already L .126), hue pulled toward accent */
-  --unflat-surface-top:#0f0e13;                 /* surface top: page-bg +4% L (backlit), keeps the page's own hue */
-  --unflat-surface-bottom:#0b090e;              /* surface base: page-bg +2% L (backlit), keeps the page's own hue */
-  --unflat-edge:rgba(255,45,149,.25);           /* lit top border: accent at .25 (backlit) */
-  --unflat-line:rgba(255,45,149,.10);           /* other borders: accent at .10 (backlit) */
-  --unflat-lightline:rgba(255,45,149,.45);      /* centered 1px light-line: accent at .45 (backlit) */
+  --unflat-ground:#060304;                      /* page-bg −3% L; tinted toward accent (Hbg 297.7°, accent H 357.3°, Δ59.6° > 30°) */
+  --unflat-surface-top:#0f0e13;                 /* backlit: page-bg +4% L (not relative to the base) */
+  --unflat-surface-bottom:#0b090e;              /* backlit: page-bg +2% L */
+  --unflat-edge:rgba(255,45,149,.25);           /* backlit: lit top border is the accent, not text */
+  --unflat-line:rgba(255,45,149,.10);           /* backlit: other borders are the accent, not the site's line token */
+  --unflat-lightline:rgba(255,45,149,.45);      /* backlit: light-line is the accent at .45 */
   --unflat-shadow:0 40px 90px -50px rgba(0,0,0,.9),0 0 0 1px rgba(255,45,149,.06);
-  --unflat-glow:0 0 120px -30px rgba(255,45,149,.40),0 60px 140px -70px rgba(255,45,149,.40);   /* accent at .40, up to two surfaces (backlit) */
-  --unflat-light:rgba(255,45,149,.12);          /* primary light, from behind (backlit; replaces the top-left light) */
+  --unflat-glow:0 0 120px -30px rgba(255,45,149,.40),0 60px 140px -70px rgba(255,45,149,.40);   /* accent at .40, hero + tickets (backlit allows two) */
+  --unflat-light:rgba(255,45,149,.12);          /* backlit: light is from behind the surfaces, not top-left */
   --unflat-vignette:rgba(0,0,0,.5);             /* opposite corner */
   --unflat-inset:clamp(8px,1.6vw,24px);         /* surface inset from the viewport edge */
   --unflat-gap:clamp(14px,2vw,28px);            /* breathing room between surfaces */
   --unflat-pad:var(--pad,0px);                  /* the site's container padding variable, if any */
-  --unflat-max:var(--max);                      /* container outer max-width */
+  --unflat-max:var(--max);                      /* container outer max-width; .wrap is border-box so no padding to add */
 }
 /* 1. ground — painted on the canvas so the fixed light layer can sit above it */
 html{background:var(--unflat-ground)}
 body{background:transparent}
-/* 2 + 3. light and texture — one fixed layer behind all content; backlit: light from behind (top-center) plus a secondary low light, no top-left light */
+/* 2 + 3. light and texture — one fixed layer behind all content; backlit: the light sits behind the surfaces (symmetric top+bottom), not top-left */
 body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:
     radial-gradient(60% 40% at 50% -10%,var(--unflat-light) 0%,transparent 60%),
@@ -123,7 +119,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
     radial-gradient(100% 80% at 100% 110%,var(--unflat-vignette) 0%,transparent 60%),
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 .85  0 0 0 0 .95  0 0 0 .18 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
   background-size:auto,auto,auto,220px 220px}
-/* 4. surfaces — mounted, lit from behind, shadow below */
+/* 4. surfaces — mounted, lit from behind (backlit), shadow below */
 :is(main > section){position:relative;margin-inline:var(--unflat-inset);
   background:linear-gradient(180deg,var(--unflat-surface-top) 0%,var(--unflat-surface-bottom) 100%);
   border:1px solid var(--unflat-line);border-top-color:var(--unflat-edge);
@@ -131,13 +127,12 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
 :is(main > section)::before{content:'';position:absolute;left:8%;right:8%;top:-1px;height:1px;pointer-events:none;
   background:linear-gradient(90deg,transparent,var(--unflat-lightline),transparent)}
 :is(main > section) + :is(main > section){margin-top:var(--unflat-gap)}
-:is(main > .hero, main > .tickets){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
-/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset */
-:is(main > section) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset)))}
+:is(main > section.hero, main > section.tickets){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
+/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own container rule (e.g. `.section .container{padding:0 24px}`); outside the compensation band it equals the site's padding, so nothing else changes. */ :is(main > section) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
 /* responsive: keep top and bottom edges, drop the side inset on small screens */
 @media (max-width:640px){:root{--unflat-inset:0px}:is(main > section){border-left:0;border-right:0}}
 /* print: paper is already a surface */
-@media print{html{background:#fff}body::before{display:none}:is(main > section),:is(main > .hero, main > .tickets){box-shadow:none;border-color:transparent;background:none}}
+@media print{html{background:#fff}body::before{display:none}:is(main > section),:is(main > section.hero, main > section.tickets){box-shadow:none;border-color:transparent;background:none}}
 /* unflat: end */
 </style>
 </head>
