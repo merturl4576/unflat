@@ -25,7 +25,7 @@ export function checkPair(before, after) {
   if (!stripped) return { ok: false, reason };
 
   // Check position and newline constraints
-  const e = src.indexOf('/* unflat: end */');
+  const e = src.indexOf(END);
   if (e >= 0) {
     const posAfterEnd = e + END.length;
     // Check for trailing newline after END marker

@@ -30,9 +30,9 @@ Grain tint and alpha are edited inside the SVG in `recipe.css` (its `feColorMatr
 | `--unflat-vignette` | `rgba(0,0,0,.45)` | light theme: `--ink` at .10 |
 | grain tint (SVG feColorMatrix) | warm `1 .93 .84`, cool `.85 .9 1`, neutral `.8 .82 .86` | warm `.55 .5 .45`, cool `.45 .5 .58` |
 | grain alpha (SVG feColorMatrix) | .12–.18 (renders as roughly 3–6% visible grain) | .08–.12 (≤ 4% under dense text) |
-| `--unflat-inset` | `clamp(8px, 1.6vw, 24px)` | same |
+| `--unflat-inset` | `clamp(8px, 1.6vw, 24px)` (selectors.md §7 allows `clamp(8px, 1vw, 16px)` only when compensation is impossible) | same |
 | `--unflat-gap` | `clamp(14px, 2vw, 28px)` | same |
-| `--unflat-pad` | the site's container padding variable, else `0px` | same |
+| `--unflat-pad` | the container's horizontal padding — its token (`var(--pad)`, `var(--gutter)`) if there is one, otherwise the literal value (`24px`); never `0px` while the alignment rule is in the block | same |
 | `--unflat-max` | the container's outer max-width: `var(--max)` or the px value (add the horizontal padding when the container is `content-box`); `100vw` when the container is fluid | same |
 
 "Text at N% alpha" means the site's primary text color with that alpha, for example `rgba(236,231,223,.10)`.
@@ -114,5 +114,5 @@ Glow marks the one surface the page is about (pricing, the product, the featured
 
 - A second light direction (for example lit top edges plus a shadow that falls upward).
 - Ground and surface base further apart than 6% L, which reads as boxes instead of depth. A ground below L 0.10 on a dark page, which reads as a hole.
-- Pure `#000` or `#fff` as a fill (alpha-black shadows and the print reset are fine).
+- Pure `#000` or `#fff` as a fill (alpha-white edges and alpha-black shadows are fine, and the print block resets the page to white for paper).
 - Texture over images or video.

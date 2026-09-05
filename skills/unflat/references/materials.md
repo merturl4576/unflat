@@ -1,6 +1,6 @@
 # Materials
 
-A material is a set of `--unflat-*` values plus a few structural choices. Where a material table states a number, it wins over the general ranges in light.md; light.md's ranges apply to anything the table leaves out. An override snippet replaces the recipe rule that has the same selector; do not keep both. Pick one per site. The material must come from the site's own world; when nothing fits, the neutral fallbacks are **plate** (dark) and **paper** (light). Glass is never a default.
+A material is a set of `--unflat-*` values plus a few structural choices. Where a material table states a number, it wins over the general ranges in light.md; light.md's ranges apply to anything the table leaves out. An override snippet replaces the recipe rule that has the same selector; do not keep both. Override snippets write `var(--bg)`, `<accent at .10>` and similar as placeholders: replace them with the site's own token or literal (a page without `--bg` leaves `color-mix(in oklab, var(--bg), white 7%)` invalid and the surface unfilled). Pick one per site. The material must come from the site's own world; when nothing fits, the neutral fallbacks are **plate** (dark) and **paper** (light). Glass is never a default.
 
 ## Decision table
 

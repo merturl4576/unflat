@@ -16,7 +16,7 @@ AI-generated pages put everything on one plane. One background color, sections s
 
 It is an [Agent Skill](https://agentskills.io) for Claude Code, Cursor, Codex and other coding agents. The agent audits the page, extracts your tokens, picks a material from your site's world, and appends one block to your global stylesheet. Five moves:
 
-1. **Ground and lift.** The page background moves 1–3% lightness down and the sections lift 2–3% up — a 4–6% separation. On dark themes the ground is tinted toward your accent when their hues differ.
+1. **Ground and lift.** The page background moves 1–3% lightness down and the sections lift 2–3% up — a separation of about 4–6% (never more than 6%). On dark themes the ground is tinted toward your accent when their hues differ.
 2. **Light.** One fixed layer: a directional light and a vignette. Everything agrees on where the light comes from.
 3. **Texture.** Inline SVG grain tinted to your palette, 3–6% opacity. No image files.
 4. **Surfaces.** Sections become mounted surfaces: inset, lit top edge, deep shadow, a hairline of light.

@@ -16,7 +16,7 @@
   --unflat-vignette:rgba(0,0,0,.45);            /* opposite corner */
   --unflat-inset:clamp(8px,1.6vw,24px);         /* surface inset from the viewport edge */
   --unflat-gap:clamp(14px,2vw,28px);            /* breathing room between surfaces */
-  --unflat-pad:var(--pad,0px);                  /* the site's container padding variable, if any */
+  --unflat-pad:var(--pad,0px);                  /* container horizontal padding: token or literal; with no measurable padding delete rule 5 instead of leaving 0px */
   --unflat-max:100vw;                           /* container outer max-width, e.g. var(--max); 100vw = fluid container */
 }
 /* 1. ground — painted on the canvas so the fixed light layer can sit above it */

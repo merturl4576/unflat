@@ -89,7 +89,7 @@ When a browser tool can evaluate JavaScript, run this on the page. It returns ba
 })()
 ```
 
-Interpretation: `distinctSectionBgs.length <= 2` with no shadows means flat. `hasUnflatBlock` true, or `shadowed >= 2`, or `distinctSectionBgs.length >= 3` means already layered: stop and say why. `withBgImage >= 3` with gradients on sections also means layered. `htmlBg` not transparent matters for the block (see `guardrails.md`, painting order).
+Interpretation: `distinctSectionBgs.length <= 2` with no shadows means flat. `hasUnflatBlock` true, or `shadowed >= 2`, or `distinctSectionBgs.length >= 3` means already layered: stop and say why. `withBgImage` is informational only (gradients on sections are common on flat pages) and does not by itself mean layered. `htmlBg` not transparent matters for the block (see `guardrails.md`, painting order).
 
 ## 5. Output of the audit
 

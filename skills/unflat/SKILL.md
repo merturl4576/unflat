@@ -13,7 +13,7 @@ AI-built pages put everything on one plane: a single background color, sections 
 
 ## The model: five moves
 
-1. **Ground and lift.** Move the page background 1–3% lightness down (never near black) and lift the sections 2–3% up, the ground tinted toward the accent hue at very low chroma when the background does not already carry it (dark themes only). The 4–6% separation is what makes the sections sit on something.
+1. **Ground and lift.** Move the page background 1–3% lightness down (never near black) and lift the sections 2–3% up, the ground tinted toward the accent hue at very low chroma when the background does not already carry it (dark themes only). A separation of about 4–6% (never more than 6%) is what makes the sections sit on something.
 2. **Light.** One fixed full-viewport layer behind content: a directional light (top-left by default) and a vignette in the opposite corner.
 3. **Texture.** Inline SVG fractal noise tinted to the palette, 3–6% opacity. No image files.
 4. **Surfaces.** Top-level sections become mounted surfaces: inset from the viewport edge, a 1.5–2.5% vertical gradient, a 1px border with a lit top edge, a deep shadow with a hairline base, and a centered top light-line. At most one surface carries an accent glow (two for the backlit material; none when the page has no call to action).
@@ -22,7 +22,7 @@ AI-built pages put everything on one plane: a single background color, sections 
 ## Rules that do not bend
 
 - **One block.** Everything lives between `/* unflat: start */` and `/* unflat: end */`, appended at the end of the global stylesheet (or in `unflat.css` imported last). Nothing else in the codebase changes.
-- **Derived colors.** Every color comes from the site's tokens or computed styles. Never invent a palette. Never pure `#000` or `#fff`. The print block is the one exception: it resets the page to white for paper.
+- **Derived colors.** Every color comes from the site's tokens or computed styles. Never invent a palette. Never pure `#000` or `#fff` as a fill; alpha-white edges and alpha-black shadows are fine, and the print block resets the page to white for paper.
 - **One light source.** Ground, surfaces and shadows agree on a direction. Backlit is the only exception (light from behind).
 - **Contrast preserved.** A surface's base color stays within 3% lightness of the original section background and its gradient adds at most 2.5% at the top edge, so existing text colors keep their contrast.
 - **Ground stays ground.** Header, nav, footer, and anything `position: fixed` or `sticky` are never turned into surfaces.
