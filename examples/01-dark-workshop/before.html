@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ferro &amp; Grain — laser and CNC studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#121110;--ink:#ece7df;--ink-2:#a49c90;--ink-3:#6f685e;
+  --line:rgba(236,231,223,.10);--line-2:rgba(236,231,223,.22);
+  --accent:#e0b25c;--accent-2:#f0cd85;
+  --display:'Barlow Condensed','Arial Narrow',sans-serif;
+  --body:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',Consolas,monospace;
+  --max:1200px;--pad:clamp(20px,4vw,48px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:var(--max);margin:0 auto;padding-inline:var(--pad)}
+header{position:sticky;top:0;z-index:10;background:rgba(18,17,16,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{font-family:var(--display);font-weight:600;font-size:1.3rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;line-height:1}
+.brand small{display:block;font:400 .58rem var(--mono);letter-spacing:.22em;color:var(--ink-2);margin-top:4px}
+nav{display:flex;gap:28px}
+nav a{text-decoration:none;color:var(--ink-2);font-size:.95rem}
+nav a:hover{color:var(--ink)}
+section{padding:clamp(64px,9vw,120px) 0}
+h1,h2{font-family:var(--display);font-weight:500;line-height:.95;letter-spacing:-.005em;margin:0;text-wrap:balance}
+h1{font-size:clamp(3rem,7.5vw,6.4rem)}
+h2{font-size:clamp(2.2rem,4.6vw,3.8rem)}
+.lead{color:var(--ink-2);font-size:1.1rem;max-width:52ch;margin:20px 0 0}
+.btn{display:inline-flex;align-items:center;height:48px;padding:0 22px;font:500 .95rem var(--body);text-decoration:none;border:1px solid var(--line-2)}
+.btn:hover{border-color:var(--ink-2)}
+.btn-p{background:var(--accent);color:#1a1408;border-color:var(--accent)}
+.btn-p:hover{background:var(--accent-2);border-color:var(--accent-2)}
+.hero{padding-top:clamp(72px,10vw,140px)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px;align-items:end}
+.readout{font:400 .74rem var(--mono);letter-spacing:.06em;color:var(--ink-2);display:grid;grid-template-columns:auto 1fr;gap:8px 20px;border:1px solid var(--line);padding:18px 20px;justify-self:end;min-width:280px}
+.readout b{color:var(--accent-2);font-weight:400;font-variant-numeric:tabular-nums;text-align:right}
+.cta-row{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+.sec-h{display:flex;align-items:end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.sec-h p{margin:10px 0 0;color:var(--ink-2);max-width:52ch}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:40px}
+.col h3{font-family:var(--display);font-weight:500;font-size:1.8rem;margin:0 0 10px}
+.col p{color:var(--ink-2);margin:0}
+.col .pic{height:180px;margin-bottom:18px;background:
+  repeating-linear-gradient(90deg,rgba(236,231,223,.05) 0 1px,transparent 1px 28px),
+  linear-gradient(135deg,#2a2420,#1a1614)}
+.mats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+.mat{border:1px solid var(--line);padding:20px}
+.mat .chip{height:72px;margin-bottom:16px}
+.mat h4{margin:0 0 6px;font-weight:500}
+.mat p{margin:0;color:var(--ink-2);font-size:.92rem}
+.mat .spec{font:400 .72rem var(--mono);color:var(--ink-3);margin-top:12px;letter-spacing:.06em}
+.work{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.tile{aspect-ratio:4/3;position:relative;overflow:hidden;background:#1c1916}
+.tile span{position:absolute;left:14px;bottom:12px;font:400 .72rem var(--mono);letter-spacing:.08em;color:var(--ink-2)}
+.tile.t1{background:repeating-radial-gradient(circle at 30% 40%,#26211d 0 6px,#1c1916 6px 14px)}
+.tile.t2{background:repeating-linear-gradient(45deg,#231f1b 0 12px,#1c1916 12px 24px)}
+.tile.t3{background:radial-gradient(circle at 50% 50%,#2b2521 0 22%,#1c1916 23%)}
+.tile.t4{background:repeating-linear-gradient(0deg,#221e1a 0 2px,#1c1916 2px 18px)}
+.tile.t5{background:conic-gradient(from 20deg at 60% 40%,#1c1916,#2a2420,#1c1916)}
+.tile.t6{background:repeating-conic-gradient(#221e1a 0 15deg,#1c1916 15deg 30deg)}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.tier{border:1px solid var(--line);padding:26px}
+.tier h3{font-family:var(--display);font-size:1.7rem;font-weight:500;margin:0}
+.tier .price{font-family:var(--display);font-size:2.6rem;margin:14px 0 6px;line-height:1}
+.tier .price small{font:400 .8rem var(--mono);color:var(--ink-2);margin-left:6px}
+.tier ul{list-style:none;padding:0;margin:16px 0 22px;color:var(--ink-2)}
+.tier li{padding:7px 0;border-top:1px solid var(--line)}
+blockquote{margin:0;font-family:var(--display);font-weight:500;font-size:clamp(1.6rem,3vw,2.6rem);line-height:1.1;max-width:24ch}
+cite{display:block;margin-top:18px;font-style:normal;color:var(--ink-2)}
+.cta .wrap{display:flex;align-items:end;justify-content:space-between;gap:32px;flex-wrap:wrap}
+footer{border-top:1px solid var(--line);padding:36px 0;color:var(--ink-3);font-size:.88rem}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+@media(max-width:860px){.hero .wrap,.cols,.mats,.work,.tiers{grid-template-columns:1fr}.readout{justify-self:start}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="brand" href="#">Ferro &amp; Grain<small>laser · cnc · rotterdam</small></a>
+    <nav><a href="#process">Process</a><a href="#materials">Materials</a><a href="#work">Work</a><a href="#pricing">Pricing</a><a href="#contact">Contact</a></nav>
+  </div>
+</header>
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Cut to a tenth of a millimetre. Finished by hand.</h1>
+        <p class="lead">Laser cutting and CNC milling for designers, architects and small brands. Plywood, walnut, acrylic and mild steel, from one piece to a thousand, out the door in five working days.</p>
+        <div class="cta-row"><a class="btn btn-p" href="#contact">Request a quote</a><a class="btn" href="#work">See the work</a></div>
+      </div>
+      <div class="readout">
+        <span>kerf</span><b>0.10 mm</b>
+        <span>bed</span><b>1300 × 900</b>
+        <span>materials</span><b>14</b>
+        <span>lead time</span><b>3–5 days</b>
+      </div>
+    </div>
+  </section>
+  <section id="process">
+    <div class="wrap">
+      <div class="sec-h"><h2>Three ways to make a part</h2><p>Send a DXF, an SVG or a sketch on a napkin. We check tolerances, nest the parts and send a quote the same day.</p></div>
+      <div class="cols">
+        <div class="col"><div class="pic"></div><h3>Laser cutting</h3><p>CO₂ laser for wood and acrylic up to 12 mm, fibre laser for steel and aluminium up to 6 mm. Clean edges, minimal char, no post-sanding on plywood.</p></div>
+        <div class="col"><div class="pic"></div><h3>CNC milling</h3><p>Three-axis routing for pockets, chamfers and joinery the laser cannot do. Solid hardwoods, Valchromat, HPL and composite panels.</p></div>
+        <div class="col"><div class="pic"></div><h3>Engraving</h3><p>Raster and vector engraving to 0.2 mm depth for logos, serial numbers and wayfinding. Repeatable across a batch of one or a batch of ten thousand.</p></div>
+      </div>
+    </div>
+  </section>
+  <section id="materials">
+    <div class="wrap">
+      <div class="sec-h"><h2>Materials in stock</h2><p>Sheets cut from stock ship in three days. Anything else, we source in a week.</p></div>
+      <div class="mats">
+        <div class="mat"><div class="chip" style="background:linear-gradient(135deg,#b78a52,#8c6238)"></div><h4>Birch plywood</h4><p>Baltic birch, 3 to 18 mm. The workhorse for furniture and fixtures.</p><div class="spec">BB/BB · 1500 × 1500</div></div>
+        <div class="mat"><div class="chip" style="background:linear-gradient(135deg,#4a3324,#2c1d15)"></div><h4>American walnut</h4><p>Solid and veneered, 6 to 25 mm. Engraves dark and deep.</p><div class="spec">FAS · 2440 × 1220</div></div>
+        <div class="mat"><div class="chip" style="background:linear-gradient(135deg,#2a2a2a,#0e0e0e)"></div><h4>Cast acrylic</h4><p>Black, white, frosted and twelve colours, 2 to 10 mm. Flame-polished edges.</p><div class="spec">GS · 2050 × 1520</div></div>
+        <div class="mat"><div class="chip" style="background:linear-gradient(135deg,#8d8f93,#5a5d62)"></div><h4>Mild steel</h4><p>1 to 6 mm, laser cut and optionally powder coated in RAL colours.</p><div class="spec">S235 · 2000 × 1000</div></div>
+      </div>
+    </div>
+  </section>
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-h"><h2>Recent work</h2><p>Retail fixtures, signage, furniture components, architectural models and a few things we still cannot explain.</p></div>
+      <div class="work">
+        <div class="tile t1"><span>PERFORATED SCREEN · ACRYLIC</span></div>
+        <div class="tile t2"><span>SHOP FIXTURES · PLYWOOD</span></div>
+        <div class="tile t3"><span>WALL CLOCK · WALNUT</span></div>
+        <div class="tile t4"><span>LOUVRE PANEL · STEEL</span></div>
+        <div class="tile t5"><span>LAMP HOUSING · BRASS</span></div>
+        <div class="tile t6"><span>TABLE TOP · VALCHROMAT</span></div>
+      </div>
+    </div>
+  </section>
+  <section id="pricing">
+    <div class="wrap">
+      <div class="sec-h"><h2>Pricing</h2><p>Machine time plus material, quoted up front. No minimums, no setup fees on repeat orders.</p></div>
+      <div class="tiers">
+        <div class="tier"><h3>Prototype</h3><div class="price">€45<small>/ sheet minimum</small></div><ul><li>One to five parts</li><li>Same-day quote</li><li>Three-day turnaround</li><li>Stock materials</li></ul><a class="btn" href="#contact">Start a prototype</a></div>
+        <div class="tier"><h3>Batch</h3><div class="price">€1.20<small>/ metre cut</small></div><ul><li>Six to five hundred parts</li><li>Nesting optimised</li><li>Five-day turnaround</li><li>Any stocked material</li></ul><a class="btn btn-p" href="#contact">Quote a batch</a></div>
+        <div class="tier"><h3>Production</h3><div class="price">Quoted<small>per project</small></div><ul><li>Five hundred parts and up</li><li>Dedicated machine time</li><li>Finishing and assembly</li><li>Sourced materials</li></ul><a class="btn" href="#contact">Talk to us</a></div>
+      </div>
+    </div>
+  </section>
+  <section id="quote">
+    <div class="wrap">
+      <blockquote>"They caught a tolerance problem in our file before we did, fixed it, and still shipped two days early."</blockquote>
+      <cite>Sanne de Vries, product designer, Studio Kade</cite>
+    </div>
+  </section>
+  <section id="contact" class="cta">
+    <div class="wrap">
+      <div><h2>Send us a file.</h2><p class="lead">DXF, SVG, STEP or a photo of a sketch. You will hear back today.</p></div>
+      <a class="btn btn-p" href="mailto:hello@ferroandgrain.example">hello@ferroandgrain.example</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap"><span>© 2026 Ferro &amp; Grain, Keilestraat 43, Rotterdam</span><span>Mon–Fri 08:00–18:00 · +31 10 000 0000</span></div>
+</footer>
+</body>
+</html>
