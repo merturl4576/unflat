@@ -2,11 +2,11 @@
 
 **Your AI-built site is flat. Unflat it.**
 
-One CSS block that gives a single-tone page a ground, one light source and mounted surfaces, derived from the site's own colors. No markup changes. Delete the block to revert.
+One CSS block that gives a single-tone page a ground, one light source and a few mounted surfaces, derived from the site's own colors. No markup changes. Delete the block to revert.
 
 ![MIT license](https://img.shields.io/badge/license-MIT-3a3632) ![Agent Skill](https://img.shields.io/badge/Agent%20Skill-SKILL.md-ff6a1f) ![No dependencies](https://img.shields.io/badge/dependencies-none-3a3632)
 
-![A developer-tool landing page: the terminal types, the page scrolls, and the flat sections become surfaces mounted on a darker ground](assets/hero.gif)
+![A developer-tool landing page: the terminal types, the page scrolls, and the flat page becomes a lit ground with a few sections mounted on it](assets/hero.gif)
 
 ```bash
 npx skills add merturl4576/unflat
@@ -20,13 +20,14 @@ AI-generated pages put everything on one plane. One background color, sections s
 
 ## What unflat does
 
-It is an [Agent Skill](https://agentskills.io) for Claude Code, Cursor, Codex and other coding agents. The agent audits the page, extracts your tokens, picks a material from your site's world, and appends one block to your global stylesheet. Five moves:
+It is an [Agent Skill](https://agentskills.io) for Claude Code, Cursor, Codex and other coding agents. The agent audits the page, extracts your tokens, picks a material from your site's world, decides which sections are mounted and which rest on the ground, and appends one block to your global stylesheet. Six moves:
 
 1. **Ground and lift.** The page background moves 1–3% lightness down and the sections lift 2–3% up — a separation of about 4–6% (never more than 6%). On dark themes the ground is tinted toward your accent when their hues differ.
 2. **Light.** One fixed layer: a directional light and a vignette. Everything agrees on where the light comes from.
 3. **Texture.** Inline SVG grain tinted to your palette, 3–6% opacity. No image files.
-4. **Surfaces.** Sections become mounted surfaces: inset, lit top edge, deep shadow, a hairline of light.
-5. **Alignment.** Content stays on your grid; header and footer stay on the ground.
+4. **Rhythm.** Not every section. The hero, strips and sections with their own artwork stay on the ground; the sections a visitor reads alternate with them as surfaces, a third to a half of the page. Every section boxed is not depth.
+5. **Surfaces.** The mounted sections: inset, lit top edge, deep shadow, a hairline of light, breathing room against the ground. A store, article or product page is one surface, the page plate.
+6. **Alignment.** Content stays on your grid; header and footer stay on the ground.
 
 ## Install
 
@@ -51,7 +52,7 @@ Say one of these to your agent:
 - "Unflat `app/globals.css`. Keep the header as it is."
 - "Add depth to this site without changing the HTML."
 
-The agent replies with an audit, a token table, the material it picked and why, the values it derived, and a six-line report with the revert instruction.
+The agent replies with an audit, a token table, the material it picked and why, which sections it mounted and which it left on the ground, the values it derived, and a seven-line report with the revert instruction.
 
 ## Materials
 
@@ -103,6 +104,7 @@ Every `after.html` in `examples/` is `before.html` plus the block and nothing el
 ## Guardrails
 
 - Surfaces stay within 3% lightness of your section background, so text contrast does not change.
+- The hero, strips and artwork sections stay on the ground; a third to a half of the sections are mounted, never all of them.
 - Header, footer, fixed and sticky elements are never touched.
 - No motion, no `filter`, no `backdrop-filter` by default.
 - One fixed pseudo-element, one SVG data URI. No requests, no assets.
@@ -112,6 +114,8 @@ Every `after.html` in `examples/` is `before.html` plus the block and nothing el
 ## FAQ
 
 **Does it work with Tailwind?** Yes. The block is plain unlayered CSS appended after the Tailwind import, so it wins over layered utilities. Class names are never used; sections are targeted by structure and `:has()`.
+
+**Why are some sections still on the plain background?** That is the point. A surface reads as a surface only with ground next to it, so the hero, strips and sections with their own artwork stay on the ground and the sections you read are mounted between them. Ask the agent to move a section either way; the alternation is the thing to keep.
 
 **Does it change my HTML?** No. If a page's structure truly cannot express the choice, the skill may add a `data-unflat` attribute and will say so in its report.
 
