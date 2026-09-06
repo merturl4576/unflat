@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orrin One - One lens. Every day.</title>
+<meta name="description" content="A full-frame camera with a fixed 35 mm f/2 lens, made to be carried rather than stored.">
+<!-- Orrin is a fictional brand made for a design demo. Every product, price and specification on this page is illustrative. -->
+<!-- Sample photographs are CC0 (public domain dedication) from StockSnap via Openverse: MIONYWYWGU (night street), HNOT4JZM0L (window portrait), 88A36E7224 (lighthouse coast). The cameras are drawn in CSS. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+:root{
+  --bg:#f7f7f9;
+  --ink:#1c1c1e;
+  --ink-2:#6e6e73;
+  --line:rgba(28,28,30,.10);
+  --accent:#2f6be6;
+  --pad:clamp(20px,4vw,48px);
+  --max:1200px;
+  --r:20px;
+  --sans:'Geist',-apple-system,'SF Pro Display','Segoe UI',system-ui,sans-serif;
+  --mono:'Geist Mono',ui-monospace,'SF Mono',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{margin:0;background:var(--bg)}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.03em;line-height:1.05}
+p{margin:0}
+.wrap{max-width:var(--max);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 22px;border-radius:999px;background:var(--accent);color:#fff;font-weight:500;font-size:15px;transition:transform .2s cubic-bezier(.16,1,.3,1),background .2s}
+.btn:hover{background:#255ccc}
+.btn:active{transform:scale(.98)}
+.link{color:var(--accent);font-weight:500;font-size:15px}
+.link:hover{text-decoration:underline}
+.lede{color:var(--ink-2);font-size:19px;line-height:1.45;max-width:36ch}
+.photo{border-radius:var(--r);overflow:hidden;background:#e9eaee}
+.photo img{width:100%;height:100%;object-fit:cover}
+.mono{font-family:var(--mono);font-size:13px;color:var(--ink-2);letter-spacing:0}
+
+/* header */
+.hdr{position:sticky;top:0;z-index:20;height:64px;background:rgba(247,247,249,.86);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line)}
+.hdr .wrap{display:grid;grid-template-columns:auto 1fr auto;align-items:center;height:100%;gap:24px}
+.brand{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-.02em}
+.brand svg{width:22px;height:22px}
+.nav{display:flex;justify-content:center;gap:32px;font-size:14px;color:var(--ink-2)}
+.nav a:hover{color:var(--ink)}
+.hdr .btn{height:36px;padding:0 16px;font-size:14px}
+
+/* sections */
+section{padding-block:clamp(72px,9vw,136px)}
+.sec-head{max-width:60ch;margin-bottom:clamp(32px,4vw,56px)}
+.sec-head h2{font-size:clamp(34px,4.4vw,56px);margin-bottom:16px}
+.sec-head p{color:var(--ink-2);font-size:18px;line-height:1.5;max-width:52ch}
+
+/* hero */
+.hero{padding-block:0}
+.hero .wrap{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,5vw,72px);align-items:center;min-height:calc(100dvh - 64px);padding-block:clamp(40px,5vw,72px)}
+.hero h1{font-size:clamp(44px,5.6vw,76px);font-weight:700;letter-spacing:-.04em;line-height:.98;margin-bottom:22px}
+.hero .lede{margin-bottom:32px}
+.hero .cta{display:flex;align-items:center;gap:24px}
+.hero-art{animation:rise .9s cubic-bezier(.16,1,.3,1) both}
+.hero-copy{animation:rise .8s cubic-bezier(.16,1,.3,1) both}
+
+/* the camera: layered CSS shapes in a 3D scene; the lens sits in front of the body, so a turn reads as depth.
+   Everything is sized in em, so one font-size scales a whole camera. */
+.cam-stage{position:relative;aspect-ratio:4/3;perspective:1400px;display:grid;place-items:center;overflow:visible}
+.cam-shadow{position:absolute;left:50%;bottom:10%;width:62%;height:28px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(28,28,30,.28),transparent 70%);translate:-50% 0;filter:blur(6px)}
+.cam-scroll,.cam-float,.cam-pose,.cam3d{transform-style:preserve-3d}
+.cam-scroll{transform:rotateX(6deg) rotateY(-18deg)}
+.cam-float{animation:float 6s ease-in-out infinite}
+.cam-stage .cam3d{font-size:16px}
+.cam3d{position:relative;width:32.5em;height:20em;font-size:16px;
+  --b1:#eef0f4;--b2:#d6d9df;--b3:#c3c6cd;--g1:#3d4048;--g2:#26282d;--t1:#f5f6f9;--t2:#d9dce2;--r1:#f3f4f7;--r2:#c6c9d0;--m1:#e8eaef;--m2:#b4b7bf}
+.cam3d.v-graphite{--b1:#4b4e56;--b2:#34373e;--b3:#25272c;--g1:#2a2c31;--g2:#17181c;--t1:#53565e;--t2:#34373e;--r1:#5d606a;--r2:#2e3037;--m1:#5a5d66;--m2:#2b2d33}
+.cam3d.v-stone{--b1:#e9e4db;--b2:#d3cdc2;--b3:#c0b9ad;--g1:#8d8579;--g2:#6a635a;--t1:#f0ebe3;--t2:#d4cec3;--r1:#ede8e0;--r2:#c2bbb1;--m1:#e4dfd6;--m2:#b3ada2}
+.cam3d.v-titan{--b1:#dadce0;--b2:#babdc4;--b3:#a0a4ac;--g1:#3a3c42;--g2:#232529;--t1:#e1e3e7;--t2:#b7bac1;--r1:#e0e2e6;--r2:#aaaeb6;--m1:#d5d8de;--m2:#9da1a9}
+.cam3d > div{position:absolute;transform-style:preserve-3d}
+.c-body{inset:0;border-radius:2.5em;background:linear-gradient(180deg,var(--b1) 0%,var(--b2) 55%,var(--b3) 100%);border:1px solid rgba(28,28,30,.14);box-shadow:inset 0 .125em 0 rgba(255,255,255,.7),inset 0 -.5em .875em rgba(28,28,30,.10)}
+.c-top{left:2.125em;top:-1em;width:28.25em;height:2.75em;border-radius:.875em .875em .25em .25em;background:linear-gradient(180deg,var(--t1),var(--t2));border:1px solid rgba(28,28,30,.14);transform:translateZ(-.25em)}
+.c-hump{display:none;left:12.75em;top:-2.7em;width:7em;height:3em;border-radius:.9em .9em .2em .2em;background:linear-gradient(180deg,var(--t1),var(--t2));border:1px solid rgba(28,28,30,.14);transform:translateZ(.5em)}
+.c-hump::after{content:'';position:absolute;left:50%;top:.55em;width:3.2em;height:1.5em;border-radius:.4em;translate:-50% 0;background:linear-gradient(135deg,#2a3448,#0f1420);box-shadow:inset 0 0 0 .15em #b8bbc3}
+.c-shoe{left:14.75em;top:-1.75em;width:3.25em;height:.875em;border-radius:.2em;background:#2c2e33;transform:translateZ(.125em)}
+.c-dial{left:23.25em;top:-2.5em;width:4.125em;height:1.875em;border-radius:.5em;background:repeating-linear-gradient(90deg,#3a3d44 0 .1875em,#5d616a .1875em .375em);border:1px solid #1f2126;transform:translateZ(.375em)}
+.c-dial.two{left:18.75em;top:-2.25em;width:2.75em;height:1.625em}
+.c-shutter{left:28.25em;top:-2.375em;width:1.625em;height:1.625em;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff,#c6c9d0);border:1px solid rgba(28,28,30,.2);transform:translateZ(.5em)}
+.c-lug{left:-.625em;top:7.375em;width:1em;height:2.25em;border-radius:.375em;background:linear-gradient(90deg,#b3b6be,#e0e2e7);transform:translateZ(-.125em)}
+.c-lug.r{left:auto;right:-.625em;background:linear-gradient(90deg,#e0e2e7,#b3b6be)}
+.c-grip{left:1.375em;top:2.75em;width:9.375em;height:14.5em;border-radius:1.625em;background:linear-gradient(180deg,var(--g1),var(--g2));box-shadow:inset 0 1px 0 rgba(255,255,255,.14);transform:translateZ(.125em)}
+.c-grip::after{content:'';position:absolute;inset:0;border-radius:inherit;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1.2px);background-size:.375em .375em}
+.c-vf{right:3.25em;top:3em;width:4.375em;height:2.5em;border-radius:.625em;background:linear-gradient(135deg,#2a3448,#0f1420);box-shadow:inset 0 0 0 .1875em #b8bbc3;transform:translateZ(.1875em)}
+.c-vf::after{content:'';position:absolute;left:.625em;top:.4375em;width:1.625em;height:.625em;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0))}
+.c-dot{left:12.75em;top:3.25em;width:.875em;height:.875em;border-radius:50%;background:var(--accent);transform:translateZ(.1875em)}
+.c-lens{left:14.5em;top:4.125em;width:13.125em;height:13.125em}
+.c-lens > i{position:absolute;left:50%;top:50%;display:block;border-radius:50%;translate:-50% -50%}
+.c-l1{width:13.125em;height:13.125em;background:radial-gradient(circle at 50% 38%,var(--m1),var(--m2));box-shadow:inset 0 -.25em .5em rgba(28,28,30,.18),0 .375em .875em -.375em rgba(28,28,30,.35);transform:translateZ(.5em)}
+.c-l2{width:11.5em;height:11.5em;background:repeating-conic-gradient(#2a2c32 0 3deg,#43464e 3deg 6deg);box-shadow:0 0 0 .125em #1e2025;transform:translateZ(2em)}
+.c-l3{width:9.375em;height:9.375em;background:linear-gradient(180deg,var(--r1),var(--r2));box-shadow:inset 0 0 0 1px rgba(28,28,30,.18);transform:translateZ(3.25em)}
+.c-glass{width:7.375em;height:7.375em;background:radial-gradient(circle at 50% 50%,#08101f 0 28%,#132650 52%,#243f70 68%,#4c5f8c 84%,#181c27 100%);box-shadow:inset 0 0 1.375em rgba(255,255,255,.08),0 0 0 .1875em #3a3d45;transform:translateZ(3.5em)}
+.c-glass::before{content:'';position:absolute;inset:24%;border-radius:50%;background:radial-gradient(circle,rgba(130,225,255,.35),rgba(255,130,210,.16) 60%,transparent 72%)}
+.c-glass::after{content:'';position:absolute;left:16%;top:12%;width:36%;height:22%;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,0));transform:rotate(-22deg)}
+/* the larger model: a viewfinder hump and a wider lens */
+.cam3d.m-two .c-hump{display:block}
+.cam3d.m-two .c-shoe{top:-3.5em}
+.cam3d.m-two .c-lens{scale:1.16}
+/* a camera fitted to its box: one font-size from the container width, a fixed three-quarter pose */
+.cam-fit{position:relative;container-type:inline-size;display:grid;place-items:center;aspect-ratio:4/3;perspective:60em;overflow:hidden;isolation:isolate}
+.cam-fit .cam-pose{transform:rotateX(6deg) rotateY(-18deg)}
+.cam-fit .cam3d{font-size:calc(100cqw / 38)}
+.cam-fit::after{content:'';position:absolute;left:50%;bottom:12%;width:60%;height:6%;border-radius:50%;background:radial-gradient(ellipse at center,rgba(28,28,30,.22),transparent 70%);translate:-50% 0;filter:blur(4px);z-index:-1}
+/* top plate, seen from above */
+.topview{position:relative;container-type:inline-size;height:100%;min-height:300px;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#f2f3f6,#e2e4e9)}
+.topview .tv{position:relative;width:34em;height:18em;font-size:calc(100cqw / 40)}
+.tv > div{position:absolute}
+.tv-body{left:1em;top:5.6em;width:32em;height:7.6em;border-radius:1.4em;background:linear-gradient(180deg,#f0f1f5,#cfd2d8);border:1px solid rgba(28,28,30,.14);box-shadow:0 .8em 1.6em -.8em rgba(28,28,30,.35)}
+.tv-plate{left:2.4em;top:6.6em;width:29.2em;height:2.6em;border-radius:.8em;background:linear-gradient(180deg,#dfe2e7,#c6c9d0);border:1px solid rgba(28,28,30,.12)}
+.tv-grip{left:2.2em;top:10em;width:9.4em;height:2.6em;border-radius:.6em;background:linear-gradient(180deg,#3d4048,#26282d)}
+.tv-dial{width:4.2em;height:4.2em;border-radius:50%;background:repeating-conic-gradient(#2f3238 0 4deg,#5d616a 4deg 8deg);box-shadow:0 .2em .5em rgba(28,28,30,.35);top:6.2em}
+.tv-dial::after{content:'';position:absolute;inset:.7em;border-radius:50%;background:radial-gradient(circle at 40% 35%,#f4f5f8,#c3c6cd);box-shadow:inset 0 0 0 1px rgba(28,28,30,.15)}
+.tv-dial.d1{left:23.4em}
+.tv-dial.d2{left:18.6em;width:3.2em;height:3.2em;top:6.7em}
+.tv-shutter{left:28.6em;top:6.9em;width:2em;height:2em;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff,#c6c9d0);border:1px solid rgba(28,28,30,.2)}
+.tv-shoe{left:14.6em;top:6.2em;width:4em;height:1.6em;border-radius:.2em;background:#2c2e33;box-shadow:inset 0 0 0 .25em #4a4d55}
+.tv-eye{left:27.4em;top:12.4em;width:3.2em;height:1.2em;border-radius:.4em;background:linear-gradient(135deg,#2a3448,#0f1420);box-shadow:inset 0 0 0 .15em #b8bbc3}
+.tv-lens{left:11.2em;top:12.4em;width:11.6em;height:5.2em}
+.tv-lens i{position:absolute;left:50%;translate:-50% 0;display:block;border-radius:.5em}
+.tv-lens i:nth-child(1){top:0;width:11.6em;height:1.6em;background:linear-gradient(180deg,#d5d8de,#b4b7bf)}
+.tv-lens i:nth-child(2){top:1.5em;width:10.2em;height:2.2em;background:repeating-linear-gradient(90deg,#2a2c32 0 .2em,#43464e .2em .4em)}
+.tv-lens i:nth-child(3){top:3.6em;width:8.4em;height:1.4em;background:linear-gradient(180deg,#f0f1f5,#c6c9d0);border:1px solid rgba(28,28,30,.15)}
+/* the shutter-speed dial, close up */
+.dialmacro{position:relative;container-type:inline-size;aspect-ratio:1;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 30%,#eef0f4,#d7dae0)}
+.dialmacro .dm{position:relative;width:22em;height:22em;font-size:calc(100cqw / 20);translate:0 2.4em}
+.dm-ring{position:absolute;inset:0;border-radius:50%;background:repeating-conic-gradient(#2a2c32 0 2.5deg,#4d5058 2.5deg 5deg);box-shadow:0 1em 2em -.6em rgba(28,28,30,.5)}
+.dm-face{position:absolute;inset:2.6em;border-radius:50%;background:radial-gradient(circle at 45% 35%,#f6f7fa,#c9ccd3);box-shadow:inset 0 0 0 1px rgba(28,28,30,.18),inset 0 -.3em .8em rgba(28,28,30,.12)}
+.dm-face span{position:absolute;left:50%;top:50%;font-family:var(--mono);font-size:1.05em;font-weight:500;color:#2c2e33;transform:translate(-50%,-50%) rotate(var(--a)) translateY(-6.9em)}
+.dm-cap{position:absolute;left:50%;top:50%;width:5em;height:5em;border-radius:50%;translate:-50% -50%;background:radial-gradient(circle at 40% 35%,#fff,#d2d5db);box-shadow:inset 0 0 0 1px rgba(28,28,30,.15)}
+.dm-index{position:absolute;left:50%;top:.6em;width:.3em;height:2em;translate:-50% 0;background:var(--accent);border-radius:.15em}
+/* the lens, straight on */
+.lensmacro{position:relative;container-type:inline-size;aspect-ratio:4/5;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 50% 45%,#f1f2f5,#d9dce2)}
+.lensmacro .lm{position:relative;width:22em;height:22em;font-size:calc(100cqw / 24)}
+.lm > i{position:absolute;left:50%;top:50%;display:block;border-radius:50%;translate:-50% -50%}
+.lm-mount{width:22em;height:22em;background:radial-gradient(circle at 50% 38%,#eceef2,#adb0b8);box-shadow:inset 0 -.4em .8em rgba(28,28,30,.18),0 1.2em 2.4em -1em rgba(28,28,30,.45)}
+.lm-ring{width:18.6em;height:18.6em;background:repeating-conic-gradient(#25272c 0 2.4deg,#45484f 2.4deg 4.8deg);box-shadow:0 0 0 .15em #1e2025}
+.lm-band{width:16.2em;height:16.2em;background:linear-gradient(180deg,#3a3d44,#22242a);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.lm-front{width:13.2em;height:13.2em;background:linear-gradient(180deg,#f3f4f7,#c6c9d0);box-shadow:inset 0 0 0 1px rgba(28,28,30,.18)}
+.lm-glass{width:10.8em;height:10.8em;background:radial-gradient(circle at 50% 50%,#070e1c 0 26%,#112349 50%,#213b6b 66%,#4a5d8a 82%,#171b26 100%);box-shadow:inset 0 0 2em rgba(255,255,255,.08),0 0 0 .25em #3a3d45}
+.lm-glass::before{content:'';position:absolute;inset:22%;border-radius:50%;background:radial-gradient(circle,rgba(130,225,255,.38),rgba(255,130,210,.18) 60%,transparent 72%)}
+.lm-glass::after{content:'';position:absolute;left:14%;top:10%;width:40%;height:24%;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,0));transform:rotate(-22deg)}
+.lm-stops{position:absolute;left:50%;top:50%;width:0;height:0}
+.lm-stops span{position:absolute;left:0;top:0;font-family:var(--mono);font-size:.95em;font-weight:500;color:#e6e8ee;transform:translate(-50%,-50%) rotate(var(--a)) translateY(7.4em)}
+.lm-mark{position:absolute;left:50%;top:50%;width:.28em;height:1.2em;background:var(--accent);border-radius:.14em;transform:translate(-50%,-50%) translateY(9.6em)}
+@media (max-width:1100px){.cam-stage .cam3d{font-size:13px}}
+@media (max-width:700px){.cam-stage .cam3d{font-size:9.5px}}
+
+/* gallery */
+.gallery .track{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:20px}
+.gallery figure{margin:0}
+.gallery .photo{aspect-ratio:16/10}
+.gallery figcaption{margin-top:12px;color:var(--ink-2);font-size:14px}
+
+/* optics */
+.optics .wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,80px);align-items:center}
+.optics .photo{aspect-ratio:4/5}
+.tiles{display:grid;gap:14px;margin-top:8px}
+.tile{border:1px solid var(--line);border-radius:var(--r);padding:26px 28px;display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:baseline}
+.tile b{font-size:clamp(34px,3.6vw,48px);font-weight:600;letter-spacing:-.04em;line-height:1;min-width:5ch}
+.tile span{color:var(--ink-2);font-size:15px;line-height:1.45}
+
+/* design bento */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto auto;gap:16px}
+.cell{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;position:relative;min-height:220px}
+.cell.big{grid-column:span 2;grid-row:span 2}
+.cell.tall{grid-row:span 2}
+.cell .photo{border-radius:0;width:100%;height:100%}
+.cell.text{padding:26px 28px;display:flex;flex-direction:column;justify-content:flex-end;gap:8px}
+.cell.text b{font-size:34px;font-weight:600;letter-spacing:-.04em;line-height:1}
+.cell.text span{color:var(--ink-2);font-size:15px}
+.cell.colors{display:grid;grid-template-rows:1fr auto;grid-template-columns:minmax(0,1fr);min-width:0}
+.cell.colors .stage{position:relative;min-height:240px;min-width:0;width:100%;background:radial-gradient(ellipse at 50% 40%,#f2f3f6,#e2e4e9);container-type:inline-size}
+.cell.colors .stage .layer{position:absolute;inset:0;opacity:0;transition:opacity .45s ease;container-type:normal;aspect-ratio:auto}
+.cell.colors .stage .cam3d{font-size:calc(100cqw / 38)}
+.cell.colors .stage .layer.on{opacity:1}
+.swatches{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-top:1px solid var(--line)}
+.swatches span{color:var(--ink-2);font-size:14px}
+.sw{display:flex;gap:10px}
+.sw button{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);cursor:pointer;padding:0;position:relative;background:var(--c)}
+.sw button.on::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--accent)}
+
+/* aperture */
+.aperture .wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,80px);align-items:center}
+.iris{position:relative;width:min(100%,520px);aspect-ratio:1;border-radius:50%;overflow:hidden;background:#e4e5ea;margin:0 auto}
+.iris img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.iris .blade{position:absolute;left:50%;top:50%;width:480px;height:480px;margin:-240px 0 0 -240px;background:linear-gradient(180deg,#d7d9de,#c9cbd1);border-top:1px solid rgba(255,255,255,.7);transform:rotate(var(--a)) translateY(calc(-176px - var(--o)))}
+@property --o{syntax:'<length>';inherits:true;initial-value:70px}
+.iris{--o:70px}
+.stops{display:flex;gap:18px;margin-top:28px;font-family:var(--mono);font-size:14px;color:var(--ink-2)}
+.stops b{color:var(--ink);font-weight:500}
+
+/* compare */
+.compare .table{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;min-width:860px}
+th,td{text-align:left;padding:14px 22px;vertical-align:top;font-weight:400}
+thead th{padding-top:26px;padding-bottom:22px;vertical-align:bottom}
+thead .thumb{margin-bottom:16px;border-radius:14px;background:radial-gradient(ellipse at 50% 40%,#f2f3f6,#e2e4e9)}
+thead h3{font-size:20px;margin-bottom:4px}
+thead .price{color:var(--ink-2);font-size:15px;margin-bottom:14px}
+tbody th{color:var(--ink-2);font-size:13px;font-weight:500;padding-top:22px;padding-bottom:6px}
+tbody td{font-size:15px;padding-top:6px;padding-bottom:6px}
+tbody tr.group > *{border-top:1px solid var(--line)}
+tbody tr:last-child td{padding-bottom:26px}
+.bar{display:inline-block;height:6px;border-radius:3px;background:var(--accent);vertical-align:middle;margin-left:10px;opacity:.85}
+
+/* footer */
+.ftr{border-top:1px solid var(--line);padding:40px 0 48px;color:var(--ink-2);font-size:14px}
+.ftr .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.ftr nav{display:flex;gap:24px}
+
+/* motion */
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes open{from{--o:70px}to{--o:176px}}
+.js .rv{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.js .rv.in{opacity:1;transform:none}
+@supports (animation-timeline:scroll()){
+  .cam-scroll{animation:tumble linear both;animation-timeline:scroll(root);animation-range:0 90vh}
+  .cam-shadow{animation:shadowfade linear both;animation-timeline:scroll(root);animation-range:0 50vh}
+  .hero-copy{animation:rise .8s cubic-bezier(.16,1,.3,1) both,copyfade linear both;animation-timeline:auto,scroll(root);animation-range:normal,0 55vh}
+  .iris{animation:open linear both;animation-timeline:view();animation-range:entry 30% cover 55%}
+  .gallery .photo img,.optics .photo img,.cell.big .photo img{animation:para linear both;animation-timeline:view();animation-range:entry 0% exit 100%}
+}
+@supports not (animation-timeline:view()){
+  .iris{--o:150px}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-art,.hero-copy,.cam-scroll,.cam-shadow,.cam-float,.iris,.photo img{animation:none}
+  .js .rv{opacity:1;transform:none;transition:none}
+  .iris{--o:150px}
+}
+
+/* mobile */
+@media (max-width:900px){
+  .nav{display:none}
+  .hero .wrap{grid-template-columns:1fr;min-height:0;padding-block:40px}
+  .gallery .track{grid-auto-flow:row;grid-auto-columns:auto}
+  .optics .wrap,.aperture .wrap{grid-template-columns:1fr}
+  .bento{grid-template-columns:1fr 1fr}
+  .cell.big{grid-column:span 2;grid-row:auto}
+  .cell.tall{grid-row:auto}
+  .iris .blade{width:360px;height:360px;margin:-180px 0 0 -180px;transform:rotate(var(--a)) translateY(calc(-132px - var(--o)*.75))}
+}
+@media (max-width:600px){
+  .bento{grid-template-columns:1fr}
+  .cell.big{grid-column:auto}
+  .hero .cta{flex-direction:column;align-items:flex-start;gap:16px}
+}
+/* unflat: start */
+:root{
+  --unflat-ground:#eaeaec;                      /* page-bg −4% L (paper); accent hue 262° is 24° from bg's 286° (<30°), so untinted */
+  --unflat-surface-top:#fdfdff;                 /* surface base +0.9% L further (never #fff) */
+  --unflat-surface-bottom:#fafafc;              /* page-bg +0.9% L */
+  --unflat-edge:rgba(255,255,255,.8);           /* lit top border: white ~80% (paper) */
+  --unflat-line:var(--line);                    /* the site's own line token */
+  --unflat-lightline:rgba(47,107,230,.45);      /* centered light-line: accent at .45 (paper; white on white is invisible) */
+  --unflat-shadow:0 30px 60px -40px rgba(28,28,30,.25),0 1px 0 rgba(28,28,30,.06);
+  --unflat-glow:0 40px 100px -60px rgba(47,107,230,.25);   /* accent at .25, one surface only */
+  --unflat-light:rgba(240,246,255,.6);          /* directional light, top-left, cool (accent is blue) */
+  --unflat-vignette:rgba(28,28,30,.10);         /* opposite corner: ink at .10 */
+  --unflat-inset:clamp(8px,1.6vw,24px);         /* surface inset from the viewport edge */
+  --unflat-gap:clamp(14px,2vw,28px);            /* breathing room above and below a surface */
+  --unflat-pad:var(--pad);                      /* container horizontal padding token */
+  --unflat-max:var(--max);                      /* container outer max-width; .wrap is border-box, used as-is */
+  --unflat-radius:calc(var(--r) * 1.4);         /* site radius 20px, one step larger on a surface, capped at 32px */
+  --unflat-field-a:rgba(47,107,230,.10);        /* accent wash at .10 (paper) */
+  --unflat-field-b:rgba(255,176,120,.12);       /* the cool accent's warm counterpart at .12 (paper) */
+  --unflat-motif:rgba(47,107,230,.08);          /* motif stroke: accent at .08 (paper) */
+  --unflat-card:color-mix(in oklab,var(--unflat-surface-bottom),var(--unflat-ground) 30%);   /* cards on a surface: base mixed 30% toward the ground (paper) */
+  --unflat-card-shadow:0 14px 34px -22px rgba(28,28,30,.30);   /* ink at .30 (paper) */
+}
+/* 1. ground — painted on the canvas so the fixed light layer can sit above it */
+html{background:var(--unflat-ground)}
+body{background:transparent}
+/* 2 + 3. light and texture — one fixed layer behind all content */
+body::before{content:'';position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(130% 90% at 12% -15%,var(--unflat-light) 0%,transparent 58%),
+    radial-gradient(100% 80% at 100% 110%,var(--unflat-vignette) 0%,transparent 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .5  0 0 0 0 .58  0 0 0 .10 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
+  background-size:auto,auto,220px 220px}
+/* 3b. motif — one shape from the site's world on a second fixed layer (taste.md §4): rings, for a camera's optics */
+body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 82% 18%,transparent 0 22vw,var(--unflat-motif) 22vw,transparent calc(22vw + 1.5px)),radial-gradient(circle at 82% 18%,transparent 0 31vw,var(--unflat-motif) 31vw,transparent calc(31vw + 1.5px)),radial-gradient(circle at 10% 88%,transparent 0 16vw,var(--unflat-motif) 16vw,transparent calc(16vw + 1.5px))}
+/* 4. surfaces — the mounted sections only: inset, lit from the top, shadow below, breathing room against the ground on both sides; isolate so the washes paint above the surface and below its content */
+:is(main > :is(.optics, .design, .compare)){position:relative;isolation:isolate;overflow:clip;margin-block:var(--unflat-gap);margin-inline:var(--unflat-inset);border-radius:var(--unflat-radius);
+  background:linear-gradient(180deg,var(--unflat-surface-top) 0%,var(--unflat-surface-bottom) 100%);
+  border:1px solid var(--unflat-line);border-top-color:var(--unflat-edge);
+  box-shadow:var(--unflat-shadow)}
+:is(main > :is(.optics, .design, .compare))::before{content:'';position:absolute;left:8%;right:8%;top:0;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,var(--unflat-lightline),transparent)}
+:is(main > .compare){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
+/* 4b. fields — two soft washes inside two surfaces, behind their content (taste.md §3) */
+:is(main > .design)::after{content:'';position:absolute;left:-10%;bottom:-30%;width:40%;aspect-ratio:1;border-radius:50%;pointer-events:none;z-index:-1;
+  background:radial-gradient(circle,var(--unflat-field-b),transparent 62%)}
+:is(main > .compare)::after{content:'';position:absolute;right:-8%;top:6%;width:46%;aspect-ratio:1;border-radius:50%;pointer-events:none;z-index:-1;
+  background:radial-gradient(circle,var(--unflat-field-a),transparent 62%)}
+/* 4c. cards on a surface — the site's cards read as a second level (taste.md §5) */
+:is(main > :is(.optics, .design, .compare)) :is(.tile, .cell){background:var(--unflat-card);box-shadow:var(--unflat-card-shadow)}
+/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own .wrap padding rule */
+:is(main > :is(.optics, .design, .compare)) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
+/* 6. motion — the one thing that moves: cards on a surface lift on hover (taste.md §6) */
+@media (prefers-reduced-motion:no-preference){:is(main > :is(.optics, .design, .compare)) :is(.tile, .cell){transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}:is(main > :is(.optics, .design, .compare)) :is(.tile, .cell):hover{transform:translateY(-3px)}}
+/* responsive: keep top and bottom edges, drop the side inset and the radius on small screens */
+@media (max-width:640px){:root{--unflat-inset:0px}:is(main > :is(.optics, .design, .compare)){border-left:0;border-right:0;border-radius:0}}
+/* print: paper is already a surface */
+@media print{html{background:#fff}body::before,body::after,:is(main > .design)::after,:is(main > .compare)::after{display:none}:is(main > :is(.optics, .design, .compare)),:is(main > .compare){box-shadow:none;border-color:transparent;background:none}:is(main > :is(.optics, .design, .compare)) :is(.tile, .cell){box-shadow:none}}
+/* unflat: end */
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Orrin home">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="#2f6be6"/></svg>
+      Orrin
+    </a>
+    <nav class="nav" aria-label="Page">
+      <a href="#gallery">Gallery</a>
+      <a href="#optics">Optics</a>
+      <a href="#design">Design</a>
+      <a href="#compare">Compare</a>
+    </nav>
+    <a class="btn" href="#compare">Buy</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-label="Orrin One">
+    <div class="wrap">
+      <div class="hero-copy">
+        <h1>One lens.<br>Every day.</h1>
+        <p class="lede">A full-frame camera with a fixed 35 mm f/2 lens, made to be carried rather than stored.</p>
+        <div class="cta">
+          <a class="btn" href="#compare">Buy</a>
+          <a class="link" href="#compare">Compare models</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="cam-stage" role="img" aria-label="Orrin One in silver, seen from the front at an angle">
+          <div class="cam-shadow"></div>
+          <div class="cam-scroll">
+            <div class="cam-float" data-cam="v-silver"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery" id="gallery">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <h2>Shot on the Orrin One.</h2>
+        <p>Straight from the camera. No profile, no crop.</p>
+      </div>
+      <div class="track">
+        <figure class="rv">
+          <div class="photo"><img src="img/sample-1.jpg" width="960" height="600" alt="A street at dusk, shop lights reflected on wet stone" loading="lazy"></div>
+          <figcaption>Dusk, handheld. f/2, 1/60 s.</figcaption>
+        </figure>
+        <figure class="rv">
+          <div class="photo"><img src="img/sample-2.jpg" width="960" height="600" alt="A portrait in window light" loading="lazy"></div>
+          <figcaption>Window light. f/2, 1/250 s.</figcaption>
+        </figure>
+        <figure class="rv">
+          <div class="photo"><img src="img/sample-3.jpg" width="960" height="600" alt="A coastline under a pale sky" loading="lazy"></div>
+          <figcaption>Coast, noon. f/8, 1/1000 s.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="optics" id="optics">
+    <div class="wrap">
+      <div>
+        <div class="sec-head rv">
+          <h2>Fixed lens, by design.</h2>
+          <p>No mount, no dust, no decisions. The 35 mm f/2 is matched to the sensor at the factory and stays there.</p>
+        </div>
+        <div class="tiles">
+          <div class="tile rv"><b>35 mm</b><span>The field of view your eyes already use. Wide enough for a room, close enough for a face.</span></div>
+          <div class="tile rv"><b>f/2</b><span>Seven aperture blades. Round highlights wide open, clean edges stopped down.</span></div>
+          <div class="tile rv"><b>24 MP</b><span>Full-frame sensor, 14-bit files, 1/8000 s on the leaf shutter. Quiet enough for a library.</span></div>
+        </div>
+      </div>
+      <div class="lensmacro rv" role="img" aria-label="The front of the 35 mm f/2 lens: aperture ring, front ring and coated glass">
+        <div class="lm">
+          <i class="lm-mount"></i><i class="lm-ring"></i><i class="lm-band"></i>
+          <div class="lm-stops"><span style="--a:-54deg">2</span><span style="--a:-36deg">2.8</span><span style="--a:-18deg">4</span><span style="--a:0deg">5.6</span><span style="--a:18deg">8</span><span style="--a:36deg">11</span><span style="--a:54deg">16</span></div>
+          <i class="lm-front"></i><i class="lm-glass"></i>
+          <div class="lm-mark"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="design" id="design">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <h2>Milled, not molded.</h2>
+        <p>The body is cut from a single aluminium block. 480 g with the battery, sealed at every seam.</p>
+      </div>
+      <div class="bento">
+        <div class="cell big rv"><div class="topview" role="img" aria-label="The top plate of the Orrin One: shutter dial, exposure dial, shutter button and hot shoe">
+          <div class="tv">
+            <div class="tv-body"></div><div class="tv-plate"></div><div class="tv-grip"></div>
+            <div class="tv-shoe"></div><div class="tv-dial d2"></div><div class="tv-dial d1"></div><div class="tv-shutter"></div>
+            <div class="tv-eye"></div>
+            <div class="tv-lens"><i></i><i></i><i></i></div>
+          </div>
+        </div></div>
+        <div class="cell colors tall rv">
+          <div class="stage">
+            <div class="cam-fit layer on" data-c="silver" data-cam="v-silver" role="img" aria-label="Orrin One in silver"></div>
+            <div class="cam-fit layer" data-c="graphite" data-cam="v-graphite" role="img" aria-label="Orrin One in graphite"></div>
+            <div class="cam-fit layer" data-c="stone" data-cam="v-stone" role="img" aria-label="Orrin One in stone"></div>
+          </div>
+          <div class="swatches">
+            <span id="color-name">Silver</span>
+            <div class="sw" role="group" aria-label="Finish">
+              <button type="button" class="on" style="--c:#d9dbe0" data-c="silver" aria-label="Silver"></button>
+              <button type="button" style="--c:#4b4d52" data-c="graphite" aria-label="Graphite"></button>
+              <button type="button" style="--c:#c9c2b6" data-c="stone" aria-label="Stone"></button>
+            </div>
+          </div>
+        </div>
+        <div class="cell text rv"><b>480 g</b><span>With the battery and a card. Lighter than a paperback.</span></div>
+        <div class="cell rv"><div class="dialmacro" role="img" aria-label="The knurled shutter speed dial, close up">
+          <div class="dm">
+            <div class="dm-ring"></div>
+            <div class="dm-face"><span style="--a:-100deg">B</span><span style="--a:-75deg">1</span><span style="--a:-50deg">8</span><span style="--a:-25deg">30</span><span style="--a:0deg">60</span><span style="--a:25deg">125</span><span style="--a:50deg">250</span><span style="--a:75deg">500</span><span style="--a:100deg">1000</span></div>
+            <div class="dm-cap"></div>
+            <div class="dm-index"></div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="aperture" id="aperture">
+    <div class="wrap">
+      <div class="iris" aria-hidden="true">
+        <img src="img/sample-2.jpg" width="960" height="600" alt="">
+        <div class="blade" style="--a:0deg"></div>
+        <div class="blade" style="--a:51.4deg"></div>
+        <div class="blade" style="--a:102.8deg"></div>
+        <div class="blade" style="--a:154.2deg"></div>
+        <div class="blade" style="--a:205.6deg"></div>
+        <div class="blade" style="--a:257deg"></div>
+        <div class="blade" style="--a:308.4deg"></div>
+      </div>
+      <div>
+        <div class="sec-head rv" style="margin-bottom:0">
+          <h2>Seven blades, f/2 to f/16.</h2>
+          <p>Wide open for a face in window light, stopped down for a street at noon. The ring clicks in thirds and never leaves your left hand.</p>
+        </div>
+        <div class="stops rv"><b>f/2</b><span>2.8</span><span>4</span><span>5.6</span><span>8</span><span>11</span><span>16</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare" id="compare">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <h2>Which Orrin is yours?</h2>
+        <p>Two sensors, two lenses, four bodies. Every one ships with a strap, a battery and a two-year warranty.</p>
+      </div>
+      <div class="table rv">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col"><span class="mono">Model</span></th>
+              <th scope="col"><div class="cam-fit thumb" data-cam="v-silver" role="img" aria-label="Orrin One"></div><h3>Orrin One</h3><p class="price">$1,899</p><a class="btn" href="#compare">Buy</a></th>
+              <th scope="col"><div class="cam-fit thumb" data-cam="v-graphite" role="img" aria-label="Orrin One Monochrom"></div><h3>One Monochrom</h3><p class="price">$2,299</p><a class="btn" href="#compare">Buy</a></th>
+              <th scope="col"><div class="cam-fit thumb" data-cam="v-silver m-two" role="img" aria-label="Orrin Two"></div><h3>Orrin Two</h3><p class="price">$2,799</p><a class="btn" href="#compare">Buy</a></th>
+              <th scope="col"><div class="cam-fit thumb" data-cam="v-titan m-two" role="img" aria-label="Orrin Two Titan"></div><h3>Two Titan</h3><p class="price">$3,499</p><a class="btn" href="#compare">Buy</a></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="group"><th scope="row">Sensor</th><td>24 MP full frame</td><td>24 MP monochrome</td><td>45 MP full frame</td><td>45 MP full frame</td></tr>
+            <tr><th scope="row">ISO</th><td>100 to 51,200</td><td>200 to 102,400</td><td>100 to 51,200</td><td>100 to 51,200</td></tr>
+            <tr><th scope="row">Files</th><td>14-bit raw, JPEG</td><td>14-bit raw, JPEG</td><td>14-bit raw, JPEG, HEIF</td><td>14-bit raw, JPEG, HEIF</td></tr>
+            <tr class="group"><th scope="row">Lens</th><td>35 mm f/2</td><td>35 mm f/2</td><td>28 mm f/1.7</td><td>28 mm f/1.7</td></tr>
+            <tr><th scope="row">Stabilisation</th><td>None</td><td>None</td><td>5-axis, 6 stops</td><td>5-axis, 6 stops</td></tr>
+            <tr><th scope="row">Close focus</th><td>30 cm</td><td>30 cm</td><td>17 cm</td><td>17 cm</td></tr>
+            <tr class="group"><th scope="row">Viewfinder</th><td>Optical, 0.7×</td><td>Optical, 0.7×</td><td>Electronic, 5.8 M dots</td><td>Electronic, 5.8 M dots</td></tr>
+            <tr><th scope="row">Weight</th><td>480 g<i class="bar" style="width:48px"></i></td><td>480 g<i class="bar" style="width:48px"></i></td><td>620 g<i class="bar" style="width:62px"></i></td><td>590 g<i class="bar" style="width:59px"></i></td></tr>
+            <tr><th scope="row">Battery</th><td>350 shots<i class="bar" style="width:52px"></i></td><td>350 shots<i class="bar" style="width:52px"></i></td><td>400 shots<i class="bar" style="width:60px"></i></td><td>400 shots<i class="bar" style="width:60px"></i></td></tr>
+            <tr><th scope="row">Sealing</th><td>Rain and dust</td><td>Rain and dust</td><td>Rain and dust</td><td>Rain and dust</td></tr>
+            <tr><th scope="row">Finish</th><td>Silver, graphite, stone</td><td>Graphite</td><td>Silver, graphite</td><td>Titanium</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="ftr">
+  <div class="wrap">
+    <span>Orrin Cameras. Made for a design demo; the products are fictional.</span>
+    <nav aria-label="Footer">
+      <a href="#gallery">Gallery</a>
+      <a href="#optics">Optics</a>
+      <a href="#design">Design</a>
+      <a href="#compare">Compare</a>
+    </nav>
+  </div>
+</footer>
+
+<template id="cam-tpl">
+  <div class="cam3d">
+    <div class="c-top"></div><div class="c-hump"></div><div class="c-shoe"></div><div class="c-dial"></div><div class="c-dial two"></div><div class="c-shutter"></div>
+    <div class="c-lug"></div><div class="c-lug r"></div><div class="c-body"></div><div class="c-grip"></div><div class="c-vf"></div><div class="c-dot"></div>
+    <div class="c-lens"><i class="c-l1"></i><i class="c-l2"></i><i class="c-l3"></i><i class="c-glass"></i></div>
+  </div>
+</template>
+<script>
+(() => {
+  const tpl = document.getElementById('cam-tpl');
+  document.querySelectorAll('[data-cam]').forEach((el) => {
+    const cam = tpl.content.firstElementChild.cloneNode(true);
+    el.dataset.cam.split(/\s+/).filter(Boolean).forEach((c) => cam.classList.add(c));
+    const pose = document.createElement('div'); pose.className = 'cam-pose'; pose.appendChild(cam); el.appendChild(pose);
+  });
+})();
+(() => {
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('.rv').forEach((el) => io.observe(el));
+})();
+(() => {
+  const stage = document.querySelector('.cell.colors .stage');
+  const name = document.getElementById('color-name');
+  const label = { silver: 'Silver', graphite: 'Graphite', stone: 'Stone' };
+  document.querySelectorAll('.sw button').forEach((b) => {
+    b.addEventListener('click', () => {
+      const c = b.dataset.c;
+      document.querySelectorAll('.sw button').forEach((x) => x.classList.toggle('on', x === b));
+      stage.querySelectorAll('.layer').forEach((im) => im.classList.toggle('on', im.dataset.c === c));
+      name.textContent = label[c];
+    });
+  });
+})();
+</script>
+</body>
+</html>

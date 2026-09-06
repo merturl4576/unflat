@@ -148,44 +148,63 @@ footer nav a:hover{color:var(--ink)}
 @media(max-width:600px){.hero h1{font-size:44px}header .btn{display:none}.logos b{font-size:13px}}
 /* unflat: start */
 :root{
-  --unflat-ground:#0d0c0a;                      /* page-bg −3% L; tinted toward the accent only when the hues differ by more than 30° (here 7.5°, so untinted) */
-  --unflat-surface-top:#1e1c1a;                 /* surface top: page-bg +4.5% L (plate) */
-  --unflat-surface-bottom:#191614;              /* surface base: page-bg +2% L (plate) */
+  --unflat-ground:var(--bg-3);                  /* reuses the site's own darkest token (#0e0c0a): page-bg -2.8% L, untinted — accent hue is only 7.5deg from the bg's own hue, already warm */
+  --unflat-surface-top:#1f1c19;                  /* surface top: --bg-2 +2% L */
+  --unflat-surface-bottom:var(--bg-2);          /* reuses the site's own card token (#1a1714): page-bg +2.3% L */
   --unflat-edge:rgba(237,231,220,.10);          /* lit top border: --ink at .10 */
-  --unflat-line:rgba(237,231,220,.09);          /* other borders: the site's --line token */
+  --unflat-line:var(--line);                    /* the site's own line token */
   --unflat-lightline:rgba(237,231,220,.22);     /* centered 1px light-line: --ink at .22 */
   --unflat-shadow:0 40px 90px -50px rgba(0,0,0,.9),0 2px 0 rgba(0,0,0,.55);
-  --unflat-glow:0 60px 140px -70px rgba(255,176,32,.38);   /* --accent at .38, one surface only (pricing) */
-  --unflat-light:rgba(255,196,150,.075);        /* directional light, top-left, warm (warm palette) */
+  --unflat-glow:0 60px 140px -70px rgba(255,176,32,.38);   /* --accent at .38, one surface */
+  --unflat-light:rgba(255,196,150,.075);        /* directional light, top-left, warm palette */
   --unflat-vignette:rgba(0,0,0,.45);            /* opposite corner */
   --unflat-inset:clamp(8px,1.6vw,24px);         /* surface inset from the viewport edge */
   --unflat-gap:clamp(14px,2vw,28px);            /* breathing room above and below a surface */
-  --unflat-pad:var(--pad);                      /* container horizontal padding token */
-  --unflat-max:var(--max);                      /* container outer max-width (border-box) */
+  --unflat-pad:var(--pad);                      /* the site's own container padding token */
+  --unflat-max:var(--max);                      /* the site's own container max-width token */
+  --unflat-radius:6px;                          /* the site's own card/button radius, kept as-is */
+  --unflat-field-a:rgba(255,176,32,.08);        /* accent wash: --accent at .08 */
+  --unflat-field-b:rgba(120,160,255,.06);       /* counterpart wash: cool blue, the amber accent's temperature opposite, at .06 */
+  --unflat-motif:rgba(237,231,220,.06);         /* motif stroke: --ink at .06 */
+  --unflat-card:#23211f;                        /* cards on a surface: surface-top +2% L */
+  --unflat-card-shadow:0 14px 34px -22px rgba(0,0,0,.6);
 }
 /* 1. ground — painted on the canvas so the fixed light layer can sit above it */
 html{background:var(--unflat-ground)}
 body{background:transparent}
 /* 2 + 3. light and texture — one fixed layer behind all content */
-body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+body::before{content:'';position:fixed;inset:0;z-index:-2;pointer-events:none;
   background:
     radial-gradient(130% 90% at 12% -15%,var(--unflat-light) 0%,transparent 58%),
     radial-gradient(100% 80% at 100% 110%,var(--unflat-vignette) 0%,transparent 60%),
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 .93  0 0 0 0 .84  0 0 0 .16 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
   background-size:auto,auto,220px 220px}
-/* 4. surfaces — the mounted sections only: inset, lit from the top, shadow below, breathing room against the ground on both sides */
-:is(main > section:is(.features, .pricing)){position:relative;margin-block:var(--unflat-gap);margin-inline:var(--unflat-inset);
+/* 3b. motif — a fine grid, faint, fading out below the hero: this is a developer-tool/terminal site */
+body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(var(--unflat-motif) 1px,transparent 1px) 0 0/100% 96px,linear-gradient(90deg,var(--unflat-motif) 1px,transparent 1px) 0 0/96px 100%;
+  mask-image:linear-gradient(180deg,#000,transparent 70vh)}
+/* 4. surfaces — the mounted sections only: inset, lit from the top, shadow below, breathing room against the ground on both sides; isolate so the washes paint above the surface and below its content */
+:is(main > .features, main > .pricing){position:relative;isolation:isolate;overflow:clip;margin-block:var(--unflat-gap);margin-inline:var(--unflat-inset);border-radius:var(--unflat-radius);
   background:linear-gradient(180deg,var(--unflat-surface-top) 0%,var(--unflat-surface-bottom) 100%);
   border:1px solid var(--unflat-line);border-top-color:var(--unflat-edge);
   box-shadow:var(--unflat-shadow)}
-:is(main > section:is(.features, .pricing))::before{content:'';position:absolute;left:8%;right:8%;top:-1px;height:1px;pointer-events:none;
+:is(main > .features, main > .pricing)::before{content:'';position:absolute;left:8%;right:8%;top:0;height:1px;pointer-events:none;
   background:linear-gradient(90deg,transparent,var(--unflat-lightline),transparent)}
-:is(main > section.pricing){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
-/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own container rule (e.g. `.section .container{padding:0 24px}`); outside the compensation band it equals the site's padding, so nothing else changes. */ :is(main > section:is(.features, .pricing)) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
-/* responsive: keep top and bottom edges, drop the side inset on small screens */
-@media (max-width:640px){:root{--unflat-inset:0px}:is(main > section:is(.features, .pricing)){border-left:0;border-right:0}}
+:is(main > .pricing){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
+/* 4b. fields — two soft washes inside two surfaces, behind their content */
+:is(main > .features)::after{content:'';position:absolute;left:-10%;bottom:-30%;width:40%;aspect-ratio:1;border-radius:50%;pointer-events:none;z-index:-1;
+  background:radial-gradient(circle,var(--unflat-field-b),transparent 62%)}
+:is(main > .pricing)::after{content:'';position:absolute;right:-8%;top:6%;width:46%;aspect-ratio:1;border-radius:50%;pointer-events:none;z-index:-1;
+  background:radial-gradient(circle,var(--unflat-field-a),transparent 62%)}
+/* 4c. cards on a surface — the site's cards read as a second level */
+:is(main > .features, main > .pricing) :is(.card, .tier){background:var(--unflat-card);box-shadow:var(--unflat-card-shadow)}
+/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own container rule; outside the compensation band it equals the site's padding, so nothing else changes. */ :is(main > .features, main > .pricing) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
+/* 6. motion — the one thing that moves: cards on a surface lift on hover */
+@media (prefers-reduced-motion:no-preference){:is(main > .features, main > .pricing) :is(.card, .tier){transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}:is(main > .features, main > .pricing) :is(.card, .tier):hover{transform:translateY(-3px)}}
+/* responsive: keep top and bottom edges, drop the side inset and the radius on small screens */
+@media (max-width:640px){:root{--unflat-inset:0px}:is(main > .features, main > .pricing){border-left:0;border-right:0;border-radius:0}}
 /* print: paper is already a surface */
-@media print{html{background:#fff}body::before{display:none}:is(main > section:is(.features, .pricing)),:is(main > section.pricing){box-shadow:none;border-color:transparent;background:none}}
+@media print{html{background:#fff}body::before,body::after,:is(main > .features)::after,:is(main > .pricing)::after{display:none}:is(main > .features, main > .pricing),:is(main > .pricing){box-shadow:none;border-color:transparent;background:none}:is(main > .features, main > .pricing) :is(.card, .tier){box-shadow:none}}
 /* unflat: end */
 </style>
 </head>
