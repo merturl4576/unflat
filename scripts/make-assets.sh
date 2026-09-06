@@ -27,6 +27,7 @@ card 03 glass   0x070b12 0x8b96ab 0x6d8cff
 card 04 backlit 0x060304 0x9a8f96 0xff2d9b
 card 05 plate   0x0f0b08 0x7f7263 0xff6a1f
 card 06 plate   0x0d0c0a 0x756d62 0xffb020
+card 07 paper   0xe9e9ee 0x8a8a90 0x2f6be6
 
 # hero: two scenes from the tall captures. Scene 1 (0–5 s): the top of the page, a wipe from before to after between 1.5 s and 4 s.
 # Scene 2 (5–9.5 s): the page 1400 px further down (where the captures end), a second wipe. The label switches mid-wipe.
