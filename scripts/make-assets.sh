@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 # Builds the README images from the page captures in assets/:
-#   assets/NN-compare.png  — before | after card for each demo
 #   assets/hero.gif        — the camera demo: the page scrolls, the camera turns and sinks, then a wipe from before to after
-# Inputs: assets/NN-before.png and assets/NN-after.png are full-page screenshots of
-# examples/NN-*/{before,after}.html at a 1440 px viewport, cropped to the top 2000 px and
-# scaled to 720×1000. assets/src/hero-{before,after}.mp4 are frame-synchronized captures of
+# Inputs: assets/src/hero-{before,after}.mp4 are frame-synchronized captures of
 # examples/07-camera-light/{before,after}.html at a 1440×1800 viewport scaled to 800×1000: time-based animations and
 # transitions are switched off by an injected style, and the scroll position is set per frame from one schedule (12 fps, 10 s,
 # a scroll of 1400 px from 2.5 s to 5 s), so both files show the same page state in every frame. Captures are made with
@@ -15,20 +12,6 @@ cd "$(dirname "$0")/.."
 FONT=${FONT:-'C\:/Windows/Fonts/consola.ttf'}
 mkdir -p scratch
 
-card() { # NN material bar-color before-label-color after-label-color
-  ffmpeg -y -loglevel error -i "assets/$1-before.png" -i "assets/$1-after.png" -filter_complex \
-    "[0]pad=iw+8:ih:0:0:color=$3[a];[a][1]hstack[s];[s]pad=iw:ih+40:0:40:color=$3,\
-drawtext=fontfile='$FONT':text='BEFORE':x=16:y=12:fontsize=15:fontcolor=$4,\
-drawtext=fontfile='$FONT':text='AFTER  ·  $2':x=744:y=12:fontsize=15:fontcolor=$5" \
-    "assets/$1-compare.png"
-}
-card 01 plate   0x0c0b0a 0x8a857d 0xe0b25c
-card 02 paper   0xe9e6e1 0x7a756d 0x1f1c18
-card 03 glass   0x070b12 0x8b96ab 0x6d8cff
-card 04 backlit 0x060304 0x9a8f96 0xff2d9b
-card 05 plate   0x0f0b08 0x7f7263 0xff6a1f
-card 06 plate   0x0d0c0a 0x756d62 0xffb020
-card 07 paper   0xe9e9ee 0x8a8a90 0x2f6be6
 
 # hero: the camera demo. Before for 5 s (the page scrolls from 2.5 s, the camera turns and sinks), then a wipe from left to
 # right into the after page over 2.5 s, then a hold. The label switches mid-wipe.
@@ -38,4 +21,4 @@ ffmpeg -y -loglevel error -i assets/src/hero-before.mp4 -i assets/src/hero-after
 drawbox=x=14:y=14:w=66:h=26:color=0xffffff@0.85:t=fill:enable='gte(t,6.25)',drawtext=fontfile='$FONT':text='after':x=24:y=19:fontsize=14:fontcolor=0x2f6be6:enable='gte(t,6.25)',format=yuv420p" scratch/hero.mp4
 ffmpeg -y -loglevel error -i scratch/hero.mp4   -vf "fps=10,split[s0][s1];[s0]palettegen=max_colors=256:stats_mode=diff[p];[s1][p]paletteuse=dither=sierra2_4a"   assets/hero.gif
 rm -rf scratch
-ls -la assets/*-compare.png assets/hero.gif
+ls -la assets/hero.gif

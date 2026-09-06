@@ -69,45 +69,6 @@ The agent replies with an audit, a token table, the material it picked and why, 
 
 Neutral fallbacks: plate for dark, paper for light. Glass is never a default.
 
-## Before and after
-
-Full-page tops at 1440 px: the flat page on the left, the same page with the block on the right. Nothing else changed. Open the [gallery](https://merturl4576.github.io/unflat/gallery/) to drag the seam yourself.
-
-**Orrin, camera, light theme → paper**
-
-![Orrin before and after: paper](assets/07-compare.png)
-
-**Solder, terminal agent → plate**
-
-![Solder before and after: plate](assets/06-compare.png)
-
-**Ash & Iron, forge workshop → plate**
-
-![Ash & Iron before and after: plate](assets/05-compare.png)
-
-<details>
-<summary>Four more: dark workshop, light editorial, dark SaaS, backlit brand</summary>
-
-**Ferro & Grain, dark workshop → plate**
-
-![Ferro & Grain before and after: plate](assets/01-compare.png)
-
-**Margin, light editorial → paper**
-
-![Margin before and after: paper](assets/02-compare.png)
-
-**Cartograph, dark SaaS → glass**
-
-![Cartograph before and after: glass](assets/03-compare.png)
-
-**HALOGEN, backlit brand → backlit**
-
-![HALOGEN before and after: backlit](assets/04-compare.png)
-
-</details>
-
-Every `after.html` in `examples/` is `before.html` plus the block and nothing else. `node scripts/check-examples.mjs` proves it. The after pages were produced by the skill itself, not by hand.
-
 ## Guardrails
 
 - Surfaces stay within 3% lightness of your section background, so text contrast does not change.
@@ -117,6 +78,7 @@ Every `after.html` in `examples/` is `before.html` plus the block and nothing el
 - Two fixed pseudo-elements at most (light, motif), one SVG data URI. No requests, no assets.
 - `@media print` strips ground, texture and shadows.
 - Everything sits between `/* unflat: start */` and `/* unflat: end */`. Delete it and the site is exactly what it was.
+- Every `after.html` in `examples/` is `before.html` plus the block and nothing else; `node scripts/check-examples.mjs` proves it. The after pages were produced by the skill itself, not by hand, and `docs/dogfood.md` keeps the log.
 
 ## FAQ
 
