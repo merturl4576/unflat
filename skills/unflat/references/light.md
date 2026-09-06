@@ -18,14 +18,14 @@ Grain tint and alpha are edited inside the SVG in `recipe.css` (its `feColorMatr
 
 | Property | Dark theme | Light theme |
 |---|---|---|
-| `--unflat-ground` | page-bg darkened 1–3% L, never below L 0.10; hue pulled toward accent when the accent's hue is more than 30° from the background's, chroma ≤ 0.02 | page-bg darkened 3–4% L, hue kept warm or cool as the palette |
+| `--unflat-ground` | page-bg darkened 1–3% L, never below L 0.10; hue pulled toward accent when the accent's hue is more than 30° from the background's, chroma ≤ 0.02 | page-bg darkened 3–4.5% L; hue pulled a trace toward the accent under the same 30° rule, chroma ≤ 0.01 |
 | `--unflat-surface-bottom` | page-bg lightened 2–3% L (the surface's base color) | page-bg lightened 0.5–1% L |
 | `--unflat-surface-top` | surface-bottom lightened 1.5–2.5% L | surface-bottom lightened 0.5–1% L (stay below `#fff`) |
 | `--unflat-edge` (lit top border) | text at 9–12% alpha | white at 75–85% alpha |
 | `--unflat-line` (other borders) | the site's line token, or text at 8–10% | the site's line token, or text at 6–8% |
-| `--unflat-lightline` | text at .18–.25 alpha | white at .85–.95 alpha |
+| `--unflat-lightline` | text at .18–.25 alpha | accent at .40–.50 alpha (white on white is invisible) |
 | `--unflat-shadow` | `0 40px 90px -50px rgba(0,0,0,.9), 0 2px 0 rgba(0,0,0,.55)` | light theme: `--ink` at .25 for the shadow's first layer and .06 for its hairline |
-| `--unflat-glow` | `0 60px 140px -70px <accent at .35–.40>` | `0 40px 100px -60px <accent at .12–.18>` |
+| `--unflat-glow` | `0 60px 140px -70px <accent at .35–.40>` | `0 40px 100px -60px <accent at .22–.28>` |
 | `--unflat-light` | warm palette `rgba(255,196,150,.075)`, cool `rgba(190,210,255,.06)`, neutral `rgba(255,255,255,.05)` | warm `rgba(255,250,240,.6)`, cool `rgba(240,246,255,.6)` |
 | `--unflat-vignette` | `rgba(0,0,0,.45)` | light theme: `--ink` at .10 |
 | grain tint (SVG feColorMatrix) | warm `1 .93 .84`, cool `.85 .9 1`, neutral `.8 .82 .86` | warm `.55 .5 .45`, cool `.45 .5 .58` |
@@ -34,6 +34,11 @@ Grain tint and alpha are edited inside the SVG in `recipe.css` (its `feColorMatr
 | `--unflat-gap` | `clamp(14px, 2vw, 28px)` | same |
 | `--unflat-pad` | the container's horizontal padding — its token (`var(--pad)`, `var(--gutter)`) if there is one, otherwise the literal value (`24px`); never `0px` while the alignment rule is in the block | same |
 | `--unflat-max` | the container's outer max-width: `var(--max)` or the px value (add the horizontal padding when the container is `content-box`); `100vw` when the container is fluid | same |
+| `--unflat-radius` | the site's card radius: `0px` on a square site, the value itself up to 12px, `calc(<token> * 1.4)` capped at 32px above (taste.md §2) | same |
+| `--unflat-field-a` / `--unflat-field-b` | accent at .08 / the accent's temperature counterpart at .06 (taste.md §3) | accent at .10 / counterpart at .12 |
+| `--unflat-motif` | text at .06 | accent at .06–.09 |
+| `--unflat-card` | `color-mix(in oklab, var(--unflat-surface-top), white 2%)` | `color-mix(in oklab, var(--unflat-surface-bottom), var(--unflat-ground) 30%)` |
+| `--unflat-card-shadow` | `0 14px 34px -22px rgba(0,0,0,.6)` | `0 14px 34px -22px <ink at .30>` |
 
 "Text at N% alpha" means the site's primary text color with that alpha, for example `rgba(236,231,223,.10)`.
 
@@ -59,7 +64,7 @@ To pull the hue toward the accent, do not mix the accent color in directly — i
 --unflat-surface-top: oklch(from var(--bg) calc(l + 0.045) c h);
 ```
 
-Use the tinted form for the ground only when the snippet says `tinted`; otherwise `oklch(from var(--bg) calc(l - 0.03) c h)`.
+Use the tinted form for the ground only when the snippet says `tinted`; otherwise `oklch(from var(--bg) calc(l - 0.03) c h)`. On a light theme the same form with `calc(l - 0.045)` and chroma `0.008`.
 
 `H` is the accent's OKLCh hue in degrees, a literal number you compute and write in (see the Node snippet below). Relative color syntax (`oklch(from …)`) is Baseline: Chrome 119, Safari 16.4, Firefox 128.
 
@@ -88,7 +93,7 @@ console.log(pre+"#"+out)' "#121110" -3
 
 `-3` darkens by three OKLab lightness points; `+2` lightens by two. Expected results (no third argument, behavior unchanged from before): `"#121110" -3` → `#0c0b0a`, `"#121110" +2` → `#161514`, `"#121110" +4.5` → `#1c1b1a`. These are also recipe.css's shipped defaults, so on a `#121110` page the recipe works unedited. Print the result for the ground, the surface base and the surface top, then write the hex values into the block. When the shift would cross the floor, the snippet lands at L 0.102 so the printed hex stays at or above L 0.10.
 
-Give a third argument, the accent's hex, to also pull the hue: the snippet then prints the accent's OKLCh hue `H` followed by the shifted color with its hue set to `H` and its chroma set to `min(0.02, max(c, 0.012))` (`c` is the shifted color's own chroma) — the same low-chroma technique as the CSS above. Without the third argument the snippet behaves exactly as today. Apply the hue pull for the ground only (surfaces keep the page background's own hue): the tint comes either from this third argument or from the relative-color CSS above. On dark themes pass the accent whenever the site has one: the snippet tints only when the accent's hue is more than 30° from the background's (it prints `tinted` or `untinted`), and caps chroma at 0.02. Light themes are never tinted — paper and slate keep the palette's own hue.
+Give a third argument, the accent's hex, to also pull the hue: the snippet then prints the accent's OKLCh hue `H` followed by the shifted color with its hue set to `H` and its chroma set to `min(0.02, max(c, 0.012))` (`c` is the shifted color's own chroma) — the same low-chroma technique as the CSS above. Without the third argument the snippet behaves exactly as today. Apply the hue pull for the ground only (surfaces keep the page background's own hue): the tint comes either from this third argument or from the relative-color CSS above. Pass the accent whenever the site has one: the snippet tints only when the accent's hue is more than 30° from the background's (it prints `tinted` or `untinted`), and caps chroma at 0.02. On a light theme halve that chroma (write the hex with the relative-color form at chroma 0.008, or accept the snippet's value when it prints under 0.012); slate is never tinted.
 
 ## Texture
 

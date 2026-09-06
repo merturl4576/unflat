@@ -22,13 +22,13 @@ A surface reads as a surface only when there is ground next to it. Walk the cand
 **Ground** — never a surface:
 - the hero, whatever it holds: it is the ground's own opening, and a mounted hero reads as a banner;
 - strips: a row of logos, a ticker, a stats or trust band, a job ticker, a newsletter bar — anything one row tall, roughly under 300px;
-- sections that carry their own artwork: a canvas, a video, a full-bleed image, an interactive tool, a map;
-- full-bleed galleries, accordions, marquees and masonry grids — the images are already the surfaces;
+- sections whose artwork fills them: a canvas, a video or a full-bleed image behind the whole section, an interactive tool that is the section (a bench, a configurator, a map, an editor); a card with a toggle, tabs or a color picker is content, not a tool;
+- full-bleed galleries, accordions, marquees and masonry grids that run edge to edge with no container around them — the images are already the surfaces. A gallery inside the container, with a heading and captions, is a readable section and a candidate;
 - header, nav, footer, and anything `position: fixed` or `sticky` (cookie banners, chat widgets, floating buttons, drawers, dialogs).
 
 **Mounted** — the sections the visitor reads: a statement or manifesto with a heading and paragraphs, the process or how-it-works, the story or about, a lookbook, the featured collection or product, testimonials, pricing with a featured tier, a text call to action.
 
-Then apply the rhythm: mounted sections alternate with ground. When two readable sections sit next to each other, mount the one that carries the page's argument (the statement over the detail, the featured collection over the plain grid, the process over the specification) and leave the other on the ground. Two surfaces in a row are allowed only when nothing can sit between them and the page has fewer than four sections. Aim for a third to a half of the candidates mounted. On the origin site, eleven sections gave four surfaces: ground (hero), strip, **statement**, bench, **lookbook**, materials, **process**, gallery, **featured collection**, band, strip.
+Then apply the rhythm, which depends on the material. On **plate, slate and backlit** (dark, low contrast between ground and surface) mounted sections alternate with ground: when two readable sections sit next to each other, mount the one that carries the page's argument (the statement over the detail, the featured collection over the plain grid, the process over the specification) and leave the other on the ground; two surfaces in a row only when nothing can sit between them and the page has fewer than four sections; a third to a half of the candidates mounted. On the origin site, eleven sections gave four surfaces: ground (hero), strip, **statement**, bench, **lookbook**, materials, **process**, gallery, **featured collection**, band, strip. On **paper and glass** (the ground is clearly darker than the sheet, and the gap shows it) consecutive sheets read as sheets on a desk: mount every readable section, half to two-thirds of the candidates, and keep the hero, the strips and one artwork-led section on the ground so the desk is seen at least twice.
 
 Write the list in your response: every section, its height, ground or mounted, one reason each. If the marked list has no ground between any two surfaces, the rhythm is wrong; go back.
 
@@ -60,6 +60,10 @@ A page that is one continuous flow rather than a sequence of sections — a stor
 
 `100%` is the parent's width here, so the clamp is rule 5's compensation with the plate's own inset: above `--unflat-max` plus twice the inset the plate is exactly `--unflat-max` wide and centered, below that it keeps the inset. Rule 5 does not apply to the plate (nothing inside it needs compensation; the plate carries the padding). A site with both kinds of page — a landing page of sections and a store — gets both in one block: the section list and the container together in SURFACE, the sizing rule for the container, one GLOW. Verify the plate like any surface: its first text element's `left` equals the header's at 1440, at the container's max plus twice the inset, and at 390.
 
+## 5b. Fields and cards
+
+`FIELD1` and `FIELD2` are one surface each, from the SURFACE list: the counterpart wash goes low-left on the photographic or gallery surface, the accent wash upper-right on the featured or product surface (`taste.md` §3). Write them in the same shape as SURFACE (`main > .gallery`), so specificity does not surprise you. `CARD` is the site's card selector inside those surfaces: `.card, .tile, .cell`, `article`, or a structural form like `section > div > div` when class names are generated; it matches only inside SURFACE, so the ground's cards stay as they are. A rule whose placeholder has no target is deleted.
+
 ## 6. Alignment compensation
 
 An auto-centered container already absorbs the inset by itself; only a container that fills the surface needs compensation, and recipe.css handles both with `--unflat-max`.
@@ -89,7 +93,7 @@ Verify: compare `getBoundingClientRect().left` of the header's first text elemen
 
 ## 8. Gotchas
 
-- A section with `overflow: hidden` or `overflow: clip` clips the light-line at `top: -1px`. Use `top: 0` for that section.
+- Surfaces carry `overflow: clip` so the field washes bleed no further than the surface; a child that must overflow a surface (a floating badge, a dropdown) needs `overflow: visible` on that surface, which then loses its wash. Sticky children keep working under `clip`.
 - A section that already has `position: absolute` or `fixed` is not a surface.
 - If `SURFACE` sections already carry a background image, keep it: use `background-image` and set only `background-color` on them.
 - If the root has `display: grid` or `flex` with `gap`, set `margin-block: 0` on `:is(SURFACE)` and rely on the gap; margins do not collapse in a grid or flex container, so the recipe's breathing room would double between two adjacent surfaces.

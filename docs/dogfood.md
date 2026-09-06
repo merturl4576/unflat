@@ -67,6 +67,23 @@ The wave adds a sixth move, **rhythm**, and a Step 3 that decides it: the hero a
 | re-run | 06-terminal-agent | plate | PASS | ACCEPT — hero (canvas) and the logo strip on the ground, **features**, how, **pricing** (glow), install; 2 of 6 | — |
 
 
+## Taste wave
+
+A seventh demo, `07-camera-light`, was built to test the skill on a light, Apple-style product page: a fictional camera drawn in CSS, three CC0 photographs, a four-model comparison table. The same flat page was then treated two ways: once by the v1.1 skill alone, run by a fresh mid-tier agent, and once by a designer working from a one-paragraph brief ("the sections sit on one tone; frame them, make it beautiful, add color, shapes and motion where they fit"). Side by side, the skill's page was correct and thin: paper material, two sheets out of six sections (it read the in-container gallery as "full-bleed" and the colour-swap bento as "an interactive tool"), square corners on a page whose every card is rounded, a white light-line on white, a glow at .14 that nobody could see. The designer's page had four sheets with the page's own radius, a warm wash behind the photographs and a cool one behind the lens, two faint rings that echoed the lens, cards that sat up on the sheets, and a lift on hover.
+
+The wave turns those differences into rules, all derived from the site rather than added to it. The block now carries the site's radius (`--unflat-radius`, 1.4× the card radius above 12px, zero on a square site); two fields (`FIELD1`, `FIELD2`: the accent and its temperature counterpart, inside two surfaces, behind their content); one motif on a second fixed layer (`MOTIF`, from a short table in `taste.md`: rings for optics, a fading grid for workshops, one arc for editorial, nothing for finance); a card level (`CARD`: the site's cards inside surfaces get a fill one step from the surface and a small shadow); and the block's first and only motion, a 3px lift on hover. Light themes get an accent light-line, a glow at .25 and a trace of accent hue in the ground. The rhythm rule is now material-aware: paper and glass may stack sheets, since the desk shows in the gap; plate, slate and backlit keep the alternation. "Full-bleed" and "interactive tool" are defined so an in-container gallery and a card with a toggle count as content. The report grew to nine lines with a taste line, and the checklist has Radius, Taste and Placeholders rows.
+
+| Run | Demo | Material chosen | Checker | Review verdict | Skill change made |
+|---|---|---|---|---|---|
+| baseline (v1.1) | 07-camera-light | paper | PASS | REJECT — two sheets (optics, compare) of six sections; gallery and bento left on the ground as "full-bleed" and "a tool"; square corners; invisible light-line and glow; every guardrail passed | the taste wave above |
+| v1.2 | 07-camera-light | paper | PASS | ACCEPT — hero and gallery on the desk, **optics**, **design**, aperture on the desk, **compare** (glow); radius 28px from the site's 20px; peach wash low-left on design, accent wash upper-right on compare; rings motif at .08; `.tile, .cell` lifted on the sheets with the hover; alignment 0/1/0 px at 1440, 1100 and 390 | — |
+| v1.2 | 01-dark-workshop | plate | PASS | ACCEPT — hero ground, **process**, materials, **work**, pricing, quote, **contact** (glow); fields on work (cool counterpart) and contact (accent); fading grid motif at text .06; cards `.tile` only, the unbordered `.col` left alone | — |
+| v1.2 | 02-light-editorial | paper | PASS | ACCEPT — hero ground, **essays**, interview, **objects**, archive, **subscribe** (glow); square site, radius 0; arc motif moved from the table's −60vw to −84vw so it clears the two-column hero (measured); cards `.obj` | taste.md: the motif offsets are starting points, measure the hero before keeping them |
+| v1.2 | 03-dark-saas | glass | PASS | ACCEPT — hero, logos on the ground, **features**, how, **pricing** (glow), cta; FIELD1 deleted (no photographic surface), accent wash on pricing; motif text at .05 | — |
+| v1.2 | 04-backlit-brand | backlit | PASS | ACCEPT — hero ground, **lineup**, stages, timetable, **tickets** (glow), info; fields accent and the site's cyan secondary; diagonal hairline motif; two fixed layers, one transition | — |
+| v1.2 | 05-forge-workshop | plate | PASS | ACCEPT — hero ground, **manifesto**, process, **knives**, steel, bench, **commission** (glow); fading grid motif; cards on the knives sheet | — |
+| v1.2 | 06-terminal-agent | plate | PASS | ACCEPT — hero (canvas) and logos on the ground, **features**, how, **pricing** (glow), install; fading grid motif; feature cards lifted on the surface | — |
+
 ## What the runs taught the skill
 
 - Prose instructions about whitespace do not survive contact with a model; the insertion is now a one-line script.
@@ -74,3 +91,4 @@ The wave adds a sixth move, **rhythm**, and a Step 3 that decides it: the hero a
 - Mixing a bright accent into a dark ground with `color-mix` raises lightness by about 3%; the hue pull now changes only hue and chroma.
 - "Already layered" is decided by counts the audit snippet returns (`shadowed`, `withBgImage`, `hasUnflatBlock`), not by eye.
 - A checklist cannot catch a missing design decision: every guardrail passed on a page cut into boxes. Which sections are mounted is now a step of its own, written down before any value is derived, with its own row in the checklist.
+- A page can pass every guardrail and still look like nobody cared about it. The taste layer (radius, fields, motif, cards) exists because a designer given one paragraph did those four things unprompted, and every one of them could be derived from the site itself.

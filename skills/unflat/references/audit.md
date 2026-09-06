@@ -42,8 +42,9 @@ Fill this table; every later step reads from it:
 | accent | (primary button or link color) | |
 | radius | (card or button radius; 0 if square) | |
 | display-font | | |
+| card selector | (the class of the site's cards, tiles or cells; `none` when there are no cards) | |
 
-Also note: theme (dark or light), warmth of the palette (warm, cool, neutral), accent saturation (low, medium, high), and the container padding variable if one exists (for example `--pad`, `--container-padding`, or Tailwind `px-6`).
+Also note: theme (dark or light), warmth of the palette (warm, cool, neutral), accent saturation (low, medium, high), the container padding variable if one exists (for example `--pad`, `--container-padding`, or Tailwind `px-6`), and what the page already animates (a hero animation, hover lifts, scroll effects), since the block adds motion only where the site has none.
 
 ## 4. Browser snippet
 

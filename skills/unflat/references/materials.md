@@ -1,6 +1,6 @@
 # Materials
 
-A material is a set of `--unflat-*` values plus a few structural choices. Where a material table states a number, it wins over the general ranges in light.md; light.md's ranges apply to anything the table leaves out. An override snippet replaces the recipe rule that has the same selector; do not keep both. Override snippets write `var(--bg)`, `<accent at .10>` and similar as placeholders: replace them with the site's own token or literal (a page without `--bg` leaves `color-mix(in oklab, var(--bg), white 7%)` invalid and the surface unfilled). Pick one per site. The material must come from the site's own world; when nothing fits, the neutral fallbacks are **plate** (dark) and **paper** (light). Glass is never a default.
+A material is a set of `--unflat-*` values plus a few structural choices. The taste values (radius, the two fields, the motif, the card fill) are derived per site in `taste.md`; the material tables below give each material's ceilings for them. Where a material table states a number, it wins over the general ranges in light.md; light.md's ranges apply to anything the table leaves out. An override snippet replaces the recipe rule that has the same selector; do not keep both. Override snippets write `var(--bg)`, `<accent at .10>` and similar as placeholders: replace them with the site's own token or literal (a page without `--bg` leaves `color-mix(in oklab, var(--bg), white 7%)` invalid and the surface unfilled). Pick one per site. The material must come from the site's own world; when nothing fits, the neutral fallbacks are **plate** (dark) and **paper** (light). Glass is never a default.
 
 ## Decision table
 
@@ -33,6 +33,9 @@ Dark. A panel mounted on a wall: warm light from the top-left catches the top ed
 | light | warm `rgba(255,196,150,.075)` (cool palettes: `rgba(190,210,255,.06)`) |
 | vignette | `rgba(0,0,0,.45)` |
 | grain | tint `1 .93 .84`, alpha .16 |
+| fields | accent at .08, counterpart at .06 |
+| motif | text at .06 |
+| card | surface-top +2% L; shadow black at .6 |
 
 Override snippet: recipe.css defaults are the plate values; nothing to override beyond the derived colors.
 
@@ -42,23 +45,30 @@ Light. Sheets of paper lying on a slightly darker desk, lit from the top-left, w
 
 | Property | Value |
 |---|---|
-| ground | page-bg −4% L, keep the palette's warmth |
+| ground | page-bg −4 to −4.5% L, hue pulled a trace toward the accent (chroma ≤ .01) when the accent's hue is more than 30° from the background's |
 | surface top / bottom | page-bg +1.5% L (never `#fff`) / page-bg +0.5% L |
 | edge | `rgba(255,255,255,.8)` |
 | line | site line token, or text at .07 |
-| lightline | `rgba(255,255,255,.9)` |
+| lightline | accent at .45 (white on white is invisible) |
 | shadow | `0 30px 60px -40px <ground hue, dark, at .25>, 0 1px 0 <text at .06>` e.g. `rgba(60,45,30,.25)` (= `--ink` at .25) |
-| glow | accent at .14, one surface, optional |
+| glow | accent at .25, one surface, optional |
 | light | `rgba(255,250,240,.6)` |
 | vignette | `<ground hue dark at .10>` e.g. `rgba(80,60,40,.10)` (= `--ink` at .10) |
 | grain | tint `.55 .5 .45`, alpha .10 |
+| fields | accent at .10, counterpart at .12 |
+| motif | accent at .06–.09 |
+| card | surface base mixed 30% toward the ground; shadow ink at .30 |
 
 ```css
-/* paper overrides */
-:root{--unflat-edge:rgba(255,255,255,.8);--unflat-lightline:rgba(255,255,255,.9);
-  --unflat-shadow:0 30px 60px -40px rgba(60,45,30,.25),0 1px 0 rgba(28,26,23,.06);
-  --unflat-light:rgba(255,250,240,.6);--unflat-vignette:rgba(80,60,40,.10)}
+/* paper overrides (accent example #2f6be6, ink #1c1c1e) */
+:root{--unflat-edge:rgba(255,255,255,.8);--unflat-lightline:rgba(47,107,230,.45);
+  --unflat-shadow:0 30px 60px -40px rgba(28,28,30,.25),0 1px 0 rgba(28,28,30,.06);
+  --unflat-glow:0 40px 100px -60px rgba(47,107,230,.25);
+  --unflat-light:rgba(240,246,255,.6);--unflat-vignette:rgba(28,28,30,.10);
+  --unflat-field-a:rgba(47,107,230,.10);--unflat-field-b:rgba(255,176,120,.12);--unflat-motif:rgba(47,107,230,.08);
+  --unflat-card:color-mix(in oklab,var(--unflat-surface-bottom),var(--unflat-ground) 30%);--unflat-card-shadow:0 14px 34px -22px rgba(28,28,30,.30)}
 ```
+The example above is a cool palette; warm palettes keep the warm light `rgba(255,250,240,.6)`, a warm-ink shadow and the warm grain tint `.55 .5 .45`, and a cool palette takes the grain tint `.45 .5 .58` from light.md.
 Change the grain `feColorMatrix` to `0 0 0 0 .55  0 0 0 0 .5  0 0 0 0 .45  0 0 0 .10 0`.
 
 ## glass — frosted panels on a field
@@ -78,6 +88,9 @@ Dark, cool or saturated accent. The ground is a soft field with two low-chroma a
 | light | cool `rgba(190,210,255,.06)` |
 | vignette | `rgba(0,0,0,.4)` |
 | grain | tint `.85 .9 1`, alpha .12 |
+| fields | the field is already in `body::before`; the surface washes use accent at .06 and secondary at .05, or are deleted |
+| motif | text at .05 |
+| card | surface-top +2% L; shadow black at .5 |
 
 ```css
 /* glass overrides */
@@ -112,8 +125,11 @@ Neutral, dark or light. Cold light, planes close together, hairline borders, ver
 | light | `rgba(200,215,235,.05)` | `rgba(240,246,255,.5)` |
 | vignette | `rgba(0,0,0,.3)` | `rgba(30,35,45,.06)` (= `--ink` at .06) |
 | grain | tint `.8 .82 .86`, alpha .09 | tint `.45 .5 .58`, alpha .07 |
+| fields | none: delete both field rules | none |
+| motif | none | none |
+| card | surface-top +1.5% L, shadow black at .5 | surface base mixed 30% toward the ground, shadow ink at .20 |
 
-Remove the `GLOW` rule entirely for slate.
+Remove the `GLOW` rule, both field rules and the motif layer entirely for slate; stone has no atmosphere.
 
 ## backlit — lit from behind
 
@@ -132,6 +148,9 @@ Dark, high-saturation accent. The ground is the darkest; surfaces are lit from b
 | secondary light | `radial-gradient(50% 40% at 50% 110%, <secondary at .06>, transparent 60%)` |
 | vignette | `rgba(0,0,0,.5)` |
 | grain | tint toward accent, e.g. `1 .85 .95` for pink, alpha .18 |
+| fields | accent at .10, the site's secondary color at .08 (not a counterpart) |
+| motif | accent at .08 |
+| card | surface-top +2% L; shadow black at .6 |
 
 ```css
 /* backlit overrides (accent example #ff2d95) */
