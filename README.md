@@ -74,7 +74,7 @@ Neutral fallbacks: plate for dark, paper for light. Glass is never a default.
 - Surfaces stay within 3% lightness of your section background, so text contrast does not change.
 - The hero, strips and artwork sections stay on the ground; a third to a half of the sections are mounted, never all of them.
 - Header, footer, fixed and sticky elements are never touched.
-- The only motion is a 3px lift on hover for cards inside surfaces; nothing on load, nothing on scroll. No `filter`, no `backdrop-filter` by default.
+- The only motion is a 3px lift on hover for cards inside surfaces, and only for pointers that can hover; nothing on load, nothing on scroll, nothing on touch screens. No `filter`, no `backdrop-filter` by default.
 - Two fixed pseudo-elements at most (light, motif), one SVG data URI. No requests, no assets.
 - `@media print` strips ground, texture and shadows.
 - Everything sits between `/* unflat: start */` and `/* unflat: end */`. Delete it and the site is exactly what it was.

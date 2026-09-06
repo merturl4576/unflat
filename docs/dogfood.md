@@ -84,6 +84,10 @@ The wave turns those differences into rules, all derived from the site rather th
 | v1.2 | 05-forge-workshop | plate | PASS | ACCEPT — hero ground, **manifesto**, process, **knives**, steel, bench, **commission** (glow); fading grid motif; cards on the knives sheet | — |
 | v1.2 | 06-terminal-agent | plate | PASS | ACCEPT — hero (canvas) and logos on the ground, **features**, how, **pricing** (glow), install; fading grid motif; feature cards lifted on the surface | — |
 
+## v1.2.1, from the first user report
+
+An hour after the launch post, a reader who had run the skill on a small project wrote that the cards "get lifted a bit too much on mobile, like they're floating away from the rest of the page." Right: under 640px the cards stack full-width, the desktop card shadow (`0 14px 34px -22px`) reads as cards hovering over the sheet, and a hover lift on a touch screen fires on tap. The recipe now swaps in `--unflat-card-shadow-narrow` (tighter geometry, alpha × .55) below 640px and gates the lift behind `(hover: hover)`. The seven example blocks were patched with the same three edits rather than re-run, and the change is recorded here so the "produced by the skill itself" claim stays honest: everything else in those blocks is the run's own.
+
 ## What the runs taught the skill
 
 - Prose instructions about whitespace do not survive contact with a model; the insertion is now a one-line script.

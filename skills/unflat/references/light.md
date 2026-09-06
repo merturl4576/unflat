@@ -39,6 +39,7 @@ Grain tint and alpha are edited inside the SVG in `recipe.css` (its `feColorMatr
 | `--unflat-motif` | text at .06 | accent at .06–.09 |
 | `--unflat-card` | `color-mix(in oklab, var(--unflat-surface-top), white 2%)` | `color-mix(in oklab, var(--unflat-surface-bottom), var(--unflat-ground) 30%)` |
 | `--unflat-card-shadow` | `0 14px 34px -22px rgba(0,0,0,.6)` | `0 14px 34px -22px <ink at .30>` |
+| `--unflat-card-shadow-narrow` | `0 6px 14px -10px rgba(0,0,0,.33)` (under 640px) | `0 6px 14px -10px <ink at .16>` |
 
 "Text at N% alpha" means the site's primary text color with that alpha, for example `rgba(236,231,223,.10)`.
 

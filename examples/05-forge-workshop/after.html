@@ -171,6 +171,7 @@ footer nav a:hover{color:var(--ink)}
   --unflat-motif:rgba(239,230,218,.06);         /* ink at .06 */
   --unflat-card:#241f1c;                        /* surface-top +2% L (white mix in oklab) */
   --unflat-card-shadow:0 14px 34px -22px rgba(0,0,0,.6);
+  --unflat-card-shadow-narrow:0 6px 14px -10px rgba(0,0,0,0.33);   /* the same shadow on narrow screens: tighter and lighter, so stacked cards do not float */
 }
 /* 1. ground — painted on the canvas so the fixed light layer can sit above it */
 html{background:var(--unflat-ground)}
@@ -201,9 +202,9 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
 :is(main > .manifesto, main > .knives, main > .commission) :is(.knife){background:var(--unflat-card);box-shadow:var(--unflat-card-shadow)}
 /* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own container rule; outside the compensation band it equals the site's padding, so nothing else changes. */ :is(main > .manifesto, main > .knives, main > .commission) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
 /* 6. motion — the one thing that moves: cards on a surface lift on hover */
-@media (prefers-reduced-motion:no-preference){:is(main > .manifesto, main > .knives, main > .commission) :is(.knife){transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}:is(main > .manifesto, main > .knives, main > .commission) :is(.knife):hover{transform:translateY(-3px)}}
+@media (prefers-reduced-motion:no-preference) and (hover:hover){:is(main > .manifesto, main > .knives, main > .commission) :is(.knife){transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}:is(main > .manifesto, main > .knives, main > .commission) :is(.knife):hover{transform:translateY(-3px)}}
 /* responsive: keep top and bottom edges, drop the side inset and the radius on small screens */
-@media (max-width:640px){:root{--unflat-inset:0px}:is(main > .manifesto, main > .knives, main > .commission){border-left:0;border-right:0;border-radius:0}}
+@media (max-width:640px){:root{--unflat-inset:0px;--unflat-card-shadow:var(--unflat-card-shadow-narrow)}:is(main > .manifesto, main > .knives, main > .commission){border-left:0;border-right:0;border-radius:0}}
 /* print: paper is already a surface */
 @media print{html{background:#fff}body::before,body::after,:is(main > .knives)::after{display:none}:is(main > .manifesto, main > .knives, main > .commission),:is(main > .commission){box-shadow:none;border-color:transparent;background:none}:is(main > .manifesto, main > .knives, main > .commission) :is(.knife){box-shadow:none}}
 /* unflat: end */

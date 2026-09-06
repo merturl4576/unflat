@@ -261,66 +261,62 @@ tbody tr:last-child td{padding-bottom:26px}
   .cell.big{grid-column:auto}
   .hero .cta{flex-direction:column;align-items:flex-start;gap:16px}
 }
-/* unflat: start */
-:root{
-  --unflat-ground:#eaeaec;                      /* page-bg −4% L (paper); accent hue 262° is 24° from bg's 286° (<30°), so untinted */
-  --unflat-surface-top:#fdfdff;                 /* surface base +0.9% L further (never #fff) */
-  --unflat-surface-bottom:#fafafc;              /* page-bg +0.9% L */
-  --unflat-edge:rgba(255,255,255,.8);           /* lit top border: white ~80% (paper) */
-  --unflat-line:var(--line);                    /* the site's own line token */
-  --unflat-lightline:rgba(47,107,230,.45);      /* centered light-line: accent at .45 (paper; white on white is invisible) */
-  --unflat-shadow:0 30px 60px -40px rgba(28,28,30,.25),0 1px 0 rgba(28,28,30,.06);
-  --unflat-glow:0 40px 100px -60px rgba(47,107,230,.25);   /* accent at .25, one surface only */
-  --unflat-light:rgba(240,246,255,.6);          /* directional light, top-left, cool (accent is blue) */
-  --unflat-vignette:rgba(28,28,30,.10);         /* opposite corner: ink at .10 */
-  --unflat-inset:clamp(8px,1.6vw,24px);         /* surface inset from the viewport edge */
-  --unflat-gap:clamp(14px,2vw,28px);            /* breathing room above and below a surface */
-  --unflat-pad:var(--pad);                      /* container horizontal padding token */
-  --unflat-max:var(--max);                      /* container outer max-width; .wrap is border-box, used as-is */
-  --unflat-radius:calc(var(--r) * 1.4);         /* site radius 20px, one step larger on a surface, capped at 32px */
-  --unflat-field-a:rgba(47,107,230,.10);        /* accent wash at .10 (paper) */
-  --unflat-field-b:rgba(255,176,120,.12);       /* the cool accent's warm counterpart at .12 (paper) */
-  --unflat-motif:rgba(47,107,230,.08);          /* motif stroke: accent at .08 (paper) */
-  --unflat-card:color-mix(in oklab,var(--unflat-surface-bottom),var(--unflat-ground) 30%);   /* cards on a surface: base mixed 30% toward the ground (paper) */
-  --unflat-card-shadow:0 14px 34px -22px rgba(28,28,30,.30);   /* ink at .30 (paper) */
-  --unflat-card-shadow-narrow:0 6px 14px -10px rgba(28,28,30,0.17);   /* the same shadow on narrow screens: tighter and lighter, so stacked cards do not float */
-}
-/* 1. ground — painted on the canvas so the fixed light layer can sit above it */
-html{background:var(--unflat-ground)}
+/* redesign: start — a free-form pass from the brief "the sections sit on one tone; frame them, make it beautiful" */
+:root{--ground:#eceef3;--sheet:#ffffff;--sheet-2:#f4f6fb;--inset:clamp(12px,2vw,28px);--shadow:0 44px 96px -52px rgba(30,40,70,.32),0 2px 6px -3px rgba(30,40,70,.08)}
+html{background:var(--ground)}
 body{background:transparent}
-/* 2 + 3. light and texture — one fixed layer behind all content */
+/* atmosphere: one light from the top left, a cool wash bottom right, faint paper grain */
 body::before{content:'';position:fixed;inset:0;z-index:-2;pointer-events:none;
   background:
-    radial-gradient(130% 90% at 12% -15%,var(--unflat-light) 0%,transparent 58%),
-    radial-gradient(100% 80% at 100% 110%,var(--unflat-vignette) 0%,transparent 60%),
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .5  0 0 0 0 .58  0 0 0 .10 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
+    radial-gradient(120% 80% at 8% -10%,rgba(255,255,255,.95) 0%,rgba(255,255,255,0) 55%),
+    radial-gradient(90% 70% at 100% 110%,rgba(47,107,230,.10) 0%,rgba(47,107,230,0) 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .33  0 0 0 0 .4  0 0 0 .07 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
   background-size:auto,auto,220px 220px}
-/* 3b. motif — one shape from the site's world on a second fixed layer (taste.md §4): rings, for a camera's optics */
-body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 82% 18%,transparent 0 22vw,var(--unflat-motif) 22vw,transparent calc(22vw + 1.5px)),radial-gradient(circle at 82% 18%,transparent 0 31vw,var(--unflat-motif) 31vw,transparent calc(31vw + 1.5px)),radial-gradient(circle at 10% 88%,transparent 0 16vw,var(--unflat-motif) 16vw,transparent calc(16vw + 1.5px))}
-/* 4. surfaces — the mounted sections only: inset, lit from the top, shadow below, breathing room against the ground on both sides; isolate so the washes paint above the surface and below its content */
-:is(main > :is(.optics, .design, .compare)){position:relative;isolation:isolate;overflow:clip;margin-block:var(--unflat-gap);margin-inline:var(--unflat-inset);border-radius:var(--unflat-radius);
-  background:linear-gradient(180deg,var(--unflat-surface-top) 0%,var(--unflat-surface-bottom) 100%);
-  border:1px solid var(--unflat-line);border-top-color:var(--unflat-edge);
-  box-shadow:var(--unflat-shadow)}
-:is(main > :is(.optics, .design, .compare))::before{content:'';position:absolute;left:8%;right:8%;top:0;height:1px;pointer-events:none;
-  background:linear-gradient(90deg,transparent,var(--unflat-lightline),transparent)}
-:is(main > .compare){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
-/* 4b. fields — two soft washes inside two surfaces, behind their content (taste.md §3) */
-:is(main > .design)::after{content:'';position:absolute;left:-10%;bottom:-30%;width:40%;aspect-ratio:1;border-radius:50%;pointer-events:none;z-index:-1;
-  background:radial-gradient(circle,var(--unflat-field-b),transparent 62%)}
-:is(main > .compare)::after{content:'';position:absolute;right:-8%;top:6%;width:46%;aspect-ratio:1;border-radius:50%;pointer-events:none;z-index:-1;
-  background:radial-gradient(circle,var(--unflat-field-a),transparent 62%)}
-/* 4c. cards on a surface — the site's cards read as a second level (taste.md §5) */
-:is(main > :is(.optics, .design, .compare)) :is(.tile, .cell){background:var(--unflat-card);box-shadow:var(--unflat-card-shadow)}
-/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own .wrap padding rule */
-:is(main > :is(.optics, .design, .compare)) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
-/* 6. motion — the one thing that moves: cards on a surface lift on hover (taste.md §6) */
-@media (prefers-reduced-motion:no-preference) and (hover:hover){:is(main > :is(.optics, .design, .compare)) :is(.tile, .cell){transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}:is(main > :is(.optics, .design, .compare)) :is(.tile, .cell):hover{transform:translateY(-3px)}}
-/* responsive: keep top and bottom edges, drop the side inset and the radius on small screens */
-@media (max-width:640px){:root{--unflat-inset:0px;--unflat-card-shadow:var(--unflat-card-shadow-narrow)}:is(main > :is(.optics, .design, .compare)){border-left:0;border-right:0;border-radius:0}}
-/* print: paper is already a surface */
-@media print{html{background:#fff}body::before,body::after,:is(main > .design)::after,:is(main > .compare)::after{display:none}:is(main > :is(.optics, .design, .compare)),:is(main > .compare){box-shadow:none;border-color:transparent;background:none}:is(main > :is(.optics, .design, .compare)) :is(.tile, .cell){box-shadow:none}}
-/* unflat: end */
+/* two faint rings, the lens motif, fixed behind everything */
+body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(circle at 82% 18%,transparent 0 22vw,rgba(47,107,230,.09) 22vw,transparent calc(22vw + 1.5px)),
+    radial-gradient(circle at 82% 18%,transparent 0 31vw,rgba(47,107,230,.07) 31vw,transparent calc(31vw + 1.5px)),
+    radial-gradient(circle at 10% 88%,transparent 0 16vw,rgba(47,107,230,.07) 16vw,transparent calc(16vw + 1.5px))}
+/* the sheets: every content section becomes a white panel mounted on the ground; the hero and the aperture stay on the ground */
+.gallery,.optics,.design,.compare{container:panel / inline-size;position:relative;width:min(100% - 2*var(--inset),1360px);margin:var(--inset) auto;border-radius:28px;background:var(--sheet);border:1px solid rgba(28,28,30,.08);box-shadow:var(--shadow);overflow:clip}
+.gallery::before,.optics::before,.design::before,.compare::before{content:'';position:absolute;left:12%;right:12%;top:0;height:2px;background:linear-gradient(90deg,transparent,rgba(47,107,230,.55),transparent)}
+.design{background:linear-gradient(180deg,var(--sheet-2),#eef1f8)}
+.compare{margin-bottom:calc(var(--inset) * 2)}
+/* content keeps the header's grid when the sheet is narrower than the container */
+@container panel (max-width:1199px){.wrap{padding-inline:calc(var(--pad) - var(--inset))}}
+/* a soft blue field behind the lens, a warm one behind the photographs */
+.optics::after{content:'';position:absolute;right:-8%;top:6%;width:46%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(47,107,230,.12),rgba(47,107,230,0) 62%);pointer-events:none}
+.gallery::after{content:'';position:absolute;left:-10%;bottom:-30%;width:40%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,176,120,.16),rgba(255,176,120,0) 62%);pointer-events:none}
+.optics .wrap,.gallery .wrap{position:relative}
+/* tiles and cells sit up on the sheets */
+.tile{background:#f7f8fb;border-color:rgba(28,28,30,.06);transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s}
+.tile:hover{transform:translateY(-3px);box-shadow:0 18px 40px -24px rgba(30,40,70,.35)}
+.design .cell{background:#fff;border-color:rgba(28,28,30,.06);box-shadow:0 14px 34px -22px rgba(30,40,70,.30);transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.design .cell:hover{transform:translateY(-3px)}
+.gallery .photo{box-shadow:0 20px 44px -28px rgba(30,40,70,.4)}
+.gallery .photo img{transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.gallery figure:hover img{transform:scale(1.04)}
+.compare .table{border:0;background:#fff}
+thead th{background:linear-gradient(180deg,#fff,#f7f8fb)}
+tbody tr.group > *{border-top-color:rgba(47,107,230,.18)}
+/* the aperture section, on the ground: a ring of light around the iris */
+.iris{box-shadow:0 0 0 12px rgba(255,255,255,.7),0 0 0 13px rgba(28,28,30,.06),0 50px 100px -50px rgba(30,40,70,.45)}
+.aperture .wrap{position:relative}
+.aperture .wrap::before{content:'';position:absolute;left:-6%;top:50%;width:52%;aspect-ratio:1;border-radius:50%;translate:0 -50%;background:radial-gradient(circle,rgba(47,107,230,.10),rgba(47,107,230,0) 60%);pointer-events:none;z-index:-1}
+/* the hero: a pool of light under the camera */
+.cam-stage::before{content:'';position:absolute;left:50%;top:50%;width:80%;aspect-ratio:1;border-radius:50%;translate:-50% -50%;background:radial-gradient(circle,rgba(255,255,255,.9),rgba(255,255,255,0) 62%);z-index:-1;pointer-events:none}
+/* motion: the lens ring turns a few degrees as it scrolls by */
+@supports (animation-timeline:view()){
+  .lensmacro .lm-ring{animation:turn linear both;animation-timeline:view();animation-range:entry 0% exit 100%}
+}
+@keyframes turn{from{rotate:-8deg}to{rotate:8deg}}
+@media (prefers-reduced-motion:reduce){.lensmacro .lm-ring{animation:none}.tile,.design .cell,.gallery .photo img{transition:none}}
+/* the header and footer stay on the ground */
+.hdr{background:rgba(236,238,243,.82)}
+.ftr{border-top:0}
+@media (max-width:640px){:root{--inset:0px}.gallery,.optics,.design,.compare{border-radius:0;border-left:0;border-right:0}}
+/* redesign: end */
 </style>
 </head>
 <body>

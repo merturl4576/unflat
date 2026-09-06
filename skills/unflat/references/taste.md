@@ -59,12 +59,13 @@ Inside a mounted surface, the site's cards, tiles and cells read as a second lev
 |---|---|---|
 | `--unflat-card` | the surface base mixed 30% toward the ground, e.g. `color-mix(in oklab, var(--unflat-surface-bottom), var(--unflat-ground) 30%)` | surface-top lightened 2% L, e.g. `color-mix(in oklab, var(--unflat-surface-top), white 2%)` |
 | `--unflat-card-shadow` | `0 14px 34px -22px <ink at .30>` | `0 14px 34px -22px rgba(0,0,0,.6)` |
+| `--unflat-card-shadow-narrow` | `0 6px 14px -10px <ink at .16>` | `0 6px 14px -10px rgba(0,0,0,.33)` |
 
-`CARD` is the site's card selector (`.card`, `.tile`, `.cell`, `article`), comma-separated when there are several. Only cards inside SURFACE change; a card on the ground keeps its own look. When the site has no cards, delete rule 4c.
+On screens under 640px the cards stack full-width, and the desktop shadow reads as cards floating off the page; the recipe swaps in `--unflat-card-shadow-narrow` there (a user report, v1.2.1). `CARD` is the site's card selector (`.card`, `.tile`, `.cell`, `article`), comma-separated when there are several. Only cards inside SURFACE change; a card on the ground keeps its own look. When the site has no cards, delete rule 4c.
 
 ## 6. Motion
 
-The block adds one motion and nothing else: cards inside a surface lift 3px on hover, 350ms, `cubic-bezier(.16,1,.3,1)`, under `prefers-reduced-motion: no-preference`. No animation on load, nothing on scroll: those belong to the site, not to a layer that must be deletable. If the site already lifts its cards on hover, delete rule 6 rather than doubling it.
+The block adds one motion and nothing else: cards inside a surface lift 3px on hover, 350ms, `cubic-bezier(.16,1,.3,1)`, under `prefers-reduced-motion: no-preference` and `(hover: hover)`, so touch screens never see a lift. No animation on load, nothing on scroll: those belong to the site, not to a layer that must be deletable. If the site already lifts its cards on hover, delete rule 6 rather than doubling it.
 
 Optional, only when the page has one large still visual (a product render, a device, a lens) and no scroll effects of its own: a two-degree turn or a 2% drift tied to scroll, on that one element, using a `view()` timeline inside `@supports (animation-timeline: view())` and the same reduced-motion guard. One element, one property. Write it below rule 6 and mention it in the report.
 

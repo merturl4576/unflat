@@ -1,5 +1,5 @@
 /* unflat: start */
-/* unflat v1.2 — ground + light + surfaces + taste, derived from this site's own tokens.
+/* unflat v1.2.1 — ground + light + surfaces + taste, derived from this site's own tokens.
    Delete everything between the start and end markers to revert.
    Placeholders to replace per selectors.md and taste.md: SURFACE (the mounted sections only — a third to two-thirds of the top-level sections, never the hero, never every section; always inside :is()), GLOW (the one surface that carries the accent glow), .wrap (the container class), FIELD1 and FIELD2 (one surface each, the washes), CARD (the site's card selector) and MOTIF (a background value from taste.md). Every selector token sits inside :is(), so a comma list or a selector with combinators drops in unchanged. A rule whose placeholder has no target on this site is deleted, not left with the placeholder, and the same token is removed from the print rule at the end.
    The inline comments and default values describe the plate material; other materials override per materials.md. */
@@ -24,6 +24,7 @@
   --unflat-motif:rgba(236,231,223,.06);         /* motif stroke: text at .06 (dark) / accent at .06–.09 (light) */
   --unflat-card:#1e1d1c;                        /* cards on a surface: surface-top +2% L (dark) / surface base mixed 30% toward the ground (light) */
   --unflat-card-shadow:0 14px 34px -22px rgba(0,0,0,.6);   /* light themes: ink at .30 */
+  --unflat-card-shadow-narrow:0 6px 14px -10px rgba(0,0,0,0.33);   /* the same shadow on narrow screens: tighter and lighter, so stacked cards do not float */
 }
 /* 1. ground — painted on the canvas so the fixed light layer can sit above it */
 html{background:var(--unflat-ground)}
@@ -53,10 +54,10 @@ body::after{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;bac
 /* 4c. cards on a surface — the site's cards read as a second level (taste.md §5); delete when the site has no cards */
 :is(SURFACE) :is(CARD){background:var(--unflat-card);box-shadow:var(--unflat-card-shadow)}
 /* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own container rule (e.g. `.section .container{padding:0 24px}`); outside the compensation band it equals the site's padding, so nothing else changes. */ :is(SURFACE) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
-/* 6. motion — the one thing that moves: cards on a surface lift on hover (taste.md §6); delete when the site already lifts its cards */
-@media (prefers-reduced-motion:no-preference){:is(SURFACE) :is(CARD){transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}:is(SURFACE) :is(CARD):hover{transform:translateY(-3px)}}
-/* responsive: keep top and bottom edges, drop the side inset and the radius on small screens */
-@media (max-width:640px){:root{--unflat-inset:0px}:is(SURFACE){border-left:0;border-right:0;border-radius:0}}
+/* 6. motion — the one thing that moves: cards on a surface lift on hover, for pointers that can hover (taste.md §6); delete when the site already lifts its cards */
+@media (prefers-reduced-motion:no-preference) and (hover:hover){:is(SURFACE) :is(CARD){transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1)}:is(SURFACE) :is(CARD):hover{transform:translateY(-3px)}}
+/* responsive: keep top and bottom edges, drop the side inset and the radius on small screens; cards fall back to the narrow shadow */
+@media (max-width:640px){:root{--unflat-inset:0px;--unflat-card-shadow:var(--unflat-card-shadow-narrow)}:is(SURFACE){border-left:0;border-right:0;border-radius:0}}
 /* print: paper is already a surface */
 @media print{html{background:#fff}body::before,body::after,:is(FIELD1)::after,:is(FIELD2)::after{display:none}:is(SURFACE),:is(GLOW){box-shadow:none;border-color:transparent;background:none}:is(SURFACE) :is(CARD){box-shadow:none}}
 /* unflat: end */
