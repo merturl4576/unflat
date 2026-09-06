@@ -153,6 +153,11 @@ section{padding-block:clamp(72px,9vw,136px)}
 .lm-stops{position:absolute;left:50%;top:50%;width:0;height:0}
 .lm-stops span{position:absolute;left:0;top:0;font-family:var(--mono);font-size:.95em;font-weight:500;color:#e6e8ee;transform:translate(-50%,-50%) rotate(var(--a)) translateY(7.4em)}
 .lm-mark{position:absolute;left:50%;top:50%;width:.28em;height:1.2em;background:var(--accent);border-radius:.14em;transform:translate(-50%,-50%) translateY(9.6em)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes tumble{0%{transform:translateY(0) rotateX(6deg) rotateY(-18deg) rotateZ(0) scale(1);opacity:1}55%{opacity:1}100%{transform:translateY(62vh) rotateX(18deg) rotateY(38deg) rotateZ(-18deg) scale(.66);opacity:0}}
+@keyframes para{from{transform:translateY(-5%) scale(1.12)}to{transform:translateY(5%) scale(1.12)}}
+@keyframes shadowfade{0%{opacity:1;scale:1}100%{opacity:0;scale:.6}}
+@keyframes copyfade{0%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-40px)}}
 @media (max-width:1100px){.cam-stage .cam3d{font-size:13px}}
 @media (max-width:700px){.cam-stage .cam3d{font-size:9.5px}}
 
