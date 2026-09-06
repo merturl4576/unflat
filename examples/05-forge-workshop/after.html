@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ash & Iron — hand-forged kitchen knives, Sheffield</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@300;500;700;800&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#16110e;--bg-2:#1d1712;--ink:#efe6da;--ink-2:#b6a692;--ink-3:#7f7263;
+  --line:rgba(239,230,218,.09);--line-2:rgba(239,230,218,.2);
+  --accent:#ff6a1f;--accent-2:#ffb454;
+  --pad:clamp(20px,4vw,48px);--max:1180px;--radius:4px;
+  --display:'Big Shoulders Display','Arial Narrow',sans-serif;
+  --body:'Instrument Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent-2);outline-offset:3px}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:700;line-height:.95;letter-spacing:.005em;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--pad)}
+.mono{font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border:1px solid var(--line-2);border-radius:var(--radius);font:500 15px/1 var(--body);color:var(--ink);white-space:nowrap}
+.btn-p{background:var(--accent);border-color:var(--accent);color:#1a0d05}
+.btn-p:hover{background:#ff7d3b}
+.btn:not(.btn-p):hover{border-color:var(--ink-2)}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+
+/* header */
+header{position:sticky;top:0;z-index:10;background:rgba(22,17,14,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;gap:36px;height:64px}
+.brand{font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:.02em;line-height:1}
+.brand small{display:block;font:400 11px/1 var(--mono);color:var(--ink-3);letter-spacing:.08em;margin-top:5px}
+header nav{display:flex;gap:26px;font-size:15px;color:var(--ink-2)}
+header nav a:hover{color:var(--ink)}
+header .spacer{flex:1}
+header .btn{padding:11px 16px;font-size:14px}
+
+main>section{padding-block:clamp(72px,9vw,128px)}
+
+/* hero */
+.hero .wrap{display:grid;grid-template-columns:1.02fr 1fr;gap:clamp(32px,5vw,72px);align-items:end}
+.hero h1{font-size:clamp(56px,6.6vw,98px);font-weight:800;line-height:.9;max-width:11ch}
+.hero .lead{margin-top:28px;font-size:19px;line-height:1.55;color:var(--ink-2);max-width:44ch}
+.hero .row{margin-top:36px}
+.hero .log{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);max-width:52ch}
+.hero .photo{position:relative}
+.hero .photo .frame{aspect-ratio:3/2;border-radius:var(--radius);overflow:hidden}
+.spec{position:absolute;left:-24px;bottom:-24px;width:min(320px,80%);padding:18px 20px;background:var(--bg-2);border:1px solid var(--line-2);border-radius:var(--radius)}
+.spec b{display:block;font:500 12px/1 var(--mono);color:var(--accent-2);letter-spacing:.08em;margin-bottom:12px}
+.spec dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:7px 18px;font-family:var(--mono);font-size:12.5px}
+.spec dt{color:var(--ink-3)}
+.spec dd{margin:0;text-align:right;color:var(--ink)}
+
+/* manifesto */
+.manifesto .wrap{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(40px,6vw,96px);align-items:start}
+.manifesto .kicker{color:var(--accent);font:500 13px/1 var(--mono);letter-spacing:.06em;margin-bottom:22px}
+.manifesto .big{font-family:var(--display);font-weight:300;font-size:clamp(34px,4.2vw,58px);line-height:1.04;color:var(--ink);text-wrap:pretty}
+.manifesto .big em{font-style:normal;font-weight:700}
+.manifesto p.text{margin-top:26px;color:var(--ink-2);max-width:56ch}
+.facts{display:grid;gap:0;border-top:1px solid var(--line-2)}
+.facts div{display:flex;align-items:baseline;justify-content:space-between;gap:20px;padding:20px 0;border-bottom:1px solid var(--line)}
+.facts strong{font-family:var(--display);font-weight:700;font-size:44px;line-height:1;letter-spacing:.01em}
+.facts strong i{font-style:normal;font-size:18px;color:var(--ink-2);margin-left:6px}
+.facts span{color:var(--ink-3);font-size:14px;text-align:right;max-width:20ch}
+
+/* section heads */
+.sec-h{display:flex;align-items:end;justify-content:space-between;gap:32px;margin-bottom:40px;flex-wrap:wrap}
+.sec-h h2{font-size:clamp(40px,5.2vw,68px);max-width:14ch}
+.sec-h p{color:var(--ink-2);max-width:46ch;font-size:16px}
+
+/* process */
+.steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card-img{position:relative;aspect-ratio:4/3;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
+.card-img .cap{position:absolute;inset:auto 0 0 0;padding:26px 22px 22px;background:linear-gradient(180deg,rgba(22,17,14,0),rgba(22,17,14,.88) 45%,rgba(22,17,14,.95))}
+.card-img h3{font-size:34px}
+.card-img .cap p{margin-top:10px;color:var(--ink-2);font-size:15px;line-height:1.5;max-width:34ch}
+.card-img .cap .mono{margin-bottom:10px;color:var(--accent-2)}
+
+/* knives */
+.knives-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.knife{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--bg)}
+.knife .pic{aspect-ratio:4/5}
+.knife .body{padding:18px 18px 20px;display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:baseline}
+.knife h3{font-size:30px;grid-column:1}
+.knife .price{font-family:var(--display);font-weight:500;font-size:26px;text-align:right}
+.knife .meta{grid-column:1/-1;color:var(--ink-3);font-size:14px}
+.knife .order{grid-column:1/-1;margin-top:10px;font-size:14px;font-weight:500;color:var(--accent-2)}
+.knife .tag{grid-column:1/-1;font:500 11.5px/1 var(--mono);color:var(--accent);letter-spacing:.06em}
+
+/* steel */
+.steel-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.steel{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.steel .tex{aspect-ratio:3/4;border-bottom:1px solid var(--line)}
+.steel .body{padding:16px 16px 18px}
+.steel h3{font-size:26px}
+.steel .body>p{margin-top:8px;color:var(--ink-2);font-size:14px;line-height:1.45;min-height:3.9em}
+.steel dl{margin:14px 0 0;display:grid;grid-template-columns:auto 1fr;gap:5px 10px;font-family:var(--mono);font-size:11.5px}
+.steel dt{color:var(--ink-3)}
+.steel dd{margin:0;text-align:right}
+
+/* bench */
+.bench .wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(32px,5vw,72px);align-items:center}
+.bench .photo{aspect-ratio:16/10;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line)}
+.bench h2{font-size:clamp(40px,5vw,64px);margin-bottom:12px}
+.bench .intro{color:var(--ink-2);max-width:44ch;margin-bottom:28px}
+.timeline{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-2)}
+.timeline li{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line)}
+.timeline .n{font-family:var(--display);font-weight:700;font-size:26px;color:var(--accent)}
+.timeline b{font-weight:600;font-size:16px}
+.timeline b small{display:block;font-weight:400;color:var(--ink-3);font-size:14px;margin-top:2px}
+.timeline .t{font-family:var(--mono);font-size:12.5px;color:var(--ink-3);white-space:nowrap}
+
+/* commission */
+.commission .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(32px,5vw,72px);align-items:center;padding-block:clamp(40px,5vw,64px)}
+.commission h2{font-size:clamp(48px,6vw,84px)}
+.commission p{margin-top:20px;color:var(--ink-2);max-width:48ch}
+.commission .row{margin-top:32px}
+.commission .note{justify-self:end;width:min(360px,100%);padding:22px 24px;border:1px solid var(--line-2);border-radius:var(--radius)}
+.commission .note b{display:block;font:500 12px/1 var(--mono);color:var(--accent-2);letter-spacing:.08em;margin-bottom:14px}
+.commission .note ul{margin:0;padding-left:18px;color:var(--ink-2);font-size:15px;line-height:1.55}
+
+footer{border-top:1px solid var(--line);padding-block:36px;color:var(--ink-3);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+footer nav{display:flex;gap:22px}
+footer nav a:hover{color:var(--ink)}
+
+@media(max-width:1100px){
+  .knives-grid{grid-template-columns:repeat(2,1fr)}
+  .steel-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:900px){
+  .hero .wrap,.manifesto .wrap,.bench .wrap,.commission .wrap{grid-template-columns:1fr}
+  .hero .photo{margin-top:12px}
+  .spec{left:16px;bottom:16px}
+  .steps3{grid-template-columns:1fr}
+  .card-img{aspect-ratio:16/10}
+  .commission .note{justify-self:start}
+  header nav{display:none}
+}
+@media(max-width:600px){
+  .knives-grid,.steel-grid{grid-template-columns:1fr}
+  .steel .tex{aspect-ratio:16/9}
+  header .btn{display:none}
+}
+/* unflat: start */
+:root{
+  --unflat-ground:#0f0b08;                      /* page-bg −3% L; tinted toward the accent only when the hues differ by more than 30° (here 10.3°, untinted) */
+  --unflat-surface-top:#201b18;                 /* surface top: surface base +2.5% L */
+  --unflat-surface-bottom:#1b1512;              /* surface base: page-bg +2% L */
+  --unflat-edge:rgba(239,230,218,.10);          /* lit top border: text (--ink) at 10% */
+  --unflat-line:var(--line);                    /* the site's own line token */
+  --unflat-lightline:rgba(239,230,218,.22);     /* centered 1px light-line: text (--ink) at .22 */
+  --unflat-shadow:0 40px 90px -50px rgba(0,0,0,.9),0 2px 0 rgba(0,0,0,.55);
+  --unflat-glow:0 60px 140px -70px rgba(255,106,31,.38);   /* accent (--accent) at .38, one surface only */
+  --unflat-light:rgba(255,196,150,.075);        /* directional light, top-left, warm palette */
+  --unflat-vignette:rgba(0,0,0,.45);            /* opposite corner */
+  --unflat-inset:clamp(8px,1.6vw,24px);         /* surface inset from the viewport edge */
+  --unflat-gap:clamp(14px,2vw,28px);            /* breathing room between surfaces */
+  --unflat-pad:var(--pad);                      /* container horizontal padding token */
+  --unflat-max:var(--max);                      /* container outer max-width token (border-box) */
+}
+/* 1. ground — painted on the canvas so the fixed light layer can sit above it */
+html{background:var(--unflat-ground)}
+body{background:transparent}
+/* 2 + 3. light and texture — one fixed layer behind all content */
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(130% 90% at 12% -15%,var(--unflat-light) 0%,transparent 58%),
+    radial-gradient(100% 80% at 100% 110%,var(--unflat-vignette) 0%,transparent 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 .93  0 0 0 0 .84  0 0 0 .16 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
+  background-size:auto,auto,220px 220px}
+/* 4. surfaces — mounted, lit from the top, shadow below */
+:is(main > section){position:relative;margin-inline:var(--unflat-inset);
+  background:linear-gradient(180deg,var(--unflat-surface-top) 0%,var(--unflat-surface-bottom) 100%);
+  border:1px solid var(--unflat-line);border-top-color:var(--unflat-edge);
+  box-shadow:var(--unflat-shadow)}
+:is(main > section)::before{content:'';position:absolute;left:8%;right:8%;top:-1px;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,var(--unflat-lightline),transparent)}
+:is(main > section) + :is(main > section){margin-top:var(--unflat-gap)}
+:is(main > section:last-child){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
+/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own container rule (e.g. `.section .container{padding:0 24px}`); outside the compensation band it equals the site's padding, so nothing else changes. */ :is(main > section) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
+/* responsive: keep top and bottom edges, drop the side inset on small screens */
+@media (max-width:640px){:root{--unflat-inset:0px}:is(main > section){border-left:0;border-right:0}}
+/* print: paper is already a surface */
+@media print{html{background:#fff}body::before{display:none}:is(main > section),:is(main > section:last-child){box-shadow:none;border-color:transparent;background:none}}
+/* unflat: end */
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="brand" href="#">Ash &amp; Iron<small>SHEFFIELD, SINCE 2019</small></a>
+    <nav><a href="#knives">Knives</a><a href="#steel">Steel</a><a href="#bench">Workshop</a><a href="#commission">Commission</a><a href="#">Journal</a></nav>
+    <span class="spacer"></span>
+    <a class="btn btn-p" href="#commission">Commission a knife</a>
+  </div>
+</header>
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1>A knife you'll sharpen for thirty years.</h1>
+        <p class="lead">Hand-forged kitchen knives from a two-person workshop on Kelham Island. Carbon steel, walnut or oak, thin behind the edge. Twelve a month, no more.</p>
+        <div class="row"><a class="btn btn-p" href="#knives">See the knives</a><a class="btn" href="#bench">How we forge</a></div>
+        <p class="log mono">At the forge this week: batch 07, 52100 steel. Six blades normalised, two handles glued, one gyuto waiting for its final edge.</p>
+      </div>
+      <div class="photo">
+        <div class="frame"><img src="img/hero.jpg" alt="A hand-forged chef's knife with a walnut handle on black slate, lit by the forge" width="1600" height="1074"></div>
+        <div class="spec">
+          <b>GYUTO 210, BATCH 07</b>
+          <dl>
+            <dt>Steel</dt><dd>52100</dd>
+            <dt>Hardness</dt><dd>62 HRC</dd>
+            <dt>Behind the edge</dt><dd>1.2 mm</dd>
+            <dt>Handle</dt><dd>Walnut, brass pin</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="manifesto">
+    <div class="wrap">
+      <div>
+        <p class="kicker">One bar, one fire, one knife</p>
+        <p class="big">We don't stamp blanks. Every blade starts as a bar of steel, goes into the fire, and comes out <em>the shape your hand asked for.</em> Then it spends three weeks at the bench until it's thin, straight and quiet in the cut.</p>
+        <p class="text">The steel is chosen for how it holds an edge, not for how it looks. The handle is shaped after the blade, to the balance of that blade. Nothing is finished until we've cut an onion with it.</p>
+      </div>
+      <div class="facts">
+        <div><strong>12</strong><span>knives a month, made to order</span></div>
+        <div><strong>62<i>HRC</i></strong><span>hardness after a two-stage temper</span></div>
+        <div><strong>1.2<i>mm</i></strong><span>behind the edge, measured on every blade</span></div>
+        <div><strong>8<i>weeks</i></strong><span>from your first email to the post</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="process" id="process">
+    <div class="wrap">
+      <div class="sec-h"><h2>Three days in the fire, three weeks at the bench.</h2><p>The fire is fast and loud. The bench is slow and quiet. A knife needs both, in that order.</p></div>
+      <div class="steps3">
+        <div class="card-img"><img src="img/forge.jpg" alt="A bladesmith hammering glowing steel on an anvil, sparks flying" width="1200" height="896">
+          <div class="cap"><p class="mono">DAY ONE</p><h3>Forge</h3><p>The bar is drawn out and bevelled by hammer at a dull orange, so the grain follows the edge instead of crossing it.</p></div></div>
+        <div class="card-img"><img src="img/grind.jpg" alt="A blade on a belt grinder throwing a fan of sparks" width="1200" height="896">
+          <div class="cap"><p class="mono">DAY TWO</p><h3>Grind</h3><p>Flat on a 2×72 belt, then by hand on stones. We stop at 1.2 mm behind the edge and check it with a caliper, every time.</p></div></div>
+        <div class="card-img"><img src="img/handle.jpg" alt="Hands sanding a walnut knife handle under a lamp" width="1200" height="896">
+          <div class="cap"><p class="mono">WEEKS TWO AND THREE</p><h3>Handle</h3><p>Walnut or oak, shaped to the balance of the finished blade, oiled six times and left to cure before it meets a cutting board.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="knives" id="knives">
+    <div class="wrap">
+      <div class="sec-h"><h2>The knives</h2><p>Four shapes, made to order. Each one is forged from a single bar and posted with a sharpening card and a coat of camellia oil.</p></div>
+      <div class="knives-grid">
+        <article class="knife">
+          <div class="pic"><img src="img/knife-gyuto.jpg" alt="Gyuto 210 on black slate" width="900" height="1125"></div>
+          <div class="body"><h3>Gyuto 210</h3><span class="price">£420</span><p class="meta">52100 steel, walnut handle, 210 mm blade. The one most kitchens want first.</p><p class="tag">MOST ORDERED</p><a class="order" href="#commission">Order this shape</a></div>
+        </article>
+        <article class="knife">
+          <div class="pic"><img src="img/knife-santoku.jpg" alt="Santoku 165 on black slate" width="900" height="1125"></div>
+          <div class="body"><h3>Santoku 165</h3><span class="price">£360</span><p class="meta">AEB-L stainless, oak handle, 165 mm blade. Flat profile for a push cut.</p><a class="order" href="#commission">Order this shape</a></div>
+        </article>
+        <article class="knife">
+          <div class="pic"><img src="img/knife-petty.jpg" alt="Petty 120 on black slate" width="900" height="1125"></div>
+          <div class="body"><h3>Petty 120</h3><span class="price">£240</span><p class="meta">1084 steel, walnut handle, 120 mm blade. For everything the big knife is too big for.</p><a class="order" href="#commission">Order this shape</a></div>
+        </article>
+        <article class="knife">
+          <div class="pic"><img src="img/knife-cleaver.jpg" alt="Vegetable cleaver on black slate" width="900" height="1125"></div>
+          <div class="body"><h3>Cleaver 180</h3><span class="price">£390</span><p class="meta">San mai, oak handle, 180 mm blade with the forge scale left on. Heavy where it should be.</p><a class="order" href="#commission">Order this shape</a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="steel" id="steel">
+    <div class="wrap">
+      <div class="sec-h"><h2>Five steels, one thickness behind the edge.</h2><p>Pick by how you cook and how you look after your knives, not by the name. We'll tell you honestly which one suits.</p></div>
+      <div class="steel-grid">
+        <div class="steel"><div class="tex"><img src="img/steel-52100.jpg" alt="" width="480" height="640"></div><div class="body"><h3>52100</h3><p>Bearing steel. Takes a keen edge and keeps it. Rusts if you leave it wet.</p><dl><dt>Edge</dt><dd>Very high</dd><dt>Toughness</dt><dd>High</dd><dt>Care</dt><dd>Dry after use</dd></dl></div></div>
+        <div class="steel"><div class="tex"><img src="img/steel-1084.jpg" alt="" width="480" height="640"></div><div class="body"><h3>1084</h3><p>Plain carbon. Simple, forgiving, easy to sharpen on any stone.</p><dl><dt>Edge</dt><dd>High</dd><dt>Toughness</dt><dd>Very high</dd><dt>Care</dt><dd>Dry after use</dd></dl></div></div>
+        <div class="steel"><div class="tex"><img src="img/steel-aebl.jpg" alt="" width="480" height="640"></div><div class="body"><h3>AEB-L</h3><p>Fine-grained stainless. The one for a busy kitchen that won't dry its knives.</p><dl><dt>Edge</dt><dd>High</dd><dt>Toughness</dt><dd>High</dd><dt>Care</dt><dd>None</dd></dl></div></div>
+        <div class="steel"><div class="tex"><img src="img/steel-damascus.jpg" alt="" width="480" height="640"></div><div class="body"><h3>Damascus</h3><p>Layers of 1084 and 15N20, etched. Cuts like 1084 and shows its work.</p><dl><dt>Edge</dt><dd>High</dd><dt>Toughness</dt><dd>High</dd><dt>Care</dt><dd>Dry, oil weekly</dd></dl></div></div>
+        <div class="steel"><div class="tex"><img src="img/steel-sanmai.jpg" alt="" width="480" height="640"></div><div class="body"><h3>San mai</h3><p>A hard core wrapped in soft iron. Thin at the edge, calm everywhere else.</p><dl><dt>Edge</dt><dd>Very high</dd><dt>Toughness</dt><dd>Very high</dd><dt>Care</dt><dd>Dry after use</dd></dl></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bench" id="bench">
+    <div class="wrap">
+      <div class="photo"><img src="img/workshop.jpg" alt="The workshop at night: anvil, forge glowing, tools on the wall" width="1600" height="900"></div>
+      <div>
+        <h2>From bar to blade</h2>
+        <p class="intro">Five stages, always in the same order. If a blade fails a check, it goes back a stage, not forward.</p>
+        <ol class="timeline">
+          <li><span class="n">1</span><b>Normalise<small>three heat cycles to refine the grain</small></b><span class="t">Day 1</span></li>
+          <li><span class="n">2</span><b>Forge to shape<small>drawn out by hammer, bevels set hot</small></b><span class="t">Day 1</span></li>
+          <li><span class="n">3</span><b>Grind<small>2×72 belt, then stones to 1.2 mm</small></b><span class="t">Day 2</span></li>
+          <li><span class="n">4</span><b>Heat-treat<small>quench in fast oil, two tempers, hardness checked</small></b><span class="t">Day 3</span></li>
+          <li><span class="n">5</span><b>Handle and edge<small>fitted, oiled, cured, then the final edge on stones</small></b><span class="t">Weeks 2 to 3</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="commission" id="commission">
+    <div class="wrap">
+      <div>
+        <h2>Commission a knife.</h2>
+        <p>Tell us what you cook and how you sharpen. We'll suggest a shape, a steel and a handle, and send you a drawing before we light the forge. Lead time is eight weeks.</p>
+        <div class="row"><a class="btn btn-p" href="#">Start a commission</a><a class="btn" href="#">Email the workshop</a></div>
+      </div>
+      <div class="note">
+        <b>WHAT YOU GET</b>
+        <ul><li>One knife, forged and finished by hand</li><li>A sharpening card for its steel</li><li>Free resharpening for life, postage both ways</li><li>A drawing to keep</li></ul>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>Ash &amp; Iron, Unit 4, Kelham Island, Sheffield. Made in batches of twelve.</span>
+    <nav><a href="#knives">Knives</a><a href="#steel">Steel</a><a href="#bench">Workshop</a><a href="#">Journal</a><a href="#">Contact</a></nav>
+  </div>
+</footer>
+</body>
+</html>

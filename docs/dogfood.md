@@ -38,6 +38,14 @@ The final whole-branch review changed two things in the alignment rule: `--unfla
 |---|---|---|---|---|---|
 | re-run 2 | 03-dark-saas | glass | PASS | ACCEPT — every `--unflat-*` value identical to the previous re-run; the compensation now skips the `.cta` card (`:is(main > section):not(.cta) > .wrap`), which keeps its padding symmetric (56px on every side at 1440); the run put the glow on the CTA instead of the pricing grid (it judged the Team tier's filled button not a featured tier — a call the skill leaves open); alignment 0/+1/0 px at 1440, 1100 and 390 | — |
 
+## Showcase demo
+
+After publishing, a fifth demo was added to show the block on a page with photographs: `05-forge-workshop`, a dark craft site with fourteen images. Its `after.html` was produced the same way as the others, by a fresh mid-tier agent following `SKILL.md`.
+
+| Run | Demo | Material chosen | Checker | Review verdict | Skill change made |
+|---|---|---|---|---|---|
+| showcase | 05-forge-workshop | plate | PASS | ACCEPT — ground −3% L untinted (accent hue 10° from the background's), surfaces +1.9/+4.4% L; glow on the commission section (the page's call to action); alignment 0/+1/0 px at 1440, 1100 and 390; images untouched (`filter: none`, opaque surfaces under every photograph, grain visible only in the ground gaps); block strips back to before.html byte-for-byte | — |
+
 ## What the runs taught the skill
 
 - Prose instructions about whitespace do not survive contact with a model; the insertion is now a one-line script.

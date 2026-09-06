@@ -4,9 +4,15 @@
 
 One CSS block that gives a single-tone page a ground, one light source and mounted surfaces, derived from the site's own colors. No markup changes. Delete the block to revert.
 
-![Two flat pages, then the same pages sitting on a ground with mounted, lit surfaces](assets/hero.gif)
+![MIT license](https://img.shields.io/badge/license-MIT-3a3632) ![Agent Skill](https://img.shields.io/badge/Agent%20Skill-SKILL.md-ff6a1f) ![No dependencies](https://img.shields.io/badge/dependencies-none-3a3632)
 
-[Live gallery with draggable before/after sliders →](https://merturl4576.github.io/unflat/gallery/)
+![A flat workshop site, then the same page on a ground with mounted, lit surfaces](assets/hero.gif)
+
+```bash
+npx skills add merturl4576/unflat
+```
+
+Then tell your agent: *"This page looks flat. Use the unflat skill."* [Live gallery with draggable before/after sliders →](https://merturl4576.github.io/unflat/gallery/)
 
 ## The problem
 
@@ -63,6 +69,13 @@ Neutral fallbacks: plate for dark, paper for light. Glass is never a default.
 
 Full-page tops at 1440 px: the flat page on the left, the same page with the block on the right. Nothing else changed. Open the [gallery](https://merturl4576.github.io/unflat/gallery/) to drag the seam yourself.
 
+**Ash & Iron, forge workshop → plate**
+
+![Ash & Iron before and after: plate](assets/05-compare.png)
+
+<details>
+<summary>Four more: dark workshop, light editorial, dark SaaS, backlit brand</summary>
+
 **Ferro & Grain, dark workshop → plate**
 
 ![Ferro & Grain before and after: plate](assets/01-compare.png)
@@ -78,6 +91,8 @@ Full-page tops at 1440 px: the flat page on the left, the same page with the blo
 **HALOGEN, backlit brand → backlit**
 
 ![HALOGEN before and after: backlit](assets/04-compare.png)
+
+</details>
 
 Every `after.html` in `examples/` is `before.html` plus the block and nothing else. `node scripts/check-examples.mjs` proves it. The after pages were produced by the skill itself, not by hand.
 
@@ -111,6 +126,8 @@ Sites built by an agent tend to share one tell: every section sits on the same s
 ## Contributing
 
 New materials are welcome. A material is a table of `--unflat-*` values, a domain list for the decision table and an override snippet; see the end of `skills/unflat/references/materials.md`. Add a demo pair under `examples/` and run `node scripts/check-examples.mjs`.
+
+If unflat made a page of yours look built, a star helps the next person find it.
 
 ## License
 

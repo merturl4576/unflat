@@ -88,9 +88,10 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
   <section>
     <div class="wrap">
       <h1>Same HTML. One CSS block.</h1>
-      <p class="lead">Drag the handle. The left side is the flat page, the right side is the same file with the unflat block appended. Nothing else changed; the diff under each demo is the entire change.</p>
+      <p class="lead">Drag the handle to move the seam, or use the arrow keys. Scroll inside a box to move down the page; both sides scroll together. The left side is the flat page, the right side is the same file with the unflat block appended. Nothing else changed; the diff under each demo is the entire change.</p>
     </div>
   </section>
+  <section><div class="wrap demo" data-demo="05-forge-workshop"><h2>Ash &amp; Iron — forge workshop</h2><div class="meta"><span>material: <code>plate</code></span><span>warm brown-black, ember accent, photographs</span></div></div></section>
   <section><div class="wrap demo" data-demo="01-dark-workshop"><h2>Ferro &amp; Grain — dark workshop</h2><div class="meta"><span>material: <code>plate</code></span><span>warm dark, brass accent</span></div></div></section>
   <section><div class="wrap demo" data-demo="02-light-editorial"><h2>Margin — light editorial</h2><div class="meta"><span>material: <code>paper</code></span><span>paper white, vermilion accent</span></div></div></section>
   <section><div class="wrap demo" data-demo="03-dark-saas"><h2>Cartograph — dark SaaS</h2><div class="meta"><span>material: <code>glass</code></span><span>navy black, periwinkle accent</span></div></div></section>
@@ -112,9 +113,14 @@ for (const demo of document.querySelectorAll('.demo')) {
   const box = demo.querySelector('.compare'), after = box.querySelector('.after'), handle = box.querySelector('.handle');
   const fit = () => { const s = box.clientWidth / 1440; for (const f of box.querySelectorAll('iframe')) f.style.transform = `scale(${s})`; };
   new ResizeObserver(fit).observe(box); fit();
-  const set = (x) => { const p = Math.max(0, Math.min(100, x / box.clientWidth * 100)); after.style.clipPath = `inset(0 0 0 ${p}%)`; handle.style.left = p + '%'; };
+  let p = 50, y = 0;
+  const setP = (v) => { p = Math.max(0, Math.min(100, v)); after.style.clipPath = `inset(0 0 0 ${p}%)`; handle.style.left = p + '%'; };
+  const set = (x) => setP(x / box.clientWidth * 100);
   box.addEventListener('pointerdown', (e) => { box.setPointerCapture(e.pointerId); set(e.offsetX); });
   box.addEventListener('pointermove', (e) => { if (e.buttons) set(e.offsetX); });
+  box.tabIndex = 0; box.setAttribute('role', 'slider'); box.setAttribute('aria-label', 'before / after seam'); box.setAttribute('aria-valuemin', '0'); box.setAttribute('aria-valuemax', '100');
+  box.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); setP(p + (e.key === 'ArrowRight' ? 4 : -4)); box.setAttribute('aria-valuenow', Math.round(p)); } });
+  box.addEventListener('wheel', (e) => { e.preventDefault(); y = Math.max(0, y + e.deltaY); for (const f of box.querySelectorAll('iframe')) { try { f.contentWindow.scrollTo(0, y); } catch {} } }, { passive: false });
   demo.querySelector('details').addEventListener('toggle', async (e) => {
     const pre = e.target.querySelector('pre'); if (pre.dataset.done) return;
     try { const t = await (await fetch(base + 'after.html')).text(); const s = t.indexOf(START), en = t.indexOf(END) + END.length;
