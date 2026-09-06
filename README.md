@@ -6,7 +6,7 @@ One CSS block that gives a single-tone page a ground, one light source and a few
 
 ![MIT license](https://img.shields.io/badge/license-MIT-3a3632) ![Agent Skill](https://img.shields.io/badge/Agent%20Skill-SKILL.md-ff6a1f) ![No dependencies](https://img.shields.io/badge/dependencies-none-3a3632)
 
-![A developer-tool landing page: the terminal types, the page scrolls, and the flat page becomes a lit ground with a few sections mounted on it](assets/hero.gif)
+![A developer-tool landing page, before and after, at two points of the page: the hero and the logo strip stay on the ground, the sections below become surfaces mounted on it, and the pricing surface carries the glow](assets/hero.gif)
 
 ```bash
 npx skills add merturl4576/unflat
