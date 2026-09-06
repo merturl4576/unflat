@@ -1,12 +1,12 @@
-# Selectors: surfaces without touching markup
+# Selectors: rhythm and surfaces without touching markup
 
-`SURFACE` in recipe.css stands for the list of top-level sections that become surfaces. `GLOW` stands for the one of them that carries the accent glow. Fill both with structural selectors; never add classes or wrappers to the markup. recipe.css wraps every token in `:is()`, so paste your selector or comma-separated list as-is — do not add your own `:is()`, and do not strip the existing one.
+`SURFACE` in recipe.css stands for the list of top-level sections that become surfaces — the mounted ones from §2, never every section. `GLOW` stands for the one of them that carries the accent glow. Fill both with structural selectors; never add classes or wrappers to the markup. recipe.css wraps every token in `:is()`, so paste your selector or comma-separated list as-is — do not add your own `:is()`, and do not strip the existing one.
 
-## 1. Find the container
+## 1. Find the root
 
-Look for the tightest element that directly holds the page's sections. Common shapes:
+Look for the tightest element that directly holds the page's sections. Its children are the candidate list; §2 decides which of them are mounted.
 
-| Markup | SURFACE |
+| Markup | Root (candidates) |
 |---|---|
 | `<main><section>…</section>…</main>` | `main > section` |
 | `<main><div class="…">…</div>…</main>` | `main > div` |
@@ -15,44 +15,52 @@ Look for the tightest element that directly holds the page's sections. Common sh
 | `<div id="__next"><main>…` | `#__next > main > section` |
 | Sections directly under `<body>` | `body > section` |
 
-## 2. Exclude what stays on the ground
+## 2. Rhythm: which sections are mounted
 
-Header, nav, footer, and anything `position: fixed` or `sticky` (cookie banners, chat widgets, floating buttons, drawers, dialogs). If the container mixes them with sections, exclude explicitly:
+A surface reads as a surface only when there is ground next to it. Walk the candidates in order and mark each one.
 
-```css
-main > :not(header):not(nav):not(footer):not([role="dialog"])
-```
+**Ground** — never a surface:
+- the hero, whatever it holds: it is the ground's own opening, and a mounted hero reads as a banner;
+- strips: a row of logos, a ticker, a stats or trust band, a job ticker, a newsletter bar — anything one row tall, roughly under 300px;
+- sections that carry their own artwork: a canvas, a video, a full-bleed image, an interactive tool, a map;
+- full-bleed galleries, accordions, marquees and masonry grids — the images are already the surfaces;
+- header, nav, footer, and anything `position: fixed` or `sticky` (cookie banners, chat widgets, floating buttons, drawers, dialogs).
 
-## 3. The hero
+**Mounted** — the sections the visitor reads: a statement or manifesto with a heading and paragraphs, the process or how-it-works, the story or about, a lookbook, the featured collection or product, testimonials, pricing with a featured tier, a text call to action.
 
-If the hero has a background image, video or canvas, it stays on the ground (a surface border would fight the artwork). Otherwise it becomes the first surface. Exclude with `:not(:first-child)` or `:not(.hero)` when needed.
+Then apply the rhythm: mounted sections alternate with ground. When two readable sections sit next to each other, mount the one that carries the page's argument (the statement over the detail, the featured collection over the plain grid, the process over the specification) and leave the other on the ground. Two surfaces in a row are allowed only when nothing can sit between them and the page has fewer than four sections. Aim for a third to a half of the candidates mounted. On the origin site, eleven sections gave four surfaces: ground (hero), strip, **statement**, bench, **lookbook**, materials, **process**, gallery, **featured collection**, band, strip.
 
-## 4. Alternating sections
+Write the list in your response: every section, its height, ground or mounted, one reason each. If the marked list has no ground between any two surfaces, the rhythm is wrong; go back.
 
-If the site alternates two background shades, map them to planes instead of flattening them: the lighter shade becomes a surface, the darker shade stays on the ground. Example:
+## 3. Writing the selector
 
-```css
-main > section:nth-child(odd)    /* SURFACE */
-main > section:nth-child(even){background:transparent}   /* rests on the ground */
-```
-
-## 5. Unstable class names
-
-Tailwind, hashed CSS modules and styled-components produce class names you cannot rely on. Target by structure and content with `:has()`:
+Express the choice structurally. Existing class names are fine in plain HTML and in CSS modules with stable names; with generated class names (Tailwind, hashed modules, styled-components) use position or content:
 
 ```css
-main > :has(> .container)              /* sections that contain a container */
-main > :has(> h2)                      /* sections with a heading */
-main > *:not(:has(img, video, canvas)) /* sections without artwork */
+main > :is(.manifesto, .knives, .commission)                 /* by class, plain HTML */
+main > :is(:nth-child(3), :nth-child(5), :nth-child(7))      /* by position; DOM order is static */
+main > :has(> .container > h2):not(:has(canvas, video, img)) /* by content */
 ```
 
-`:has()` is supported in every evergreen browser since 2023.
+`:has()` is supported in every evergreen browser since 2023. Whatever form you use, the sections marked ground must not match; check the count in the browser (`document.querySelectorAll('<SURFACE>').length`) against your list. If the root mixes header, nav or footer with sections, exclude them explicitly: `main > :not(header):not(nav):not(footer):not([role="dialog"])`.
 
-## 6. Choosing GLOW
+## 4. Choosing GLOW
 
-One surface only (two for backlit): the one the page is about. Pricing, the featured product, the collection, the signup. Pick by content when possible: `main > section:is(.pricing, :has(.pricing, .tiers, form))` (Baseline `:has()` in all evergreen browsers) (`:has()` never matches the section's own class, so the class goes in `:is()`). Otherwise, `main > section:last-child` when the CTA is the last section (most pages), or `main > section:nth-last-child(2)` only when a newsletter or contact strip sits after it. Glow the section the page wants the visitor to act on: a pricing section with one featured tier, a subscribe form, or the final CTA. A plain pricing grid with no featured tier is not the target — glow the CTA instead. Confirm the section you hit before writing the rule. When nothing qualifies — parallel sections with no call to action, an article, a gallery — there is no glow: delete the `:is(GLOW){…}` rule and remove `:is(GLOW)` from the print rule, as the slate material does. For the backlit material only, GLOW may be two sections — usually the hero and the CTA — joined with a comma.
+One surface only (two for backlit): the one the page is about. Pricing, the featured product, the collection, the signup. GLOW must be one of the mounted sections; if the alternation left it on the ground, flip it and its neighbour. Pick by content when possible: `main > section:is(.pricing, :has(.pricing, .tiers, form))` (Baseline `:has()` in all evergreen browsers) (`:has()` never matches the section's own class, so the class goes in `:is()`). Otherwise, `main > section:last-child` when the CTA is the last section (most pages), or `main > section:nth-last-child(2)` only when a newsletter or contact strip sits after it. Glow the section the page wants the visitor to act on: a pricing section with one featured tier, a subscribe form, or the final CTA. A plain pricing grid with no featured tier is not the target — glow the CTA instead. Confirm the section you hit before writing the rule. When nothing qualifies — parallel sections with no call to action, an article, a gallery — there is no glow: delete the `:is(GLOW){…}` rule and remove `:is(GLOW)` from the print rule, as the slate material does. For the backlit material only, GLOW may be two sections — usually the featured section and the CTA, never the hero — joined with a comma.
 
-## 7. Alignment compensation
+## 5. The page plate
+
+A page that is one continuous flow rather than a sequence of sections — a store listing, a product page, an article, docs, a checkout, a cart — is one surface: the content container itself is mounted, at its own max width, centered when the viewport is wider, header and footer on the ground. Put the container in SURFACE (`main > .wrap`, `#app > div.wrap`) so it gets rule 4's gradient, border, shadow and light-line, and add this sizing rule after rule 4, with the same SURFACE and the container as PAGE:
+
+```css
+/* page plate — the container is the surface; sized to its own max width, padding gives back the inset */
+:is(SURFACE):is(PAGE){margin-inline:max(var(--unflat-inset),calc((100% - var(--unflat-max))/2));max-width:none;width:auto;box-sizing:border-box;
+  padding-inline:calc(var(--unflat-pad) - clamp(0px,var(--unflat-inset) - (100% - var(--unflat-max))/2,var(--unflat-inset)))}
+```
+
+`100%` is the parent's width here, so the clamp is rule 5's compensation with the plate's own inset: above `--unflat-max` plus twice the inset the plate is exactly `--unflat-max` wide and centered, below that it keeps the inset. Rule 5 does not apply to the plate (nothing inside it needs compensation; the plate carries the padding). A site with both kinds of page — a landing page of sections and a store — gets both in one block: the section list and the container together in SURFACE, the sizing rule for the container, one GLOW. Verify the plate like any surface: its first text element's `left` equals the header's at 1440, at the container's max plus twice the inset, and at 390.
+
+## 6. Alignment compensation
 
 An auto-centered container already absorbs the inset by itself; only a container that fills the surface needs compensation, and recipe.css handles both with `--unflat-max`.
 
@@ -66,7 +74,7 @@ The compensation declaration is `!important` so it wins over `.section .containe
 
 Verify: compare `getBoundingClientRect().left` of the header's first text element and of the first surface's first text element at 1440 and 390 — equal within 1px (at intermediate widths a 1px difference is the surface's own border).
 
-## 8. Framework notes
+## 7. Framework notes
 
 | Stack | Where the block goes | Notes |
 |---|---|---|
@@ -79,15 +87,16 @@ Verify: compare `getBoundingClientRect().left` of the header's first text elemen
 | styled-components / Emotion | inside `createGlobalStyle` / `<Global>` as a template literal | keep the markers as comments |
 | Tailwind v3 / v4 | plain unlayered CSS after `@tailwind utilities` / `@import "tailwindcss"` | unlayered CSS beats `@layer`; do not wrap the block in `@layer` |
 
-## 9. Gotchas
+## 8. Gotchas
 
-- A section with `overflow: hidden` clips the light-line at `top: -1px`. Use `top: 0` for that section.
+- A section with `overflow: hidden` or `overflow: clip` clips the light-line at `top: -1px`. Use `top: 0` for that section.
 - A section that already has `position: absolute` or `fixed` is not a surface.
 - If `SURFACE` sections already carry a background image, keep it: use `background-image` and set only `background-color` on them.
-- If the container has `display: grid` or `flex` with `gap`, drop the `:is(SURFACE) + :is(SURFACE) { margin-top }` rule and rely on the gap.
+- If the root has `display: grid` or `flex` with `gap`, set `margin-block: 0` on `:is(SURFACE)` and rely on the gap; margins do not collapse in a grid or flex container, so the recipe's breathing room would double between two adjacent surfaces.
 - When SURFACE carries a `:not()` (`main > section:not(.hero)`), a bare-class GLOW (`.pricing`) loses on specificity and its shadow never shows; write GLOW in the same shape (`main > section.pricing`) so source order decides.
-- A section that has its own class rule for `background`, `border` or `box-shadow` beats `:is(SURFACE)` on specificity; include that class in SURFACE (`main > section.hero`) or repeat the selector (`:is(SURFACE):is(SURFACE)`) for that section.
+- A section that has its own class rule for `background`, `border` or `box-shadow` beats `:is(SURFACE)` on specificity; include that class in SURFACE (`main > section.story`) or repeat the selector (`:is(SURFACE):is(SURFACE)`) for that section.
+- A ground section that has its own opaque background (the hero, a band) keeps it; the ground shows only where sections are transparent. That is fine: the hero's own color is part of the ground.
 
-## 10. Escape hatch
+## 9. Escape hatch
 
 When structure alone cannot express the choice, `data-unflat="surface"`, `data-unflat="ground"` and `data-unflat="glow"` attributes are allowed on sections. This is a markup change: report it explicitly, and keep it to the minimum.

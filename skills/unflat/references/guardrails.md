@@ -6,10 +6,11 @@ Run this after writing the block. Every line is pass or fail.
 
 | Check | Pass condition | How to check |
 |---|---|---|
+| Rhythm | the hero is on the ground; no strip (one row, under about 300px) is a surface; between a third and a half of the top-level sections are surfaces; no two surfaces are adjacent unless the page has fewer than four sections | `[...document.querySelectorAll('<root>')].map(e => [e.className, getComputedStyle(e).boxShadow !== 'none'])` — read the pattern; the first entry is false, the true entries are separated by false entries |
 | Contrast | text on surfaces keeps its original contrast; the surface base (`--unflat-surface-bottom`) is within 3% L of the original section background and the gradient top at most 2.5% above that (nominal values; 8-bit hex rounding may add up to 0.2% L — `#161514`→`#1c1b1a` measures 2.64%). For semi-transparent surfaces (glass) measure the composited color (`getComputedStyle` of the section over the ground), not the raw token. | compare `--unflat-surface-bottom` to the page-bg token; spot-check a heading and a paragraph |
 | Horizontal scroll | none introduced | `document.documentElement.scrollWidth <= innerWidth` |
-| Gap | consecutive surfaces are separated by `--unflat-gap` | the second top-level section's computed `margin-top` equals the gap value (`getComputedStyle(document.querySelectorAll('<your SURFACE selector>')[1]).marginTop`) |
-| Alignment | content inside surfaces stays on the header's grid at every width — and a container that is also a padded card keeps equal padding on all sides | `getBoundingClientRect().left` of the header's first text element vs the first and last surface's first text element at 1440, at a width just under the container's max plus twice the inset (e.g. 1100 for a 1160px container), and 390: equal within 1px |
+| Gap | every surface has `--unflat-gap` of breathing room above and below it (against ground sections and against another surface, where the two margins collapse into one gap) | `getComputedStyle(document.querySelector('<your SURFACE selector>')).marginTop` equals the gap value; same for `marginBottom` |
+| Alignment | content inside surfaces stays on the header's grid at every width — and a container that is also a padded card keeps equal padding on all sides; a page plate's first text element aligns the same way | `getBoundingClientRect().left` of the header's first text element vs the first and last surface's first text element at 1440, at a width just under the container's max plus twice the inset (e.g. 1100 for a 1160px container), and 390: equal within 1px |
 | Fixed and sticky | header, banners, widgets unchanged | screenshot top of page and compare |
 | One light | edges lit from the same side as the light; shadows fall down | eye check on two surfaces |
 | Motion | no animation added | grep the block for `animation` and `transition` |
@@ -19,7 +20,7 @@ Run this after writing the block. Every line is pass or fail.
 | Print | ground, texture and shadows removed | print preview or `@media print` present |
 | Reduced motion | nothing to do unless glow is animated; it is not | grep |
 | Reversible | removing start..end restores the file byte for byte | delete start..end (plus the one newline after end) and diff; for a single HTML file also confirm the bytes between `/* unflat: end */` and `</style>` are exactly one `\n`: `node -e "const s=require('fs').readFileSync('FILE','utf8');console.log(JSON.stringify(s.slice(s.indexOf('/* unflat: end */')+17,s.lastIndexOf('</style>'))))"` must print `"\n"` |
-| Report | six lines delivered (material, values, file, revert, dials, markup) | read the response |
+| Report | seven lines delivered (material, rhythm, values, file, revert, dials, markup) | read the response |
 
 ## Painting order gotcha
 
@@ -58,3 +59,4 @@ Say which one applies and what, if anything, you would do instead (texture and l
 - `--unflat-edge` and `--unflat-lightline`: more or less edge light.
 - grain alpha inside the SVG: more or less texture, within 3–6%.
 - `--unflat-inset`: wider inset reads as more mounted; narrower reads as calmer.
+- the SURFACE list itself: moving one section between ground and mounted is the biggest change a reader can ask for; keep the alternation when you do.

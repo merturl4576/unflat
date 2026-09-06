@@ -47,9 +47,30 @@ After publishing, two more demos were added: `05-forge-workshop`, a dark craft s
 | showcase | 05-forge-workshop | plate | PASS | ACCEPT — ground −3% L untinted (accent hue 10° from the background's), surfaces +1.9/+4.4% L; glow on the commission section (the page's call to action); alignment 0/+1/0 px at 1440, 1100 and 390; images untouched (`filter: none`, opaque surfaces under every photograph, grain visible only in the ground gaps); block strips back to before.html byte-for-byte | — |
 | showcase | 06-terminal-agent | plate | PASS | ACCEPT — the hero holds a `<canvas>`, so it stays on the ground and the five sections below become surfaces; ground −3% L untinted (accent hue 7.5° from the background's), surfaces +2/+4.5% L; glow on pricing (featured tier); alignment 0/+1/0 px at 1440, 1100 and 390; sticky header and the canvas untouched | selectors.md gotcha: with `main > section:not(.hero)` as SURFACE, a bare-class GLOW (`.pricing`) loses on specificity and its shadow never paints — the run caught it and wrote `main > section.pricing`; the gotcha is now documented |
 
+## Rhythm wave
+
+The published demos had one thing in common that the origin site never had: every section below the hero became a surface. Side by side with the flat page they read as the same page cut into boxes, and a strip one row tall (a logo row, a trust band) became a bordered box of its own. Measured on the origin site's home page, eleven top-level sections gave four surfaces — statement, lookbook, process, featured collection — with the hero, the strips, the interactive bench, the material swatches and the full-bleed gallery on the ground between them; its store, product and article pages were one surface each, the content container itself, at the container's max width. The skill had none of that: `selectors.md` said "top-level sections become surfaces" and left the hero on the ground only when it carried artwork.
+
+To confirm the gap before changing anything, the unchanged skill was run by a fresh mid-tier agent on the origin site's flat build (the file with the hand-written layer removed): it mounted 9 of the 11 home sections, including the 166px trust strip and the 168px call-to-action band, put the glow on that band instead of the featured collection, and on the store page mounted the toolbar and the product grid as two panels beside a bare rail. Every guardrail passed. The checklist could not see the problem because nothing in the skill named it.
+
+The wave adds a sixth move, **rhythm**, and a Step 3 that decides it: the hero and strips always stay on the ground, so do sections with their own artwork or an interactive tool and full-bleed galleries; the sections a visitor reads alternate with them, a third to a half of the page; a page that is one continuous flow is a single surface, the page plate (`selectors.md` §5, sized to the container's max width with the same compensation as rule 5). The recipe gives every surface `margin-block` breathing room instead of a margin only between two adjacent surfaces, the audit snippet returns the section list Step 3 walks, the report grew to seven lines, and the checklist has a Rhythm row. The same flat build was then run again with the changed skill, and every demo was re-run; the rows below are the shipped pages.
+
+| Run | Demo | Material chosen | Checker | Review verdict | Skill change made |
+|---|---|---|---|---|---|
+| baseline | the origin site's flat build (private) | plate | — | REJECT — 9 of the 11 home sections mounted, including the 166px trust strip and the 168px call-to-action band; glow on that band; on the store page the toolbar and the product grid mounted as two panels beside a bare rail; every guardrail passed | the rhythm wave above |
+| re-run | the origin site's flat build (private) | plate | — | ACCEPT — home: ground (hero), strip, **statement**, bench, **lookbook**, materials, **process**, gallery, **featured collection** (glow), band, strip — the hand-written layer's own selection, 4 of 11; store: one page plate at the container's 1440px, first text on the header's grid at 1440, 1470, 1500 and 390 | — |
+| re-run | 01-dark-workshop | plate | PASS | ACCEPT — hero ground, **process**, materials, gallery, **pricing**, quote, **contact** (glow); 3 of 6 candidates | — |
+| re-run | 02-light-editorial | paper | PASS | ACCEPT — hero ground, **featured essays**, interview, **objects**, archive, **subscribe** (glow); 3 of 6 | — |
+| re-run | 03-dark-saas | glass | PASS | ACCEPT — hero, logos and features on the ground, **how**, pricing, **cta** (glow); 2 of 6; the `.cta` card stays out of the compensation rule as before | — |
+| re-run | 04-backlit-brand | backlit | PASS | ACCEPT — hero ground, **lineup** (glow), stages, timetable, **tickets** (glow), info; 2 of 5 candidates; backlit's two glows now sit on the featured section and the CTA, no longer on the hero | — |
+| re-run | 05-forge-workshop | plate | PASS | ACCEPT — hero ground, **manifesto**, process, **knives**, steel, bench, **commission** (glow); 3 of 7 | — |
+| re-run | 06-terminal-agent | plate | PASS | ACCEPT — hero (canvas) and the logo strip on the ground, **features**, how, **pricing** (glow), install; 2 of 6 | — |
+
+
 ## What the runs taught the skill
 
 - Prose instructions about whitespace do not survive contact with a model; the insertion is now a one-line script.
 - Alignment compensation depends on whether the container fills the surface; the recipe now derives that from `--unflat-max` at runtime instead of assuming a fluid container.
 - Mixing a bright accent into a dark ground with `color-mix` raises lightness by about 3%; the hue pull now changes only hue and chroma.
 - "Already layered" is decided by counts the audit snippet returns (`shadowed`, `withBgImage`, `hasUnflatBlock`), not by eye.
+- A checklist cannot catch a missing design decision: every guardrail passed on a page cut into boxes. Which sections are mounted is now a step of its own, written down before any value is derived, with its own row in the checklist.

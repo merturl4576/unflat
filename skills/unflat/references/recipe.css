@@ -1,7 +1,7 @@
 /* unflat: start */
 /* unflat v1 — ground + light + surfaces, derived from this site's own tokens.
    Delete everything between the start and end markers to revert.
-   Three placeholders to replace per selectors.md: SURFACE (the selector list for top-level sections, always inside :is()), GLOW (the one section that carries the accent glow) and .wrap (the container class). Every token sits inside :is(), so a comma list or a selector with combinators drops in unchanged.
+   Three placeholders to replace per selectors.md: SURFACE (the mounted sections only — a third to a half of the top-level sections, alternating with ground, never the hero, never every section; always inside :is()), GLOW (the one surface that carries the accent glow) and .wrap (the container class). Every token sits inside :is(), so a comma list or a selector with combinators drops in unchanged.
    The inline comments and default values describe the plate material; other materials override per materials.md. */
 :root{
   --unflat-ground:#0c0b0a;                      /* page-bg −3% L; tinted toward the accent only when the hues differ by more than 30° */
@@ -15,7 +15,7 @@
   --unflat-light:rgba(255,196,150,.075);        /* directional light, top-left */
   --unflat-vignette:rgba(0,0,0,.45);            /* opposite corner */
   --unflat-inset:clamp(8px,1.6vw,24px);         /* surface inset from the viewport edge */
-  --unflat-gap:clamp(14px,2vw,28px);            /* breathing room between surfaces */
+  --unflat-gap:clamp(14px,2vw,28px);            /* breathing room above and below a surface */
   --unflat-pad:var(--pad,0px);                  /* container horizontal padding: token or literal; with no measurable padding delete rule 5 instead of leaving 0px */
   --unflat-max:100vw;                           /* container outer max-width, e.g. var(--max); 100vw = fluid container */
 }
@@ -29,14 +29,13 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
     radial-gradient(100% 80% at 100% 110%,var(--unflat-vignette) 0%,transparent 60%),
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 .93  0 0 0 0 .84  0 0 0 .16 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
   background-size:auto,auto,220px 220px}
-/* 4. surfaces — mounted, lit from the top, shadow below */
-:is(SURFACE){position:relative;margin-inline:var(--unflat-inset);
+/* 4. surfaces — the mounted sections only: inset, lit from the top, shadow below, breathing room against the ground on both sides */
+:is(SURFACE){position:relative;margin-block:var(--unflat-gap);margin-inline:var(--unflat-inset);
   background:linear-gradient(180deg,var(--unflat-surface-top) 0%,var(--unflat-surface-bottom) 100%);
   border:1px solid var(--unflat-line);border-top-color:var(--unflat-edge);
   box-shadow:var(--unflat-shadow)}
 :is(SURFACE)::before{content:'';position:absolute;left:8%;right:8%;top:-1px;height:1px;pointer-events:none;
   background:linear-gradient(90deg,transparent,var(--unflat-lightline),transparent)}
-:is(SURFACE) + :is(SURFACE){margin-top:var(--unflat-gap)}
 :is(GLOW){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
 /* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own container rule (e.g. `.section .container{padding:0 24px}`); outside the compensation band it equals the site's padding, so nothing else changes. */ :is(SURFACE) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
 /* responsive: keep top and bottom edges, drop the side inset on small screens */

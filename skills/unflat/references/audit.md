@@ -47,7 +47,7 @@ Also note: theme (dark or light), warmth of the palette (warm, cool, neutral), a
 
 ## 4. Browser snippet
 
-When a browser tool can evaluate JavaScript, run this on the page. It returns backgrounds of top-level children, fixed and sticky elements, and all `:root` custom properties, including ones declared inside `@media`, `@supports` or `@layer` blocks (later declarations overwrite earlier ones — this includes `@media` breakpoints, so audit at the viewport you are designing for and note which theme you are in).
+When a browser tool can evaluate JavaScript, run this on the page. It returns backgrounds of top-level children, the top-level sections in order with their height and contents, fixed and sticky elements, and all `:root` custom properties, including ones declared inside `@media`, `@supports` or `@layer` blocks (later declarations overwrite earlier ones — this includes `@media` breakpoints, so audit at the viewport you are designing for and note which theme you are in).
 
 ```js
 (() => {
@@ -62,6 +62,12 @@ When a browser tool can evaluate JavaScript, run this on the page. It returns ba
   const withBgImage = visible.filter((e) => cs(e).backgroundImage !== 'none').length;
   const sig = (e) => e.tagName.toLowerCase() + (e.id ? '#' + e.id : '') +
     (typeof e.className === 'string' && e.className ? '.' + e.className.trim().split(/\s+/).slice(0, 3).join('.') : '');
+  const sections = kids.map((e) => ({
+    sig: sig(e), height: Math.round(e.getBoundingClientRect().height), position: cs(e).position,
+    canvas: e.querySelectorAll('canvas').length, video: e.querySelectorAll('video').length, img: e.querySelectorAll('img, picture').length,
+    text: (e.textContent || '').replace(/s+/g, ' ').trim().length,
+    heading: ((e.querySelector('h1, h2') || {}).textContent || '').trim().slice(0, 40),
+  }));
   const fixed = [...document.querySelectorAll('body *')]
     .filter((e) => ['fixed', 'sticky'].includes(cs(e).position)).map(sig).slice(0, 20);
   const vars = {};
@@ -79,6 +85,7 @@ When a browser tool can evaluate JavaScript, run this on the page. It returns ba
     htmlBg: cs(document.documentElement).backgroundColor,
     bodyBg: cs(document.body).backgroundColor,
     topLevelCount: kids.length,
+    sections,
     distinctSectionBgs: [...new Set(bgs)],
     shadowed,
     withBgImage,
@@ -89,7 +96,7 @@ When a browser tool can evaluate JavaScript, run this on the page. It returns ba
 })()
 ```
 
-Interpretation: `distinctSectionBgs.length <= 2` with no shadows means flat. `hasUnflatBlock` true, or `shadowed >= 2`, or `distinctSectionBgs.length >= 3` means already layered: stop and say why. `withBgImage` is informational only (gradients on sections are common on flat pages) and does not by itself mean layered. `htmlBg` not transparent matters for the block (see `guardrails.md`, painting order).
+Interpretation: `distinctSectionBgs.length <= 2` with no shadows means flat. `hasUnflatBlock` true, or `shadowed >= 2`, or `distinctSectionBgs.length >= 3` means already layered: stop and say why. `withBgImage` is informational only (gradients on sections are common on flat pages) and does not by itself mean layered. `htmlBg` not transparent matters for the block (see `guardrails.md`, painting order). `sections` is the list Step 3 walks, in DOM order: the first entry is the hero and stays on the ground; an entry with a canvas or video, or under about 300px tall, is ground; the rest are candidates for mounting, alternating with ground (`selectors.md` §2).
 
 ## 5. Output of the audit
 
@@ -98,3 +105,4 @@ Write in your response:
 2. The token table.
 3. The exclusion list (fixed and sticky).
 4. Theme, warmth, saturation, container padding variable.
+5. The section list in order (the snippet's `sections`): signature, height, what it holds. Step 3 marks each one ground or mounted.
