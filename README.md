@@ -12,7 +12,7 @@ One CSS block that gives a single-tone page a ground, one light source, a few mo
 npx skills add merturl4576/unflat
 ```
 
-Then tell your agent: *"This page looks flat. Use the unflat skill."* [Live gallery with draggable before/after sliders →](https://merturl4576.github.io/unflat/gallery/)
+Then tell your agent: *"This page looks flat. Use the unflat skill."*
 
 ## The problem
 
@@ -78,7 +78,7 @@ Neutral fallbacks: plate for dark, paper for light. Glass is never a default.
 - Two fixed pseudo-elements at most (light, motif), one SVG data URI. No requests, no assets.
 - `@media print` strips ground, texture and shadows.
 - Everything sits between `/* unflat: start */` and `/* unflat: end */`. Delete it and the site is exactly what it was.
-- Every `after.html` in `examples/` is `before.html` plus the block and nothing else; `node scripts/check-examples.mjs` proves it. The after pages were produced by the skill itself, not by hand, and `docs/dogfood.md` keeps the log.
+- Every `after.html` in `examples/` is `before.html` plus the block and nothing else; `node scripts/check-examples.mjs` proves it. The after pages were produced by the skill itself, not by hand, and `docs/dogfood.md` keeps the log. Open any pair in a browser to compare.
 
 ## FAQ
 
