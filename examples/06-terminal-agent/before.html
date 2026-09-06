@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Solder — the coding agent that lives in your terminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141210;--bg-2:#1a1714;--bg-3:#0e0c0a;--ink:#ede7dc;--ink-2:#a89f92;--ink-3:#756d62;
+  --line:rgba(237,231,220,.09);--line-2:rgba(237,231,220,.18);
+  --accent:#ffb020;--green:#5ee1a0;--red:#ff6b57;
+  --pad:clamp(20px,4vw,48px);--max:1180px;--radius:6px;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{color-scheme:dark;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--display);font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.025em;line-height:1;text-wrap:balance}
+p{margin:0}
+code,pre,.mono{font-family:var(--mono)}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--pad)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 20px;border:1px solid var(--line-2);border-radius:var(--radius);font:500 15px/1 var(--display);color:var(--ink);white-space:nowrap}
+.btn-p{background:var(--accent);border-color:var(--accent);color:#1b1200}
+.btn-p:hover{background:#ffc04a}
+.btn:not(.btn-p):hover{border-color:var(--ink-2)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.cmd{display:inline-flex;align-items:center;gap:14px;padding:12px 16px;border:1px solid var(--line-2);border-radius:var(--radius);font:500 14px/1 var(--mono);background:var(--bg-3)}
+.cmd span{color:var(--ink-3)}
+.cmd button{all:unset;cursor:pointer;color:var(--accent);font:500 12px/1 var(--mono);padding:4px 6px;border-radius:4px}
+.cmd button:hover{background:rgba(255,176,32,.12)}
+
+header{position:sticky;top:0;z-index:10;background:rgba(20,18,16,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;gap:36px;height:62px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:21px;letter-spacing:-.02em}
+.brand i{width:22px;height:22px;border-radius:5px;background:var(--accent);position:relative}
+.brand i::after{content:'';position:absolute;left:5px;top:10px;width:12px;height:3px;background:#1b1200;border-radius:2px;box-shadow:0 -5px 0 #1b1200}
+header nav{display:flex;gap:26px;font-size:15px;color:var(--ink-2)}
+header nav a:hover{color:var(--ink)}
+header .spacer{flex:1}
+header .btn{padding:10px 14px;font-size:14px}
+
+main>section{padding-block:clamp(72px,9vw,120px)}
+
+/* hero: the stage */
+.hero{position:relative;overflow:clip;padding-top:clamp(56px,7vw,96px)}
+.hero canvas.field{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(32px,5vw,64px);align-items:center}
+.hero h1{font-size:clamp(52px,6.4vw,92px);max-width:9ch}
+.hero .lead{margin-top:24px;font-size:19px;line-height:1.5;color:var(--ink-2);max-width:42ch}
+.hero .row{margin-top:32px}
+.hero .fine{margin-top:22px;font-size:13px;color:var(--ink-3)}
+.hero .fine b{color:var(--ink-2);font-weight:500}
+
+.term{border:1px solid var(--line-2);border-radius:10px;background:var(--bg-3);overflow:hidden;font:400 13.5px/1.7 var(--mono);min-height:460px;display:flex;flex-direction:column}
+.term .bar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--ink-3);font-size:12px}
+.term .bar i{width:10px;height:10px;border-radius:50%;background:var(--line-2)}
+.term .bar i:first-child{background:var(--red)}
+.term .bar i:nth-child(2){background:var(--accent)}
+.term .bar i:nth-child(3){background:var(--green)}
+.term .bar span{margin-left:auto}
+.term .scr{padding:18px 20px 22px;flex:1;white-space:pre-wrap;overflow:hidden}
+.term .l{display:block;min-height:1.7em}
+.term .l.c{color:var(--ink)}
+.term .l.c::before{content:'$ ';color:var(--accent)}
+.term .l.o{color:var(--ink-2)}
+.term .l.a{color:var(--accent)}
+.term .l.p{color:var(--green)}
+.term .l.m{color:var(--red)}
+.term .l.k{color:var(--ink-3)}
+.term .cur{display:inline-block;width:8px;height:1.1em;vertical-align:-.2em;background:var(--accent);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* logos */
+.logos .wrap{display:flex;gap:clamp(24px,4vw,56px);align-items:center;flex-wrap:wrap;justify-content:space-between}
+.logos p{color:var(--ink-3);font-size:13px}
+.logos b{font:600 15px/1 var(--mono);letter-spacing:.14em;color:var(--ink-2);text-transform:uppercase}
+
+/* section heads */
+.sec-h{display:flex;align-items:end;justify-content:space-between;gap:32px;margin-bottom:44px;flex-wrap:wrap}
+.sec-h h2{font-size:clamp(36px,4.6vw,60px);max-width:16ch}
+.sec-h p{color:var(--ink-2);max-width:44ch;font-size:16px}
+
+/* features */
+.feat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-2);padding:22px;display:flex;flex-direction:column;gap:16px}
+.card h3{font-size:24px;letter-spacing:-.02em}
+.card p{color:var(--ink-2);font-size:15px;line-height:1.55}
+.screen{margin-top:auto;border:1px solid var(--line);border-radius:6px;background:var(--bg-3);padding:14px 16px;font:400 12.5px/1.7 var(--mono);color:var(--ink-2);white-space:pre-wrap;overflow-wrap:anywhere}
+.screen .p{color:var(--green)}.screen .m{color:var(--red)}.screen .a{color:var(--accent)}.screen .k{color:var(--ink-3)}
+
+/* how */
+.how .wrap{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(32px,5vw,72px);align-items:center}
+.how h2{font-size:clamp(36px,4.6vw,60px);margin-bottom:14px}
+.how .intro{color:var(--ink-2);max-width:42ch;margin-bottom:28px}
+.steps{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-2)}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.steps .n{font:500 12px/1 var(--mono);color:var(--accent);padding:5px 7px;border:1px solid rgba(255,176,32,.35);border-radius:4px}
+.steps b{font-weight:600;font-size:16px}
+.steps b small{display:block;font-weight:400;color:var(--ink-3);font-size:14px;margin-top:3px;line-height:1.5}
+.receipt{border:1px solid var(--line-2);border-radius:10px;background:var(--bg-3);overflow:hidden;font:400 13px/1.7 var(--mono)}
+.receipt .bar{display:flex;gap:16px;padding:10px 16px;border-bottom:1px solid var(--line);color:var(--ink-3);font-size:12px}
+.receipt .bar b{color:var(--ink-2);font-weight:500}
+.receipt pre{margin:0;padding:16px 18px;white-space:pre;overflow:auto;color:var(--ink-2)}
+.receipt .p{color:var(--green);background:rgba(94,225,160,.08);display:block}
+.receipt .m{color:var(--red);background:rgba(255,107,87,.08);display:block}
+.receipt .k{color:var(--ink-3)}
+.receipt .sum{display:flex;gap:18px;padding:12px 18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3)}
+.receipt .sum b{color:var(--green);font-weight:500}
+
+/* pricing */
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tier{border:1px solid var(--line);border-radius:var(--radius);padding:26px 24px;display:flex;flex-direction:column;gap:14px;background:var(--bg)}
+.tier.f{border-color:rgba(255,176,32,.45)}
+.tier h3{font-size:22px}
+.tier .price{font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.tier .price small{font-size:14px;font-weight:400;color:var(--ink-3);letter-spacing:0;margin-left:6px}
+.tier ul{margin:0;padding:0;list-style:none;color:var(--ink-2);font-size:15px;line-height:1.5;display:grid;gap:8px}
+.tier ul li::before{content:'– ';color:var(--ink-3)}
+.tier .btn{margin-top:auto;justify-content:center}
+
+/* install */
+.install .wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(32px,5vw,72px);align-items:center;padding-block:clamp(32px,4vw,56px)}
+.install h2{font-size:clamp(44px,5.8vw,80px)}
+.install p{margin-top:18px;color:var(--ink-2);max-width:44ch}
+.install .row{margin-top:28px}
+.install .box{justify-self:end;width:min(420px,100%);border:1px solid var(--line-2);border-radius:10px;background:var(--bg-3);padding:20px 22px;font:400 13px/1.8 var(--mono);color:var(--ink-2);white-space:pre-wrap}
+.install .box b{color:var(--ink);font-weight:500}
+.install .box .a{color:var(--accent)}
+
+footer{border-top:1px solid var(--line);padding-block:34px;color:var(--ink-3);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+footer nav{display:flex;gap:22px}
+footer nav a:hover{color:var(--ink)}
+
+@media(prefers-reduced-motion:reduce){.term .cur{animation:none}}
+@media(max-width:1000px){
+  .hero .wrap,.how .wrap,.install .wrap{grid-template-columns:1fr}
+  .feat,.tiers{grid-template-columns:1fr}
+  .install .box{justify-self:start}
+  header nav{display:none}
+}
+@media(max-width:600px){.hero h1{font-size:44px}header .btn{display:none}.logos b{font-size:13px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="brand" href="#"><i></i>Solder</a>
+    <nav><a href="#features">Product</a><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#">Docs</a><a href="#">Changelog</a></nav>
+    <span class="spacer"></span>
+    <a class="btn btn-p" href="#install">Install</a>
+  </div>
+</header>
+<main>
+  <section class="hero" id="top">
+    <canvas class="field" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div>
+        <h1>Ship the boring parts.</h1>
+        <p class="lead">Solder is a coding agent that lives in your terminal. Give it the ticket. It reads the repo, runs your tests, and hands you a diff you can read before you merge.</p>
+        <div class="row">
+          <div class="cmd"><span>$</span>npm i -g solder<button type="button">copy</button></div>
+          <a class="btn" href="#how">See what it does</a>
+        </div>
+        <p class="fine">Node 20 or newer. macOS, Linux and WSL. <b>Nothing leaves your machine</b> except the prompt and the files you approve.</p>
+      </div>
+      <div class="term" aria-label="Solder session">
+        <div class="bar"><i></i><i></i><i></i><span>~/app · solder 1.4.2</span></div>
+        <div class="scr" id="scr"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="logos">
+    <div class="wrap">
+      <p>Running in repos at</p>
+      <b>Northwind</b><b>Halcyon</b><b>Bramble</b><b>Tessellate</b><b>Orbital</b><b>Kestrel</b>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="wrap">
+      <div class="sec-h"><h2>It reads the repo before it writes a line.</h2><p>Most agents guess and apologise. Solder runs what you already have, then proposes the smallest change that makes it pass.</p></div>
+      <div class="feat">
+        <div class="card">
+          <h3>Tests first</h3>
+          <p>Before it answers, Solder runs your test command and reads the failures. It reports what it found, not what it assumed.</p>
+          <div class="screen"><span class="k">ran</span> npm test <span class="k">in 4.2s</span>
+<span class="m">✗ auth › refresh token expires early</span>
+<span class="k">expected 3600, got 60 — src/auth/session.ts:41</span></div>
+        </div>
+        <div class="card">
+          <h3>Diffs you can read</h3>
+          <p>Every change arrives as a diff with a one-line reason per hunk. Approve a hunk, skip a hunk, or ask why.</p>
+          <div class="screen"><span class="k">src/auth/session.ts</span>
+<span class="m">-  ttl: 60,</span>
+<span class="p">+  ttl: 60 * 60,</span>
+<span class="a">why</span> refresh tokens are issued in seconds, not minutes</div>
+        </div>
+        <div class="card">
+          <h3>Stays in your terminal</h3>
+          <p>No web IDE, no browser tab, no sync. It uses your shell, your editor and your git. Uninstall with one command.</p>
+          <div class="screen"><span class="k">$</span> solder fix <span class="a">"flaky auth test"</span>
+<span class="k">$</span> solder explain src/auth/
+<span class="k">$</span> solder review --staged</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <div class="wrap">
+      <div>
+        <h2>One command, three receipts.</h2>
+        <p class="intro">You get a test run, a diff and a commit message. Nothing is applied until you say so.</p>
+        <ol class="steps">
+          <li><span class="n">01</span><b>Reads<small>the files the failing test touches, the imports, and the last ten commits that changed them</small></b></li>
+          <li><span class="n">02</span><b>Runs<small>your test command, records the failures, and tries the smallest fix first</small></b></li>
+          <li><span class="n">03</span><b>Reports<small>a diff with one reason per hunk, the green test run, and a commit message you can edit</small></b></li>
+        </ol>
+      </div>
+      <div class="receipt" aria-label="a diff receipt">
+        <div class="bar"><b>receipt</b><span>#417</span><span>fix: refresh token ttl</span></div>
+<pre><span class="k">src/auth/session.ts</span>
+<span class="k">@@ -38,7 +38,7 @@</span>
+   const session = await store.get(id)
+<span class="m">-  ttl: 60,</span>
+<span class="p">+  ttl: 60 * 60,</span>
+   issued: now()
+<span class="k">test/auth.test.ts</span>
+<span class="p">+  expect(session.ttl).toBe(3600)</span></pre>
+        <div class="sum"><b>✓ 42 passed</b><span>1 file changed</span><span>2 hunks</span><span>4.8s</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing">
+    <div class="wrap">
+      <div class="sec-h"><h2>Pricing</h2><p>Per seat, monthly. Bring your own model key or use ours.</p></div>
+      <div class="tiers">
+        <div class="tier">
+          <h3>Solo</h3>
+          <div class="price">$0</div>
+          <ul><li>One repo at a time</li><li>Bring your own key</li><li>Diff, explain, review</li><li>Community support</li></ul>
+          <a class="btn" href="#install">Install free</a>
+        </div>
+        <div class="tier f">
+          <h3>Team</h3>
+          <div class="price">$19<small>per seat</small></div>
+          <ul><li>Unlimited repos</li><li>Shared rules and fixtures</li><li>Review bot on pull requests</li><li>Model included</li></ul>
+          <a class="btn btn-p" href="#install">Start a Team trial</a>
+        </div>
+        <div class="tier">
+          <h3>Company</h3>
+          <div class="price">Custom</div>
+          <ul><li>Self-hosted runner</li><li>Audit log and SSO</li><li>Private model routing</li><li>An engineer on call</li></ul>
+          <a class="btn" href="#">Talk to us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="install" id="install">
+    <div class="wrap">
+      <div>
+        <h2>Install in ten seconds.</h2>
+        <p>One package, no account. Run it on the test that has been red all week.</p>
+        <div class="row"><div class="cmd"><span>$</span>npm i -g solder<button type="button">copy</button></div><a class="btn" href="#">Read the docs</a></div>
+      </div>
+      <div class="box"><b>$ solder fix "flaky auth test"</b>
+<span class="a">reading</span>  src/auth/session.ts, test/auth.test.ts
+<span class="a">running</span>  npm test
+<span class="a">proposing</span>  1 file, 2 hunks
+<b>$ solder apply --commit</b></div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 Solder Software Ltd. Made for people who read their diffs.</span>
+    <nav><a href="#features">Product</a><a href="#pricing">Pricing</a><a href="#">Docs</a><a href="#">Status</a><a href="#">Privacy</a></nav>
+  </div>
+</footer>
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const scr = document.getElementById('scr');
+  const lines = [
+    ['c', 'solder fix "flaky auth test"'],
+    ['a', 'reading  src/auth/session.ts, test/auth.test.ts, 8 commits'],
+    ['a', 'running  npm test'],
+    ['m', '✗ auth › refresh token expires early   (60 ≠ 3600)'],
+    ['o', 'the ttl is written in seconds; the caller passes minutes'],
+    ['k', 'src/auth/session.ts'],
+    ['m', '-  ttl: 60,'],
+    ['p', '+  ttl: 60 * 60,'],
+    ['a', 'running  npm test'],
+    ['p', '✓ 42 passed   4.8s'],
+    ['o', 'receipt #417 ready. apply? [y/n/why]'],
+    ['c', 'y'],
+    ['p', 'applied. committed 3f2a1c "fix: refresh token ttl"'],
+  ];
+  const el = (cls, text) => { const s = document.createElement('span'); s.className = 'l ' + cls; s.textContent = text; return s; };
+  const cursor = document.createElement('span'); cursor.className = 'cur';
+  const render = () => { scr.replaceChildren(...lines.map(([c, t]) => el(c, t))); };
+  if (reduce) { render(); return; }
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+  const type = async (span, text) => { for (const ch of text) { span.textContent += ch; await sleep(ch === ' ' ? 60 : 38); } };
+  const run = async () => {
+    scr.replaceChildren(cursor);
+    await sleep(700);
+    for (const [c, t] of lines) {
+      if (c === 'c') { const s = el('c', ''); scr.insertBefore(s, cursor); await type(s, t); await sleep(500); }
+      else { scr.insertBefore(el(c, t), cursor); await sleep(c === 'a' ? 900 : 380); }
+    }
+    await sleep(4500);
+    run();
+  };
+  run();
+
+  const cv = document.querySelector('canvas.field'); const ctx = cv.getContext('2d');
+  const glyphs = '{}[]();=></+-*01'.split('');
+  let W, H, pts = [];
+  const size = () => { W = cv.width = cv.clientWidth; H = cv.height = cv.clientHeight; pts = Array.from({ length: Math.round(W / 22) }, () => ({ x: Math.random() * W, y: Math.random() * H, v: .15 + Math.random() * .35, g: glyphs[Math.random() * glyphs.length | 0], a: .04 + Math.random() * .09 })); };
+  size(); addEventListener('resize', size);
+  const draw = () => {
+    ctx.clearRect(0, 0, W, H);
+    const grad = ctx.createRadialGradient(W * .75, H * .35, 0, W * .75, H * .35, W * .55);
+    grad.addColorStop(0, 'rgba(255,176,32,.07)'); grad.addColorStop(1, 'rgba(255,176,32,0)');
+    ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
+    ctx.font = '13px "JetBrains Mono", monospace';
+    for (const p of pts) { ctx.fillStyle = `rgba(255,176,32,${p.a})`; ctx.fillText(p.g, p.x, p.y); if (!reduce) { p.y -= p.v; if (p.y < -14) { p.y = H + 14; p.x = Math.random() * W; } } }
+    if (!reduce) requestAnimationFrame(draw);
+  };
+  draw();
+  for (const b of document.querySelectorAll('.cmd button')) b.addEventListener('click', () => { navigator.clipboard?.writeText('npm i -g solder'); b.textContent = 'copied'; setTimeout(() => b.textContent = 'copy', 1200); });
+})();
+</script>
+</body>
+</html>

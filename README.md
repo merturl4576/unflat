@@ -6,7 +6,7 @@ One CSS block that gives a single-tone page a ground, one light source and mount
 
 ![MIT license](https://img.shields.io/badge/license-MIT-3a3632) ![Agent Skill](https://img.shields.io/badge/Agent%20Skill-SKILL.md-ff6a1f) ![No dependencies](https://img.shields.io/badge/dependencies-none-3a3632)
 
-![A flat workshop site, then the same page on a ground with mounted, lit surfaces](assets/hero.gif)
+![A developer-tool landing page: the terminal types, the page scrolls, and the flat sections become surfaces mounted on a darker ground](assets/hero.gif)
 
 ```bash
 npx skills add merturl4576/unflat
@@ -68,6 +68,10 @@ Neutral fallbacks: plate for dark, paper for light. Glass is never a default.
 ## Before and after
 
 Full-page tops at 1440 px: the flat page on the left, the same page with the block on the right. Nothing else changed. Open the [gallery](https://merturl4576.github.io/unflat/gallery/) to drag the seam yourself.
+
+**Solder, terminal agent → plate**
+
+![Solder before and after: plate](assets/06-compare.png)
 
 **Ash & Iron, forge workshop → plate**
 

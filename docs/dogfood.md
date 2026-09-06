@@ -40,11 +40,12 @@ The final whole-branch review changed two things in the alignment rule: `--unfla
 
 ## Showcase demo
 
-After publishing, a fifth demo was added to show the block on a page with photographs: `05-forge-workshop`, a dark craft site with fourteen images. Its `after.html` was produced the same way as the others, by a fresh mid-tier agent following `SKILL.md`.
+After publishing, two more demos were added: `05-forge-workshop`, a dark craft site with fourteen photographs, and `06-terminal-agent`, a developer-tool landing page whose hero has an animated canvas and a typing terminal. Both `after.html` files were produced the same way as the others, by a fresh mid-tier agent following `SKILL.md`.
 
 | Run | Demo | Material chosen | Checker | Review verdict | Skill change made |
 |---|---|---|---|---|---|
 | showcase | 05-forge-workshop | plate | PASS | ACCEPT — ground −3% L untinted (accent hue 10° from the background's), surfaces +1.9/+4.4% L; glow on the commission section (the page's call to action); alignment 0/+1/0 px at 1440, 1100 and 390; images untouched (`filter: none`, opaque surfaces under every photograph, grain visible only in the ground gaps); block strips back to before.html byte-for-byte | — |
+| showcase | 06-terminal-agent | plate | PASS | ACCEPT — the hero holds a `<canvas>`, so it stays on the ground and the five sections below become surfaces; ground −3% L untinted (accent hue 7.5° from the background's), surfaces +2/+4.5% L; glow on pricing (featured tier); alignment 0/+1/0 px at 1440, 1100 and 390; sticky header and the canvas untouched | selectors.md gotcha: with `main > section:not(.hero)` as SURFACE, a bare-class GLOW (`.pricing`) loses on specificity and its shadow never paints — the run caught it and wrote `main > section.pricing`; the gotcha is now documented |
 
 ## What the runs taught the skill
 

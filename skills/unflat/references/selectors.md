@@ -85,6 +85,7 @@ Verify: compare `getBoundingClientRect().left` of the header's first text elemen
 - A section that already has `position: absolute` or `fixed` is not a surface.
 - If `SURFACE` sections already carry a background image, keep it: use `background-image` and set only `background-color` on them.
 - If the container has `display: grid` or `flex` with `gap`, drop the `:is(SURFACE) + :is(SURFACE) { margin-top }` rule and rely on the gap.
+- When SURFACE carries a `:not()` (`main > section:not(.hero)`), a bare-class GLOW (`.pricing`) loses on specificity and its shadow never shows; write GLOW in the same shape (`main > section.pricing`) so source order decides.
 - A section that has its own class rule for `background`, `border` or `box-shadow` beats `:is(SURFACE)` on specificity; include that class in SURFACE (`main > section.hero`) or repeat the selector (`:is(SURFACE):is(SURFACE)`) for that section.
 
 ## 10. Escape hatch
