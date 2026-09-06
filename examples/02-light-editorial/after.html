@@ -103,19 +103,19 @@ footer nav{gap:22px;font-size:.84rem}
 /* unflat: start */
 :root{
   --unflat-ground:#e9e6e1;                      /* page-bg −4% L (paper) */
-  --unflat-surface-top:#fbf8f3;                 /* surface top: page-bg +1.5% L, never #fff */
-  --unflat-surface-bottom:#f8f5f0;              /* surface base: page-bg +0.5% L */
+  --unflat-surface-top:#fbf8f3;                 /* page-bg +1.5% L */
+  --unflat-surface-bottom:#f8f5f0;              /* page-bg +0.5% L (surface base) */
   --unflat-edge:rgba(255,255,255,.8);           /* lit top border: white ~80% (light theme) */
-  --unflat-line:var(--line);                    /* other borders: the site's own line token */
-  --unflat-lightline:rgba(255,255,255,.9);      /* centered 1px light-line, white ~90% */
-  --unflat-shadow:0 30px 60px -40px rgba(60,45,30,.25),0 1px 0 rgba(28,26,23,.06);
+  --unflat-line:var(--line);                    /* the site's own line token */
+  --unflat-lightline:rgba(255,255,255,.9);      /* centered 1px light-line */
+  --unflat-shadow:0 30px 60px -40px rgba(28,26,23,.25),0 1px 0 rgba(28,26,23,.06);
   --unflat-glow:0 40px 100px -60px rgba(178,58,43,.14);   /* accent at .14, one surface only */
-  --unflat-light:rgba(255,250,240,.6);          /* directional light, top-left */
-  --unflat-vignette:rgba(80,60,40,.10);         /* opposite corner */
+  --unflat-light:rgba(255,250,240,.6);          /* directional light, top-left, warm */
+  --unflat-vignette:rgba(28,26,23,.10);         /* opposite corner, ink at .10 */
   --unflat-inset:clamp(8px,1.6vw,24px);         /* surface inset from the viewport edge */
-  --unflat-gap:clamp(14px,2vw,28px);            /* breathing room between surfaces */
-  --unflat-pad:var(--pad,0px);                  /* the site's container padding variable, if any */
-  --unflat-max:var(--max);                      /* container outer max-width */
+  --unflat-gap:clamp(14px,2vw,28px);            /* breathing room above and below a surface */
+  --unflat-pad:var(--pad);                      /* container horizontal padding token */
+  --unflat-max:var(--max);                      /* container outer max-width (border-box) */
 }
 /* 1. ground — painted on the canvas so the fixed light layer can sit above it */
 html{background:var(--unflat-ground)}
@@ -127,20 +127,20 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
     radial-gradient(100% 80% at 100% 110%,var(--unflat-vignette) 0%,transparent 60%),
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 .5  0 0 0 0 .45  0 0 0 .10 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
   background-size:auto,auto,220px 220px}
-/* 4. surfaces — mounted, lit from the top, shadow below */
-:is(main > section){position:relative;margin-inline:var(--unflat-inset);
+/* 4. surfaces — the mounted sections only: inset, lit from the top, shadow below, breathing room against the ground on both sides */
+:is(main > :is(.featured, .objects, .subscribe)){position:relative;margin-block:var(--unflat-gap);margin-inline:var(--unflat-inset);
   background:linear-gradient(180deg,var(--unflat-surface-top) 0%,var(--unflat-surface-bottom) 100%);
   border:1px solid var(--unflat-line);border-top-color:var(--unflat-edge);
   box-shadow:var(--unflat-shadow)}
-:is(main > section)::before{content:'';position:absolute;left:8%;right:8%;top:-1px;height:1px;pointer-events:none;
+:is(main > :is(.featured, .objects, .subscribe))::before{content:'';position:absolute;left:8%;right:8%;top:-1px;height:1px;pointer-events:none;
   background:linear-gradient(90deg,transparent,var(--unflat-lightline),transparent)}
-:is(main > section) + :is(main > section){margin-top:var(--unflat-gap)}
-:is(main > section:last-child){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
-/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own container rule (e.g. `.section .container{padding:0 24px}`); outside the compensation band it equals the site's padding, so nothing else changes. */ :is(main > section) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
+:is(main > .subscribe){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
+/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own container rule; outside the compensation band it equals the site's padding, so nothing else changes. */
+:is(main > :is(.featured, .objects, .subscribe)) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
 /* responsive: keep top and bottom edges, drop the side inset on small screens */
-@media (max-width:640px){:root{--unflat-inset:0px}:is(main > section){border-left:0;border-right:0}}
+@media (max-width:640px){:root{--unflat-inset:0px}:is(main > :is(.featured, .objects, .subscribe)){border-left:0;border-right:0}}
 /* print: paper is already a surface */
-@media print{html{background:#fff}body::before{display:none}:is(main > section),:is(main > section:last-child){box-shadow:none;border-color:transparent;background:none}}
+@media print{html{background:#fff}body::before{display:none}:is(main > :is(.featured, .objects, .subscribe)),:is(main > .subscribe){box-shadow:none;border-color:transparent;background:none}}
 /* unflat: end */
 </style>
 </head>

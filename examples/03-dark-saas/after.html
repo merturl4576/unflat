@@ -107,25 +107,25 @@ footer nav a{color:var(--ink-3)}
 @media(max-width:560px){header .wrap{gap:16px}.signin{display:none}}
 /* unflat: start */
 :root{
-  --unflat-ground:#070b12;                      /* page-bg -2% L; accent hue is 6deg from bg hue (<30deg), so untinted */
-  --unflat-surface-top:color-mix(in oklab,color-mix(in oklab,var(--bg),white 7%),transparent 15%);    /* glass: translucent panel top */
-  --unflat-surface-bottom:color-mix(in oklab,color-mix(in oklab,var(--bg),white 3.5%),transparent 8%); /* glass: translucent panel base */
-  --unflat-edge:rgba(255,255,255,.12);          /* glass: 1px inner highlight reads as a glass edge */
-  --unflat-line:rgba(255,255,255,.07);          /* glass: faint edge, field shows through */
-  --unflat-lightline:rgba(255,255,255,.25);     /* glass: centered top light-line */
+  --unflat-ground:oklch(from var(--bg) calc(l - 0.02) c h);     /* page-bg -2% L; accent hue is only 6deg from bg hue (<30deg), so untinted */
+  --unflat-surface-top:color-mix(in oklab,color-mix(in oklab,var(--bg),white 7%),transparent 15%);     /* glass: +7% L base, then 15% transparent so the field shows through */
+  --unflat-surface-bottom:color-mix(in oklab,color-mix(in oklab,var(--bg),white 3.5%),transparent 8%); /* glass: +3.5% L base, 8% transparent */
+  --unflat-edge:rgba(255,255,255,.12);          /* glass inner highlight */
+  --unflat-line:rgba(255,255,255,.07);          /* glass edge line */
+  --unflat-lightline:rgba(255,255,255,.25);     /* glass centered light-line */
   --unflat-shadow:0 30px 80px -40px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.06);
-  --unflat-glow:0 60px 140px -70px rgba(109,140,255,.30);  /* accent #6d8cff at .30, one surface only */
-  --unflat-light:rgba(190,210,255,.06);         /* cool light dial; the field blobs below carry the visible light */
+  --unflat-glow:0 60px 140px -70px rgba(109,140,255,.30);   /* --accent #6d8cff at 30%, one surface only (.cta) */
+  --unflat-light:rgba(190,210,255,.06);         /* cool light; kept for reference, glass's own body::before below carries the field instead */
   --unflat-vignette:rgba(0,0,0,.4);             /* opposite corner */
   --unflat-inset:clamp(8px,1.6vw,24px);         /* surface inset from the viewport edge */
-  --unflat-gap:clamp(14px,2vw,28px);            /* breathing room between surfaces */
+  --unflat-gap:clamp(14px,2vw,28px);            /* breathing room above and below a surface */
   --unflat-pad:var(--pad);                      /* site's own container padding token */
-  --unflat-max:var(--max);                      /* site's own container max-width token (border-box) */
+  --unflat-max:var(--max);                      /* site's own container max-width token (1180px) */
 }
-/* 1. ground — painted on the canvas so the fixed light layer can sit above it */
+/* 1. ground - painted on the canvas so the fixed light layer can sit above it */
 html{background:var(--unflat-ground)}
 body{background:transparent}
-/* 2+3. light and texture — glass field: two low-chroma accent blobs + vignette + grain, one fixed layer behind all content */
+/* 2 + 3. glass field - two low-chroma accent blobs, vignette and grain in one fixed layer (replaces the plate light+texture rule) */
 body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:
     radial-gradient(60% 50% at 15% -10%,rgba(109,140,255,.10) 0%,transparent 60%),
@@ -133,20 +133,20 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
     radial-gradient(100% 80% at 100% 110%,var(--unflat-vignette) 0%,transparent 60%),
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .85  0 0 0 0 .9  0 0 0 0 1  0 0 0 .12 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
   background-size:auto,auto,auto,220px 220px}
-/* 4. surfaces — mounted, lit from the top, shadow below */
-:is(main > section){position:relative;margin-inline:var(--unflat-inset);
+/* 4. surfaces - the mounted sections only: how-it-works and the closing CTA, lit from the top, shadow below, breathing room against the ground on both sides */
+:is(main > :is(.how, .cta)){position:relative;margin-block:var(--unflat-gap);margin-inline:var(--unflat-inset);
   background:linear-gradient(180deg,var(--unflat-surface-top) 0%,var(--unflat-surface-bottom) 100%);
   border:1px solid var(--unflat-line);border-top-color:var(--unflat-edge);
   box-shadow:var(--unflat-shadow)}
-:is(main > section)::before{content:'';position:absolute;left:8%;right:8%;top:-1px;height:1px;pointer-events:none;
+:is(main > :is(.how, .cta))::before{content:'';position:absolute;left:8%;right:8%;top:-1px;height:1px;pointer-events:none;
   background:linear-gradient(90deg,transparent,var(--unflat-lightline),transparent)}
-:is(main > section) + :is(main > section){margin-top:var(--unflat-gap)}
-:is(main > section:last-child){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
-/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own container rule (e.g. `.section .container{padding:0 24px}`); outside the compensation band it equals the site's padding, so nothing else changes. */ :is(main > section):not(.cta) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
+:is(main > .cta){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
+/* 5. alignment - .cta > .wrap is already its own padded, bordered card, so it is excluded; .how > .wrap is a plain centered container and gets the standard compensation. !important beats the site's own .wrap padding rule outside the compensation band, where it evaluates to the site's own padding, so nothing else changes. */
+:is(main > :is(.how, .cta)):not(.cta) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
 /* responsive: keep top and bottom edges, drop the side inset on small screens */
-@media (max-width:640px){:root{--unflat-inset:0px}:is(main > section){border-left:0;border-right:0}}
+@media (max-width:640px){:root{--unflat-inset:0px}:is(main > :is(.how, .cta)){border-left:0;border-right:0}}
 /* print: paper is already a surface */
-@media print{html{background:#fff}body::before{display:none}:is(main > section),:is(main > section:last-child){box-shadow:none;border-color:transparent;background:none}}
+@media print{html{background:#fff}body::before{display:none}:is(main > :is(.how, .cta)),:is(main > .cta){box-shadow:none;border-color:transparent;background:none}}
 /* unflat: end */
 </style>
 </head>

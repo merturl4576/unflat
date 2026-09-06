@@ -81,20 +81,20 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
 @media(max-width:860px){.hero .wrap,.cols,.mats,.work,.tiers{grid-template-columns:1fr}.readout{justify-self:start}}
 /* unflat: start */
 :root{
-  --unflat-ground:#0c0b0a;                      /* page-bg −3% L; tinted toward the accent only when the hues differ by more than 30° */
-  --unflat-surface-top:#1c1b1a;                 /* surface top: 1.5–2.5% L lighter than the base */
-  --unflat-surface-bottom:#161514;              /* surface base: page-bg 2–3% L lighter */
-  --unflat-edge:rgba(236,231,223,.10);          /* lit top border: text at 9–12% (dark) / white ~80% (light) */
-  --unflat-line:rgba(236,231,223,.10);          /* other borders: the site's line token */
-  --unflat-lightline:rgba(236,231,223,.22);     /* centered 1px light-line, alpha .18–.25 */
+  --unflat-ground:#0c0b0a;                      /* --bg -3% L (oklab); accent H81.3 vs bg H67.7, d=13.7 < 30 -> untinted */
+  --unflat-surface-top:#1c1b1a;                 /* --bg +4.5% L */
+  --unflat-surface-bottom:#161514;              /* --bg +2% L */
+  --unflat-edge:rgba(236,231,223,.10);          /* --ink at .10 */
+  --unflat-line:var(--line);                    /* site's own line token */
+  --unflat-lightline:rgba(236,231,223,.22);     /* --ink at .22 */
   --unflat-shadow:0 40px 90px -50px rgba(0,0,0,.9),0 2px 0 rgba(0,0,0,.55);
-  --unflat-glow:0 60px 140px -70px rgba(224,178,92,.38);   /* accent at 35–40%, one surface only */
-  --unflat-light:rgba(255,196,150,.075);        /* directional light, top-left */
+  --unflat-glow:0 60px 140px -70px rgba(224,178,92,.38);   /* --accent at .38, one surface only (#contact) */
+  --unflat-light:rgba(255,196,150,.075);        /* warm palette, directional light, top-left */
   --unflat-vignette:rgba(0,0,0,.45);            /* opposite corner */
   --unflat-inset:clamp(8px,1.6vw,24px);         /* surface inset from the viewport edge */
-  --unflat-gap:clamp(14px,2vw,28px);            /* breathing room between surfaces */
-  --unflat-pad:var(--pad,0px);                  /* the site's container padding variable, if any */
-  --unflat-max:var(--max);                      /* container outer max-width: site's own --max (centered, border-box container) */
+  --unflat-gap:clamp(14px,2vw,28px);            /* breathing room above and below a surface */
+  --unflat-pad:var(--pad);                      /* site's container horizontal padding token */
+  --unflat-max:var(--max);                      /* site's container outer max-width (border-box) */
 }
 /* 1. ground — painted on the canvas so the fixed light layer can sit above it */
 html{background:var(--unflat-ground)}
@@ -106,20 +106,19 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
     radial-gradient(100% 80% at 100% 110%,var(--unflat-vignette) 0%,transparent 60%),
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 .93  0 0 0 0 .84  0 0 0 .16 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
   background-size:auto,auto,220px 220px}
-/* 4. surfaces — mounted, lit from the top, shadow below */
-:is(main > section){position:relative;margin-inline:var(--unflat-inset);
+/* 4. surfaces — the mounted sections only: inset, lit from the top, shadow below, breathing room against the ground on both sides */
+:is(main > :is(#process, #pricing, #contact)){position:relative;margin-block:var(--unflat-gap);margin-inline:var(--unflat-inset);
   background:linear-gradient(180deg,var(--unflat-surface-top) 0%,var(--unflat-surface-bottom) 100%);
   border:1px solid var(--unflat-line);border-top-color:var(--unflat-edge);
   box-shadow:var(--unflat-shadow)}
-:is(main > section)::before{content:'';position:absolute;left:8%;right:8%;top:-1px;height:1px;pointer-events:none;
+:is(main > :is(#process, #pricing, #contact))::before{content:'';position:absolute;left:8%;right:8%;top:-1px;height:1px;pointer-events:none;
   background:linear-gradient(90deg,transparent,var(--unflat-lightline),transparent)}
-:is(main > section) + :is(main > section){margin-top:var(--unflat-gap)}
-:is(main > section:has(.tiers)){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
-/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own container rule (e.g. `.section .container{padding:0 24px}`); outside the compensation band it equals the site's padding, so nothing else changes. */ :is(main > section) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
+:is(main > #contact){box-shadow:var(--unflat-shadow),var(--unflat-glow)}
+/* 5. alignment — give back the inset only where the container fills the surface; 100% is the section width, so (100% + 2*inset - max)/2 is the header's centering offset. !important: it must beat the site's own container rule (e.g. `.section .container{padding:0 24px}`); outside the compensation band it equals the site's padding, so nothing else changes. */ :is(main > :is(#process, #pricing, #contact)) > .wrap{padding-inline:calc(var(--unflat-pad) - clamp(0px, var(--unflat-inset) - (100% + 2*var(--unflat-inset) - var(--unflat-max)) / 2, var(--unflat-inset))) !important}
 /* responsive: keep top and bottom edges, drop the side inset on small screens */
-@media (max-width:640px){:root{--unflat-inset:0px}:is(main > section){border-left:0;border-right:0}}
+@media (max-width:640px){:root{--unflat-inset:0px}:is(main > :is(#process, #pricing, #contact)){border-left:0;border-right:0}}
 /* print: paper is already a surface */
-@media print{html{background:#fff}body::before{display:none}:is(main > section),:is(main > section:has(.tiers)){box-shadow:none;border-color:transparent;background:none}}
+@media print{html{background:#fff}body::before{display:none}:is(main > :is(#process, #pricing, #contact)),:is(main > #contact){box-shadow:none;border-color:transparent;background:none}}
 /* unflat: end */
 </style>
 </head>
